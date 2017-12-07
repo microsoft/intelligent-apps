@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<!-- Page Content -->
+<section id="about" class="content-section-a">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 ml-auto">
+                <hr class="section-heading-spacer">
+                <div class="clearfix"></div>
+                <h2 class="section-heading">What we believe:<br>Knowledge is Power</h2>
+                <p class="lead">
+                    The epicenter of our
+                    company culture is the strive to obtain knowledge. We pride ourselves on knowing all matters concerning taxes.
+                </p>
+            </div>
+            <div class="col-lg-5 mr-auto">
+                <img class="img-fluid" src="~/Images/ipad.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</section>
+<section id="services" class="content-section-b">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 mr-auto order-lg-2">
+                <hr class="section-heading-spacer">
+                <div class="clearfix"></div>
+                <h2 class="section-heading">Tap into our<br>on-demand service</h2>
+                <p class="lead">
+                    Search our tax library and find answers to tax questions in your country.
+                    When you are ready, signup to unlock any of the 190 countries.
+                </p>
+            </div>
+            <div class="col-lg-5 ml-auto order-lg-1">
+                <img class="img-fluid" src="~/Images/dog.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /.content-section-b -->
+<section class="content-section-a">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 ml-auto">
+                <hr class="section-heading-spacer">
+                <div class="clearfix"></div>
+                <h2 class="section-heading">We bring 100 years of <br>experience with our consulting services</h2>
+                <p class="lead">We are a global team of advisors across major timezones that can work with your tax consultation needs and schedules.</p>
+            </div>
+            <div class="col-lg-5 mr-auto ">
+                <img class="img-fluid" src="~/Images/mouse.jpg" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /.content-section-a -->
+<aside id="contact" class="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 my-auto">
+                <h2>Connect with us:</h2>
+            </div>
+            <div class="col-lg-6 my-auto">
+                <ul class="list-inline banner-social-buttons">
+                    <li class="list-inline-item">
+                        <a href="#" class="btn btn-secondary btn-lg">
+                            <i class="fa fa-twitter fa-fw"></i>
+                            <span class="network-name">Twitter</span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="btn btn-secondary btn-lg">
+                            <i class="fa fa-github fa-fw"></i>
+                            <span class="network-name">Github</span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="btn btn-secondary btn-lg">
+                            <i class="fa fa-linkedin fa-fw"></i>
+                            <span class="network-name">Linkedin</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</aside>
+<!-- /.banner -->
+
+<section id="faqs" class="content-section-c">
+    <div class="container">
+        <div class="row">
+            <div class="">
+                <hr class="section-heading-spacer">
+                <div class="clearfix"></div>
+                <h2 class="section-heading">FAQs</h2>
+                <p class="lead">
+                       @{
+                            List<AdatumTaxCorpKnowledgeService.Models.Faq> faqslist = ViewBag.FaqsList;
+                            foreach (var item in faqslist)
+                            {
+                                <div class="faq">@Html.Raw(item.Question)</div>
+                                <div class="answer" style="display: none">@Html.Raw(item.Answer)</div>
+                            }
+                       }
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</section>
