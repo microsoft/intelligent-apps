@@ -1,6 +1,6 @@
 
 # Activate Azure with Intelligent Apps
-There are five proof of concept applications in this repo written to illustrate how to augment existing applications with Microsoft Cognitive Services and Bot Framework to add intelligence in addition to other services in the Azure platform.
+There are five proof of concept applications in this repo written to illustrate how to augment existing applications with Microsoft Cognitive Services and Bot Framework to add intelligence as well as using other services in the Azure platform.
 
 **Adatum Corporation Knowledge Service**
 * Demonstrate how to enhance website to answer questions with natural language based on existing list of FAQ questions & answers. 
