@@ -188,7 +188,6 @@
     <Content Include="Images\intro-bg.jpg" />
     <Content Include="Images\ipad.png" />
     <Content Include="Images\mouse.jpg" />
-    <Content Include="readme.txt" />
     <Content Include="Scripts\AdatumTaxCorp.Main.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />

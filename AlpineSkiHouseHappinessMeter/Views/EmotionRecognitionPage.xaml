@@ -1,0 +1,58 @@
+﻿<Page
+    x:Class="IntelligentKioskSample.Views.EmotionRecognitionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:IntelligentKioskSample.Views"
+    xmlns:ctl="using:IntelligentKioskSample.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <CommandBar x:Name="commandBar" VerticalAlignment="Top" HorizontalContentAlignment="Stretch">
+
+            <CommandBar.Content>
+                <ctl:PageHeader>
+                    <ctl:PageHeader.HeaderContent>
+                        <TextBlock Text="EMOTION API EXPLORER" Style="{ThemeResource PageTitleTextBlockStyle}" TextWrapping="NoWrap"/>
+                    </ctl:PageHeader.HeaderContent>
+                </ctl:PageHeader>
+            </CommandBar.Content>
+        </CommandBar>
+
+        <Grid Grid.Row="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition/>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.1*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.1*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="1" Grid.Row="1" x:Name="TxtStatusDescription" Text="{StaticResource TextStatus_Hi}" FontSize="18" HorizontalAlignment="Center" Foreground="{StaticResource StatusTextBrush}" MinHeight="16" MinWidth="96" Width="256" ></TextBlock>
+
+            <Grid Grid.Row="2" Grid.Column="1" x:Name="webCamHostGrid" Visibility="Collapsed" >
+                <!--HERE-->
+                <ctl:ImageWithFaceBorderUserControl BalloonBackground="#ECCF11" BalloonForeground="#D86C2A" FlowDirection="RightToLeft" x:Name="imageFromCameraWithFaces" ShowEmotionRecognition="True" DetectFacesOnLoad="True" ShowMultipleFaces="True" ShowRecognitionResults="True"/>
+                <ctl:CameraControl x:Name="cameraControl" 
+                                   EnableAutoCaptureMode="True"/>
+            </Grid>
+
+            <ctl:ImageWithFaceBorderUserControl BalloonBackground="#ECCF11" BalloonForeground="#D86C2A" Grid.Row="1" Grid.Column="1" x:Name="imageWithFacesControl" ShowEmotionRecognition="True" DetectFacesOnLoad="True" ShowMultipleFaces="True" ShowRecognitionResults="True"/>
+
+            <ProgressRing Grid.Column="1" Grid.Row="3" x:Name="PrgRing1" Width="64" Height="64" />
+
+        </Grid>
+
+    </Grid>
+</Page>
