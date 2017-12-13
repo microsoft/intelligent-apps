@@ -76,13 +76,65 @@ namespace WoodgroveBankRegistration.Views
 
         private async void button_addPhoto_Click(object sender, RoutedEventArgs e)
         {
-
+            //TODO: add in code to initialize the camera capture
+            //and then display the image
         }
 
         private async void button_addface_Click(object sender, RoutedEventArgs e)
-        {          
-              
+        {
+            //Disable all buttons while processing
+            button_addface.IsEnabled = false;
+            button_addPhoto.IsEnabled = false;
+
+
+            //TODO: Upload photo and add person face using Face API
+            
+
+            //Enable all buttons
+            button_addface.IsEnabled = true;
+            button_addPhoto.IsEnabled = true;
+
+            //Display last three photos in image control
+            //DisplayLatestPhotos();
         }
 
+        private async void DisplayLatestPhotos()
+        {
+            List<FaceEntity> faceList = new List<FaceEntity>();
+
+
+            //TODO: get all registered face details for the user
+
+
+            //TODO: uncomment code
+            //If faceList count is greater than 0, display the last image and remove the last item
+            /*if (faceList.Count > 0)
+            {
+                Image3.Source = new BitmapImage(new Uri(faceList.Last().ImageUrl));
+                faceList.Remove(faceList.Last());
+            }
+
+            //Repeat to display second last photo
+            if (faceList.Count > 0)
+            {
+                Image2.Source = new BitmapImage(new Uri(faceList.Last().ImageUrl));
+                faceList.Remove(faceList.Last());
+            }
+
+            //Repeat to display third last photo
+            if (faceList.Count > 0)
+            {
+                Image1.Source = new BitmapImage(new Uri(faceList.Last().ImageUrl));
+                faceList.Remove(faceList.Last());
+            }*/
+        }
+
+        private async Task<bool> CheckFaceExistsAsync(string Uri)
+        {
+            //TODO: add code to check if face already matches a registered user
+
+
+            return false;
+        }
     }
 }

@@ -86,5 +86,55 @@ namespace WoodgrovePortable.Services
             }
         }
 
+        public async Task<object> uploadPhotoAsync(string personGroupID, string imageNameWithExtension, Stream ImageStream)
+        {
+            try
+            {
+                //TODO: add in code to upload the image to a blob container
+                //and returns the URI that references the image
+                
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        private async Task<CloudTable> GetFaceTableAsync()
+        {
+            //TODO: create a table
+
+            return null;
+        }
+
+        public async Task<object> AddUserFaceAsync(string Username, string personId, string uri, string persistedFaceID)
+        {
+            //Get reference to face table
+            var table = await GetFaceTableAsync();
+
+
+            //TODO: create FaceEntity to be inserted into the table           
+
+
+            //Execute the insert operation.
+            try
+            {
+                //TODO: add code to execute the insert operation
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+            return true;
+        }
+
+        public async Task<List<FaceEntity>> LoadFacesAsync(string Username, string personId)
+        {
+            //TODO: load faces tied to a person
+
+
+            return null;
+        }
     }
 }

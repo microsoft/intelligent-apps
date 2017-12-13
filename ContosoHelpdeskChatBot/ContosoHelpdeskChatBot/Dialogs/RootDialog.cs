@@ -12,11 +12,13 @@
     {
         private static log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private const string InstallAppOption = "Install Application (install)";
+        private const string ResetPasswordOption = "Reset Password (password)";
         private const string GreetMessage = "Welcome to **Contoso Helpdesk Chat Bot**.\n\nI am mainly designed to use with mobile email app, make sure your replies do not contain signatures. \n\nHere's what I can help you, just reply with word in parenthesis:";
         private const string ErrorMessage = "Not a valid option";
         private static List<string> HelpdeskOptions = new List<string>()
         {
             InstallAppOption,
+            ResetPasswordOption
         };
 
         public async Task StartAsync(IDialogContext context)
@@ -48,6 +50,9 @@
                 {
                     case InstallAppOption:
                         context.Call(new InstallAppDialog(), this.ResumeAfterOptionDialog);
+                        break;
+                    case ResetPasswordOption:
+                        context.Call(new ResetPasswordDialog(), this.ResumeAfterOptionDialog);
                         break;
                 }
             }

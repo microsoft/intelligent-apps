@@ -7,6 +7,6 @@ namespace WoodgrovePortable.Models
 {
     public class FaceEntity 
     {
-        
+        //TODO: add in properties
     }
 }

@@ -28,9 +28,12 @@ namespace CallFabrikamCustomerService
 
         private void StopMicrophone()
         {
-            //end mic recognition and dispose of client
-            micClient.EndMicAndRecognition();
-            micClient.Dispose();
+            //end mic
+            if(micClient != null)
+            {
+                micClient.EndMicAndRecognition();
+                micClient.Dispose();
+            }
         }
 
         //Creates a new microphone client to start recoding and send send audio stream to Speech API automatically for text transcription
@@ -60,9 +63,9 @@ namespace CallFabrikamCustomerService
         {
             thinking.PlaySync();
 
-            this.EchoResponse(e);
+            this.EchoResponseAsync(e).Wait();
 
-            micClient.StartMicAndRecognition();
+            StartMicrophone();
         }
 
         //writes the error from Speech API if any to the onscreen display

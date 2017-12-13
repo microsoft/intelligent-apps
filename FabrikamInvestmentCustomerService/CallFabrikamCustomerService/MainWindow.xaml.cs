@@ -1,4 +1,5 @@
-﻿using Microsoft.CognitiveServices.SpeechRecognition;
+﻿using Microsoft.Bot.Connector.DirectLine;
+using Microsoft.CognitiveServices.SpeechRecognition;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,16 +31,25 @@ namespace CallFabrikamCustomerService
     /// </summary>
     public partial class MainWindow : Window
     {
+        //Fields needed for Speech to Text
         private string MicrosoftSpeechToTextEndpoint;
         private string MicrosoftSpeechApiKey;
+        private BitmapImage callButtonImage;
+        private BitmapImage hangUpButtonImage;
+        SoundPlayer dialTone;
+        SoundPlayer ringing;
+
+        //Fields needed for Speech to Text
         private string MicrosoftSpeechAccessTokenEndpoint;
         private string MicrosoftTextToSpeechEndpoint;
 
-        private BitmapImage callButtonImage;
-        private BitmapImage hangUpButtonImage;
-
-        SoundPlayer dialTone;
-        SoundPlayer ringing;
+        //Fields needed for using bots
+        private string MicrosoftBotDirectLineKey;
+        private DirectLineClient botClient;
+        private string fromUser;
+        private string botId;
+        private Microsoft.Bot.Connector.DirectLine.Conversation conversation;
+        private string watermark;
 
         public MainWindow()
         {
@@ -53,6 +63,10 @@ namespace CallFabrikamCustomerService
 
             //Best practice to add event handler to dispose and cleanup resources whenever this window is closed
             this.Closing += OnMainWindowClosing;
+
+            //Initialize speech to short phrase mode & default locale
+            Mode = SpeechRecognitionMode.ShortPhrase;
+            DefaultLocale = "en-US";
 
             //Setup the green Call button image
             // Note BitmapImage.UriSource must be in a BeginInit/EndInit block.
@@ -71,13 +85,15 @@ namespace CallFabrikamCustomerService
             dialTone = new SoundPlayer(@"../../Resources/DialTone_18883226837.wav");
             ringing = new SoundPlayer(@"../../Resources/Ringing_Phone-Mike_Koenig.wav");
 
-            //Initialize speech to short phrase mode & default locale
-            Mode = SpeechRecognitionMode.ShortPhrase;
-            DefaultLocale = "en-US";
+            //Initialize Bot configuration
+            botId = ConfigurationManager.AppSettings["BotId"];
+            MicrosoftBotDirectLineKey = ConfigurationManager.AppSettings["MicrosoftBotDirectLineKey"];
+            fromUser = "FabrikamInvestmentCustomer";
+            watermark = null;
         }
 
-        //Event handler that will cleanup speech client when window is closed; essentially closing app
-        private void OnMainWindowClosing(object sender, CancelEventArgs e)
+    //Event handler that will cleanup speech client when window is closed; essentially closing app
+    private void OnMainWindowClosing(object sender, CancelEventArgs e)
         {
             //cleanup tones
             dialTone.Dispose();
@@ -186,7 +202,7 @@ namespace CallFabrikamCustomerService
 
 
         //Writes the response result.
-        private void EchoResponse(SpeechResponseEventArgs e)
+        private async Task EchoResponseAsync(SpeechResponseEventArgs e)
         {
             WriteLine("Speech To Text Result:");
             //handle the case when there are no results. 
@@ -210,8 +226,12 @@ namespace CallFabrikamCustomerService
                 }
                 WriteLine();
 
+                string result = string.Empty;
+                //TODO: send transcribed text to bot and get the response
+
+
                 //Play audio from text to speech API
-                PlaySpeechAudio(e.PhraseResponse.Results[0].DisplayText);
+                await PlaySpeechAudioAsync(result);
             }
         }
 

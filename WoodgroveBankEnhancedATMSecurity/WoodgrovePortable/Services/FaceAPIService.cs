@@ -130,5 +130,47 @@ namespace WoodgrovePortable.Services
             }
         }
 
+        //POST Create a person face
+        public async Task<HttpResponseMessage> CreatePersonFaceAsync(string GroupID, string PersonID, string FaceUrl)
+        {
+            //TODO: uncomment code
+
+            /*using (var client = FaceClient())
+            {
+                string uri = AppSettings.baseuri + "/persongroups/" + GroupID + "/persons/" + PersonID + "/persistedFaces?";
+
+                // Request body
+                string jsonRequest = "{\"url\":\"" + FaceUrl + "\"}";
+                byte[] byteData = Encoding.UTF8.GetBytes(jsonRequest);
+
+                content = new ByteArrayContent(byteData);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                responseMessage = await client.PostAsync(uri, content);
+                return responseMessage;
+            }*/
+
+            return null;
+        }
+
+        //POST Detect face
+        public async Task<HttpResponseMessage> DetectFaceAsync(string ImageUrl)
+        {
+            //TODO: add in code
+
+            return null;
+        }
+
+        //POST Verify face
+        public async Task<HttpResponseMessage> IdentifyFaceAsync(float confidenceThreshold, string[] faceIds, int maxNumOfCandidatesReturned, string personGroupId)
+        {
+            using (var client = FaceClient())
+            {
+                //TODO: add in code
+
+                return null;
+            }
+        }
+
     }
 }
