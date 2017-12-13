@@ -67,8 +67,9 @@ namespace CallFabrikamCustomerService
             dialTone = new SoundPlayer(@"../../Resources/DialTone_18883226837.wav");
             ringing = new SoundPlayer(@"../../Resources/Ringing_Phone-Mike_Koenig.wav");
 
-            //TODO: Initialize speech to short phrase mode & default locale
-
+            //Initialize speech to short phrase mode & default locale
+            Mode = SpeechRecognitionMode.ShortPhrase;
+            DefaultLocale = "en-US";
         }
 
         //Event handler that will cleanup speech client when window is closed; essentially closing app
@@ -78,7 +79,15 @@ namespace CallFabrikamCustomerService
             dialTone.Dispose();
             ringing.Dispose();
 
-            //TODO: cleanup speech to text mic & thinking tone
+            //cleanup speech to text mic & thinking tone
+            if (this.micClient != null)
+            {
+                this.micClient.EndMicAndRecognition();
+                micClient.Dispose();
+                
+            }
+            if (this.thinking != null)
+                thinking.Dispose();
 
         }
 
@@ -166,13 +175,27 @@ namespace CallFabrikamCustomerService
         private void EchoResponse(SpeechResponseEventArgs e)
         {
             WriteLine("Speech To Text Result:");
-            //TODO: handle the case when there are no results. 
+            //handle the case when there are no results. 
             //common situation is when there is a pause from user and audio captured has no speech in it
-
+            if (e.PhraseResponse.Results.Length == 0)
+            {
+                WriteLine("No phrase response is available.");
+                WriteLine();
+            }
+            else
+            {
                 //speech to text usually returns an array of returns ranked highest first to lowest
-                //TODO: we will print all of the results
-                
-
+                //we will print all of the results
+                for (int i = 0; i < e.PhraseResponse.Results.Length; i++)
+                {
+                    WriteLine(
+                        "[{0}] Confidence={1}, Text=\"{2}\"",
+                        i,
+                        e.PhraseResponse.Results[i].Confidence,
+                        e.PhraseResponse.Results[i].DisplayText);
+                }
+                WriteLine();
+            }
         }
 
         //Creates a line break

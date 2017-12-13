@@ -55,9 +55,13 @@ namespace WoodgroveBankRegistration.Views
             }
             SystemNavigationManager.GetForCurrentView().BackRequested += RegisterPage_BackRequested;
             
-        
-            //TODO:Load person groups into the ComboBox_PersonGroups
-
+            //Load person groups in PersonGroupList Combo Box
+            ComboBox_PersonGroups.ItemsSource = pgvm.PersonGroupList;
+            foreach (var item in pgvm.PersonGroupList)
+            {
+                if (item.personGroupId == AppSettings.defaultPersonGroupID)
+                    ComboBox_PersonGroups.SelectedItem = item;
+            }
 
             base.OnNavigatedTo(e);
         }
@@ -76,12 +80,34 @@ namespace WoodgroveBankRegistration.Views
             //Disable register user button
             Button_RegisterUser.IsEnabled = false;
 
-            //TODO: Add in code that will register the user profile
+            //Encrypt the PIN
+            string password = CryptographicBuffer.EncodeToHexString(HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha256).HashData(CryptographicBuffer.ConvertStringToBinary(PasswordBox_PIN.Password, BinaryStringEncoding.Utf8)));
 
+            //Identify the selected person group
+            var selectedGroup = (ComboBox_PersonGroups.SelectedItem as PersonGroupDetails).personGroupId;
 
-            //Enable the button
+            //Register the user profile - add the user entity to Azure table storage
+            var result = await storageService.RegisterUserAsync(TextBox_Name.Text, password, selectedGroup);
+            if (!(result is bool))
+            {
+                var ex = result as Exception;
+
+                //Handle conflict if another user with the same name exists
+                if (ex.Message.ToLower() == "conflict")
+                {
+                    msg.Title = "User already exists";
+                    msg.Content = "Another user with the same username exists. Please try another username!";
+                    await msg.ShowAsync();
+                }
+            }
+            else
+            {
+                //Create the Person using Face API
+                //This will be handled later
+            }
+            //Disable the button
             Button_RegisterUser.IsEnabled = true;
         }
-        
+
     }
 }

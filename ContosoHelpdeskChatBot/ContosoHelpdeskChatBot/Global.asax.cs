@@ -26,7 +26,15 @@ namespace ContosoHelpdeskChatBot
         {
             public static void UpdateConversationContainer()
             {
+                var builder = new ContainerBuilder();
 
+                builder.Register(c => new CachingBotDataStore(c.ResolveKeyed<IBotDataStore<BotData>>(typeof(ConnectorStore)),
+                    CachingBotDataStoreConsistencyPolicy.LastWriteWins))
+                    .As<IBotDataStore<BotData>>()
+                    .AsSelf()
+                    .InstancePerLifetimeScope();
+
+                builder.Update(Conversation.Container);
             }
         }
     }

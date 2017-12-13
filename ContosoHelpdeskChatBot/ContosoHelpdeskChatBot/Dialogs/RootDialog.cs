@@ -10,6 +10,15 @@
     [Serializable]
     public class RootDialog : IDialog<object>
     {
+
+        private const string InstallAppOption = "Install Application (install)";
+        private const string GreetMessage = "Welcome to **Contoso Helpdesk Chat Bot**.\n\nI am mainly designed to use with mobile email app, make sure your replies do not contain signatures. \n\nHere's what I can help you, just reply with word in parenthesis:";
+        private const string ErrorMessage = "Not a valid option";
+        private static List<string> HelpdeskOptions = new List<string>()
+        {
+            InstallAppOption
+        };
+
         public async Task StartAsync(IDialogContext context)
         {
             context.Wait(this.MessageReceivedAsync);
@@ -20,12 +29,13 @@
             //this will trigger a wait for user's reply
             var message = await userReply;
 
+            this.ShowOptions(context);
 
         }
 
         private void ShowOptions(IDialogContext context)
         {
-            
+            PromptDialog.Choice(context, this.OnOptionSelected, HelpdeskOptions, GreetMessage, ErrorMessage, 3);
         }
 
         private async Task OnOptionSelected(IDialogContext context, IAwaitable<string> userReply)
@@ -35,7 +45,12 @@
                 //this will trigger a wait for user's reply
                 string optionSelected = await userReply;
 
-                
+                switch (optionSelected)
+                {
+                    case InstallAppOption:
+                        context.Call(new InstallAppDialog(), this.ResumeAfterOptionDialog);
+                        break;
+                }
             }
             catch (TooManyAttemptsException ex)
             {
