@@ -20,7 +20,6 @@
             </Image>
         </Grid>
         
-        <local:EmotionEmojiControl x:Name="emotionEmojiControl" VerticalAlignment="Top" />
         <!--<ProgressRing x:Name="progressIndicator"  />-->
         <ProgressBar x:Name="progressIndicator" IsIndeterminate="False" Visibility="Collapsed" Height="32" ></ProgressBar>
     </Grid>

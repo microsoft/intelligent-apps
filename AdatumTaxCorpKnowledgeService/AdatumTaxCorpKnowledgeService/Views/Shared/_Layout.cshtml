@@ -45,19 +45,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#faqs">FAQs</a>
                     </li>
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <!-- HTML input box with id so we can look up in jQuery -->
-                            <input id="taxquestion" type="text" class="form-control" placeholder="Ask a tax question...">
-                            <span class="input-group-btn">
-                                <!-- HTML button for invoking jQuery AJAX method in AdatumTaxCorp.Main.js to get answer -->
-                                <button id="findtaxanswer" class="btn btn-default" type="button" data-toggle="modal" data-target="#answerModal">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                        <!-- /input-group -->
-                    </li>
                 </ul>
             </div>
         </div>
@@ -123,22 +110,6 @@
             <p class="copyright text-muted small">Copyright &copy; Adatum Tax Corp Knowledge Service 2017. All Rights Reserved</p>
         </div>
     </footer>
-
-    <div class="modal fade" id="answerModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">IRS FAQ Answer Match</h4>
-                </div>
-                <div id="taxanswer" class="modal-body">
-                    <p>&hellip;</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
     <!-- Bootstrap core JavaScript -->
     <script src="~/Scripts/jquery.min.js"></script>

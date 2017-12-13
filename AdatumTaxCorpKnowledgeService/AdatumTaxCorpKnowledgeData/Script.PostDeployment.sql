@@ -10,7 +10,7 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 
-USE [AdatumTaxCorpKnowledgeData]
+USE [AdatumTaxCorpKnowledgeService20171127064957_db]
 GO
 SET ANSI_NULLS ON
 GO

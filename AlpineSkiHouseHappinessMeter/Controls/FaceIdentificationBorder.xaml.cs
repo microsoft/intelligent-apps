@@ -32,7 +32,6 @@
 // 
 
 using ServiceHelpers;
-using Microsoft.ProjectOxford.Emotion.Contract;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -52,7 +51,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
-using Microsoft.ProjectOxford.Face.Contract;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 

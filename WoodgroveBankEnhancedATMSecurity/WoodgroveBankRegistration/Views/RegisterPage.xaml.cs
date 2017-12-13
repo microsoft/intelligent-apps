@@ -54,17 +54,10 @@ namespace WoodgroveBankRegistration.Views
                     AppViewBackButtonVisibility.Visible;
             }
             SystemNavigationManager.GetForCurrentView().BackRequested += RegisterPage_BackRequested;
+            
+        
+            //TODO:Load person groups into the ComboBox_PersonGroups
 
-            //Load person groups in PersonGroupList Combo Box
-            ComboBox_PersonGroups.ItemsSource = pgvm.PersonGroupList;
-            foreach (var item in pgvm.PersonGroupList)
-            {
-                if (item.personGroupId == AppSettings.defaultPersonGroupID)
-                    ComboBox_PersonGroups.SelectedItem = item;
-            }
-
-            //Create the default person group if it doesn't exist
-            await pgvm.InitializePersonGroupsAsync();
 
             base.OnNavigatedTo(e);
         }
@@ -83,96 +76,12 @@ namespace WoodgroveBankRegistration.Views
             //Disable register user button
             Button_RegisterUser.IsEnabled = false;
 
-            //Encrypt the PIN
-            string password = CryptographicBuffer.EncodeToHexString(HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha256).HashData(CryptographicBuffer.ConvertStringToBinary(PasswordBox_PIN.Password, BinaryStringEncoding.Utf8)));
-            
-            //Identify the selected person group
-            var selectedGroup = (ComboBox_PersonGroups.SelectedItem as PersonGroupDetails).personGroupId;
+            //TODO: Add in code that will register the user profile
 
-            //Register the user profile - add the user entity to Azure table storage
-            var result = await storageService.RegisterUserAsync(TextBox_Name.Text, password, selectedGroup);
-            if (!(result is bool))
-            {
-                var ex = result as Exception;
 
-                //Handle conflict if another user with the same name exists
-                if (ex.Message.ToLower() == "conflict")
-                {
-                    msg.Title = "User already exists";
-                    msg.Content = "Another user with the same username exists. Please try another username!";
-                    await msg.ShowAsync();
-                }
-            }
-            else
-            {
-                //Create the Person using Face API
-                var response = await faceClient.CreatePersonAsync(selectedGroup, TextBox_Name.Text);
-                var responseMessage = await response.Content.ReadAsStringAsync();
-                if (response.IsSuccessStatusCode)
-                {
-                    msg.Title = "User registered successfully!";
-                    msg.Content = responseMessage;
-                    await msg.ShowAsync();
-
-                    //Log In after successfully registering
-                    await LogInAsync();
-                }
-                else
-                {
-                    msg.Title = "Unable to register user!";
-                    msg.Content = responseMessage;
-                    await msg.ShowAsync();
-                }
-            }
-
-            //Disable the button
+            //Enable the button
             Button_RegisterUser.IsEnabled = true;
         }
-
-        private async Task<bool> LogInAsync()
-        {
-            //Encrypt the PIN
-            string password = CryptographicBuffer.EncodeToHexString(HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha256).HashData(CryptographicBuffer.ConvertStringToBinary(PasswordBox_PIN.Password, BinaryStringEncoding.Utf8)));
-
-            //Invoke Log In method
-            var result = await storageService.SignInAsync(TextBox_Name.Text, password);
-
-            //If log in is successful
-            if (result is bool)
-            {
-                var username = TextBox_Name.Text.ToLower().Replace(" ", "");
-
-                //Get all persons in the person group
-                var plist = await faceClient.ListPersonsAsync(AppSettings.defaultPersonGroupID);
-                if (!(plist is bool))
-                {
-                    var personlist = plist as List<PersonDetails>;
-
-                    //Iterate through the persons in the person group to check if username matches
-                    foreach (var item in personlist)
-                    {
-                        if (item.userData == username)
-                        {
-                            //If a Person exists in Face API with the same username
-                            //then save person ID and username in local settings
-                            localSettings.Values["PersonId"] = item.personId;
-                            localSettings.Values["UserName"] = item.userData;
-
-                            //Navigate to Dashboard Page - Successful Log In
-                            Frame.Navigate(typeof(Dashboard));
-                        }
-                    }
-                }
-            }
-            else
-            {
-                //Display the failure message
-                msg.Title = "Invalid Log In!";
-                msg.Content = result.ToString();
-                await msg.ShowAsync();
-                return false;
-            }
-            return true;
-        }
+        
     }
 }

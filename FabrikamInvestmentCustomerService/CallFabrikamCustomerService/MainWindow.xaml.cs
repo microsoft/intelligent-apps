@@ -1,5 +1,4 @@
-﻿using Microsoft.Bot.Connector.DirectLine;
-using Microsoft.CognitiveServices.SpeechRecognition;
+﻿using Microsoft.CognitiveServices.SpeechRecognition;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,25 +30,14 @@ namespace CallFabrikamCustomerService
     /// </summary>
     public partial class MainWindow : Window
     {
-        //Fields needed for Speech to Text
         private string MicrosoftSpeechToTextEndpoint;
         private string MicrosoftSpeechApiKey;
+
         private BitmapImage callButtonImage;
         private BitmapImage hangUpButtonImage;
+
         SoundPlayer dialTone;
         SoundPlayer ringing;
-
-        //Fields needed for Speech to Text
-        private string MicrosoftSpeechAccessTokenEndpoint;
-        private string MicrosoftTextToSpeechEndpoint;
-
-        //Fields needed for using bots
-        private string MicrosoftBotDirectLineKey;
-        private DirectLineClient botClient;
-        private string fromUser;
-        private string botId;
-        private Microsoft.Bot.Connector.DirectLine.Conversation conversation;
-        private string watermark;
 
         public MainWindow()
         {
@@ -58,15 +46,9 @@ namespace CallFabrikamCustomerService
             //Initialize the speech end point & key from app.config
             MicrosoftSpeechToTextEndpoint = ConfigurationManager.AppSettings["MicrosoftSpeechToTextEndpoint"];
             MicrosoftSpeechApiKey = ConfigurationManager.AppSettings["MicrosoftSpeechApiKey"];
-            MicrosoftSpeechAccessTokenEndpoint = ConfigurationManager.AppSettings["MicrosoftSpeechAccessTokenEndpoint"];
-            MicrosoftTextToSpeechEndpoint = ConfigurationManager.AppSettings["MicrosoftTextToSpeechEndpoint"];
 
             //Best practice to add event handler to dispose and cleanup resources whenever this window is closed
             this.Closing += OnMainWindowClosing;
-
-            //Initialize speech to text mode & default locale
-            Mode = SpeechRecognitionMode.ShortPhrase;
-            DefaultLocale = "en-US";
 
             //Setup the green Call button image
             // Note BitmapImage.UriSource must be in a BeginInit/EndInit block.
@@ -85,39 +67,18 @@ namespace CallFabrikamCustomerService
             dialTone = new SoundPlayer(@"../../Resources/DialTone_18883226837.wav");
             ringing = new SoundPlayer(@"../../Resources/Ringing_Phone-Mike_Koenig.wav");
 
-            //Initialize Bot configuration
-            botId = ConfigurationManager.AppSettings["BotId"];
-            MicrosoftBotDirectLineKey = ConfigurationManager.AppSettings["MicrosoftBotDirectLineKey"];
-            fromUser = "FabrikamInvestmentCustomer";
-            watermark = null;
+            //TODO: Initialize speech to short phrase mode & default locale
+
         }
 
-    //Event handler that will cleanup speech client when window is closed; essentially closing app
-    private void OnMainWindowClosing(object sender, CancelEventArgs e)
+        //Event handler that will cleanup speech client when window is closed; essentially closing app
+        private void OnMainWindowClosing(object sender, CancelEventArgs e)
         {
             //cleanup tones
             dialTone.Dispose();
             ringing.Dispose();
 
-            //cleanup speech to text mic & thinking tone
-            if (this.micClient != null)
-            {
-                this.micClient.EndMicAndRecognition();
-                micClient.Dispose();
-                
-            }
-            if (this.thinking != null)
-                thinking.Dispose();
-
-            //cleanup text to speech http client, handler & speech audio
-            if (this.httpClient != null)
-                this.httpClient.Dispose();
-
-            if (this.httpHandler != null)
-                this.httpHandler.Dispose();
-
-            if (this.speech != null)
-                this.speech.Dispose();
+            //TODO: cleanup speech to text mic & thinking tone
 
         }
 
@@ -133,15 +94,10 @@ namespace CallFabrikamCustomerService
             //we should wait until the dialing tone has been completed before continue
             dial.Wait();
 
+            StartMicrophone();
+
             //transition calling to connected GUI
             TransitionCallGui();
-
-            //greet caller
-            this.WriteLine("Connecting...");
-            var result = await this.GetBotReplyAsync("hi");
-            await PlaySpeechAudioAsync(result);
-
-            StartMicrophone();
         }
 
         //Handle the hang up button click
@@ -207,36 +163,16 @@ namespace CallFabrikamCustomerService
 
 
         //Writes the response result.
-        private async Task EchoResponseAsync(SpeechResponseEventArgs e)
+        private void EchoResponse(SpeechResponseEventArgs e)
         {
             WriteLine("Speech To Text Result:");
-            //handle the case when there are no results. 
+            //TODO: handle the case when there are no results. 
             //common situation is when there is a pause from user and audio captured has no speech in it
-            if (e.PhraseResponse.Results.Length == 0)
-            {
-                WriteLine("No phrase response is available.");
-                WriteLine();
-            }
-            else
-            {
+
                 //speech to text usually returns an array of returns ranked highest first to lowest
-                //we will print all of the results
-                for (int i = 0; i < e.PhraseResponse.Results.Length; i++)
-                {
-                    WriteLine(
-                        "[{0}] Confidence={1}, Text=\"{2}\"",
-                        i,
-                        e.PhraseResponse.Results[i].Confidence,
-                        e.PhraseResponse.Results[i].DisplayText);
-                }
-                WriteLine();
+                //TODO: we will print all of the results
+                
 
-                //send transcribed text to bot and get the response
-                var result = await this.GetBotReplyAsync(e.PhraseResponse.Results[0].DisplayText);
-
-                //Play audio from text to speech API
-                await PlaySpeechAudioAsync(result);
-            }
         }
 
         //Creates a line break

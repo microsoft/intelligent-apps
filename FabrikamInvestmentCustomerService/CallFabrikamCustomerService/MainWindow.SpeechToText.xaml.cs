@@ -19,21 +19,14 @@ namespace CallFabrikamCustomerService
 
         private void StartMicrophone()
         {
-            if (micClient == null)
-            {
-                CreateMicrophoneRecoClient();
-            }
-            micClient.StartMicAndRecognition();
+            //TODO: create and start mic recognition client
+            
         }
 
         private void StopMicrophone()
         {
-            //end mic
-            if(micClient != null)
-            {
-                micClient.EndMicAndRecognition();
-                micClient.Dispose();
-            }
+            //TODO: end mic recognition and dispose of client
+
         }
 
         //Creates a new microphone client to start recoding and send send audio stream to Speech API automatically for text transcription
@@ -41,21 +34,18 @@ namespace CallFabrikamCustomerService
         {
             thinking = new SoundPlayer(@"../../Resources/SpeechResponse_Thinking.wav");
 
-            micClient = SpeechRecognitionServiceFactory.CreateMicrophoneClient(
-                Mode,
-                DefaultLocale,
-                MicrosoftSpeechApiKey);
+            //TODO: use the speech recognition factory to create mic client
 
-            // Event handlers for speech recognition results
-            micClient.OnMicrophoneStatus += OnMicrophoneStatus;
-            micClient.OnResponseReceived += OnMicShortPhraseResponseReceivedHandler;
-            micClient.OnConversationError += OnConversationErrorHandler;
+
+            //TODO: Wire up Event handlers for speech recognition results
+
         }
 
         //Event handler that is called when the microphone status is ready
         private void OnMicrophoneStatus(object sender, MicrophoneEventArgs e)
         {
-            WriteLine(e.Recording ? "Mic Recording. Please start speaking." : "Mic Stopped.");
+            //TODO: Writeline out mic status change to onscreen display
+            
         }
 
         //This event handler gets called when full response audio is sent and transcribed
@@ -63,9 +53,10 @@ namespace CallFabrikamCustomerService
         {
             thinking.PlaySync();
 
-            this.EchoResponseAsync(e).Wait();
+            //TODO: call EchoResponse to write out received response 
 
-            StartMicrophone();
+            //TODO: start mic recognition again
+
         }
 
         //writes the error from Speech API if any to the onscreen display

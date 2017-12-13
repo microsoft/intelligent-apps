@@ -31,8 +31,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-using Microsoft.ProjectOxford.Emotion.Contract;
-using Microsoft.ProjectOxford.Face.Contract;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -276,18 +274,25 @@ namespace IntelligentKioskSample.Controls
                 {
                     FaceIdentificationBorder faceUI = new FaceIdentificationBorder();
 
-                    faceUI.Margin = new Thickness((emotion.FaceRectangle.Left * renderedImageXTransform) + ((this.ActualWidth - this.imageControl.RenderSize.Width) / 2),
-                                                    (emotion.FaceRectangle.Top * renderedImageYTransform) + ((this.ActualHeight - this.imageControl.RenderSize.Height) / 2), 0, 0);
+                    // Implement PBI 4, Task 3, Step 2
+                    // Call the ShowFaceRectangle with the FaceRectangle coordinates 
 
-                    faceUI.BalloonBackground = this.BalloonBackground;
-                    faceUI.BalloonForeground = this.BalloonForeground;
+                    // Implement PBI 4, Task 3, Step 2
+                    // Set the FaceIdentificationBorder Margin by using the FaceRectangle coordinates and the renderedImageXTransform and
+                    // renderedImageYTransform objects. This will set the margin of the Rectangle
 
-                    faceUI.ShowFaceRectangle(emotion.FaceRectangle.Width * renderedImageXTransform, emotion.FaceRectangle.Height * renderedImageYTransform);
+                    // Implement PBI 4, Task 3, Step 2
+                    // Set the FaceIdentificationBorder BalloonBackground and BalloonForeground by using the declared properties
 
-                    faceUI.ShowEmotionData(emotion);
-                    this.emotionEmojiControl.UpdateEmotion(emotion.Scores);
+                    // Implement PBI 4, Task 3, Step 2
+                    // Show the emotion by calling the ShowEmotionData method 
+
+                    // Implement PBI 5, Task 1, Step 4
+                    // Call the emojiControl update emotion method
 
                     this.hostGrid.Children.Add(faceUI);
+
+                    
 
                     if (!this.ShowMultipleFaces)
                     {
@@ -313,10 +318,8 @@ namespace IntelligentKioskSample.Controls
                 img.UpdateDecodedImageSize(this.bitmapImage.PixelHeight, this.bitmapImage.PixelWidth);
             }
 
-            if (this.ShowEmotionRecognition)
-            {
-                await this.DetectAndShowEmotion();
-            }
+            // Implement PBI3, Task 3, Step 1
+            // Call the DetectAndShowEmotion method if ShowEmotionRecognition is true
         }
 
         private async void OnBitmapImageOpened(object sender, RoutedEventArgs e)

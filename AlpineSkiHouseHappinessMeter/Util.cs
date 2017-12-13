@@ -32,7 +32,6 @@
 // 
 
 using ServiceHelpers;
-using Microsoft.ProjectOxford.Face;
 using System;
 using System.Collections.Generic;
 using System.IO;

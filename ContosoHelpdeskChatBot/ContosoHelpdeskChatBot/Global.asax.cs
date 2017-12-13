@@ -1,11 +1,9 @@
 ﻿using Autofac;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
-using Microsoft.Bot.Builder.Internals.Fibers;
 using Microsoft.Bot.Connector;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -20,9 +18,6 @@ namespace ContosoHelpdeskChatBot
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             BotConfig.UpdateConversationContainer();
-            this.RegisterBotModules();
-
-            log4net.Config.XmlConfigurator.Configure();
         }
 
         //setting Bot data store policy to use last write win
@@ -31,25 +26,8 @@ namespace ContosoHelpdeskChatBot
         {
             public static void UpdateConversationContainer()
             {
-                var builder = new ContainerBuilder();
 
-                builder.Register(c => new CachingBotDataStore(c.ResolveKeyed<IBotDataStore<BotData>>(typeof(ConnectorStore)),
-                    CachingBotDataStoreConsistencyPolicy.LastWriteWins))
-                    .As<IBotDataStore<BotData>>()
-                    .AsSelf()
-                    .InstancePerLifetimeScope();
-
-                builder.Update(Conversation.Container);
             }
-        }
-
-        private void RegisterBotModules()
-        {
-            Conversation.UpdateContainer(builder =>
-            {
-                builder.RegisterModule(new ReflectionSurrogateModule());
-                builder.RegisterModule<GlobalMessageHandlersBotModule>();
-            });
         }
     }
 }
