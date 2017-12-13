@@ -210,8 +210,8 @@ namespace CallFabrikamCustomerService
                 }
                 WriteLine();
 
-                //TODO: Play audio from text to speech API
-                
+                //Play audio from text to speech API
+                PlaySpeechAudio(e.PhraseResponse.Results[0].DisplayText);
             }
         }
 

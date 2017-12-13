@@ -10,7 +10,7 @@ namespace WoodgrovePortable.Common
         public static string baseuri = "https://westeurope.api.cognitive.microsoft.com/face/v1.0";
         public static string StorageAccountName = "woodgrovebank";
         public static string StorageAccountAccessKey = "hjuKG5mO+0NikcsnjKGZQqz6HrVBh00a00M32n9GWn+SaJBLJNwIntiJ9QfRQPDnnKG7p3LEyjKo+tm68/nFSQ==";
-        public static string defaultPersonGroupID = "persongroup1";
-        public static string defaultPersonGroupName = "Person Group 1";
+        public static string defaultPersonGroupID = "bankgroup1";
+        public static string defaultPersonGroupName = "Bank Group 1";
     }
 }

@@ -67,13 +67,50 @@ namespace WoodgroveBankRegistration.Views
             //Disable log in button
             Button_LogIn.IsEnabled = false;
 
+            //Encrypt the PIN
+            string password = CryptographicBuffer.EncodeToHexString(HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha256).HashData(CryptographicBuffer.ConvertStringToBinary(PasswordBox_PIN.Password, BinaryStringEncoding.Utf8)));
 
-            //TODO: add code to login the user and if login is successfull 
-            //then verify a person has been created for the user using the Face API
-            
+            //Invoke Log In method
+            var result = await storageService.SignInAsync(TextBox_Name.Text, password);
+
+            //If log in is successful
+            if (result is bool)
+            {
+                var username = TextBox_Name.Text.ToLower().Replace(" ", "");
+
+                //Get all persons in the person group
+                var plist = await faceClient.ListPersonsAsync(AppSettings.defaultPersonGroupID);
+                if (!(plist is bool))
+                {
+                    var personlist = plist as List<PersonDetails>;
+
+                    //Iterate through the persons in the person group to check if username matches
+                    foreach (var item in personlist)
+                    {
+                        if (item.userData == username)
+                        {
+                            //If a Person exists in Face API with the same username
+                            //then save person ID and username in local settings
+                            localSettings.Values["PersonId"] = item.personId;
+                            localSettings.Values["UserName"] = item.userData;
+
+                            //Navigate to Dashboard Page - Successful Log In
+                            Frame.Navigate(typeof(Dashboard));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //Display the failure message
+                msg.Title = "Invalid Log In!";
+                msg.Content = result.ToString();
+                await msg.ShowAsync();
+            }
 
             //Enable the log in button
             Button_LogIn.IsEnabled = true;
         }
+
     }
 }

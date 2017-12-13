@@ -66,10 +66,25 @@ namespace WoodgrovePortable.Services
             //Create a retrieve operation that takes a customer entity.
             TableOperation retrieveOperation = TableOperation.Retrieve<UserEntity>(AppSettings.defaultPersonGroupID, username.ToLower().Replace(" ", ""));
 
+            //Execute the retrieve operation.
+            TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
 
-            //TODO: Execute the retrieve operation and based off the results return the proper result
-
-            return null;
+            if (retrievedResult.Result != null)
+            {
+                //User found 
+                var result = retrievedResult.Result as UserEntity;
+                if (result.PIN == PIN)
+                    return true;
+                else
+                    return "Sorry, you have entered an invalid PIN!";
+                //Check for match
+            }
+            else
+            {
+                //User not found
+                return "Sorry, user not found!";
+            }
         }
+
     }
 }

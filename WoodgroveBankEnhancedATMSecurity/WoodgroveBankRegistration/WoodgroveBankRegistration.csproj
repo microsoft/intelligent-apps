@@ -121,6 +121,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="WoodgroveBankATM_TemporaryKey.pfx" />
     <None Include="WoodgroveBankRegistration_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

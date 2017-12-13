@@ -8,14 +8,12 @@
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.FormFlow;
     using Microsoft.Bot.Connector;
-    //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
-    //using ContosoHelpdeskChatBot.Models;
+    using ContosoHelpdeskChatBot.Models;
 
     [Serializable]
     public class InstallAppDialog : IDialog<object>
     {
-        //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
-        //private Models.InstallApp install = new InstallApp();
+        private Models.InstallApp install = new InstallApp();
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -35,9 +33,8 @@
 
             if (names.Count == 1)
             {
-                //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
-                //install.AppName = names.First();
-                //await context.PostAsync($"Found {install.AppName}. What is the name of the machine to install application?");
+                install.AppName = names.First();
+                await context.PostAsync($"Found {install.AppName}. What is the name of the machine to install application?");
                 context.Wait(machineNameAsync);
             }
             else if (names.Count > 1)
@@ -75,9 +72,8 @@
 
             if (isNum && choice <= applist.Count && choice > 0)
             {
-                //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
                 //minus becoz index zero base
-                //this.install.AppName = applist[choice - 1];
+                this.install.AppName = applist[choice - 1];
                 await context.PostAsync($"What is the name of the machine to install?");
                 context.Wait(machineNameAsync);
             }
@@ -96,12 +92,16 @@
 
             var machinename = message.Text;
 
-            //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
-            //this.install.MachineName = machinename;
+            this.install.MachineName = machinename;
 
             //TODO: Save to database
+            using (var db = new ContosoHelpdeskContext())
+            {
+                db.InstallApps.Add(install);
+                db.SaveChanges();
+            }
 
-            //await context.PostAsync($"Great, your request to install {this.install.AppName} on {this.install.MachineName} has been scheduled.");
+            await context.PostAsync($"Great, your request to install {this.install.AppName} on {this.install.MachineName} has been scheduled.");
             context.Done<object>(null);
         }
 
@@ -109,6 +109,13 @@
         {
             //TODO: Add EF to lookup database
             var names = new List<string>();
+
+            using (var db = new ContosoHelpdeskContext())
+            {
+                names = (from app in db.AppMsis
+                         where app.AppName.ToLower().Contains(Name.ToLower())
+                         select app.AppName).ToList();
+            }
 
             return names;
         }

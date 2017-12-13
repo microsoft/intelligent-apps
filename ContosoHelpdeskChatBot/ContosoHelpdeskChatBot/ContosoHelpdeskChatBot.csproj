@@ -59,6 +59,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bot.Builder, Version=3.11.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bot.Builder.3.11.0\lib\net46\Microsoft.Bot.Builder.dll</HintPath>
     </Reference>
@@ -126,6 +129,12 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Models\AppMsi.cs" />
+    <Compile Include="Models\ContosoHelpdeskContext.cs" />
+    <Compile Include="Models\InstallApp.cs" />
+    <Compile Include="Models\LocalAdmin.cs" />
+    <Compile Include="Models\Log.cs" />
+    <Compile Include="Models\ResetPassword.cs" />
     <Compile Include="Dialogs\InstallAppDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
     <Compile Include="Global.asax.cs">
@@ -144,9 +153,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

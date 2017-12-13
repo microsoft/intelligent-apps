@@ -10,8 +10,7 @@
     [Serializable]
     public class RootDialog : IDialog<object>
     {
-        //TODO: Uncomment after adding log4net Nuget package 
-        //private static log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private const string InstallAppOption = "Install Application (install)";
         private const string GreetMessage = "Welcome to **Contoso Helpdesk Chat Bot**.\n\nI am mainly designed to use with mobile email app, make sure your replies do not contain signatures. \n\nHere's what I can help you, just reply with word in parenthesis:";
         private const string ErrorMessage = "Not a valid option";
@@ -77,8 +76,7 @@
 
                 // In general resume from task after calling a child dialog is a good place to handle exceptions
                 // try catch will capture exceptions from the bot framework awaitable object which is essentially "userReply"
-                //TODO: Uncomment after adding log4net Nuget package 
-                //logger.Error(ex);
+                logger.Error(ex);
             }
         }
     }

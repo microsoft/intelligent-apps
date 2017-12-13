@@ -21,8 +21,7 @@ namespace ContosoHelpdeskChatBot
 
             BotConfig.UpdateConversationContainer();
 
-            //TODO: Uncomment after adding log4net Nuget package 
-            //log4net.Config.XmlConfigurator.Configure();
+            log4net.Config.XmlConfigurator.Configure();
         }
 
         //setting Bot data store policy to use last write win

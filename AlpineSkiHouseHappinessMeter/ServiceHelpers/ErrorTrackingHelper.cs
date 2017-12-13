@@ -43,12 +43,7 @@ namespace ServiceHelpers
     {
         // callbacks for exception tracking
         public static Action<Exception, string> TrackException { get; set; }
-            = (exception, message) =>
-            {
-                // Implement PBI2, Task5, Step 1
-                //      Create a exception handling logic so if anything goes wrong you can rely on this information 
-                //      to fix it and complete the lab
-            };
+            = (exception, message) => { };
 
         // callbacks for blocking UI error message
         public static Func<Exception, string, Task> GenericApiCallExceptionHandler { get; set; }

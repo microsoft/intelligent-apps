@@ -124,7 +124,21 @@
         </div>
     </footer>
 
-    <!--TODO: display a modal to show the response to a search inquiry-->
+    <div class="modal fade" id="answerModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">IRS FAQ Answer Match</h4>
+                </div>
+                <div id="taxanswer" class="modal-body">
+                    <p>&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <!-- Bootstrap core JavaScript -->
     <script src="~/Scripts/jquery.min.js"></script>

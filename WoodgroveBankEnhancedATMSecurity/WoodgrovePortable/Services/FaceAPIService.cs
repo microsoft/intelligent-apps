@@ -1,4 +1,5 @@
 ﻿
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -12,17 +13,32 @@ namespace WoodgrovePortable.Services
 {
     public class FaceAPIService
     {
-
-        //TODO: Add in FaceClient function that returns an HttpClient
-
+        HttpContent content;
+        HttpResponseMessage responseMessage;
+        private HttpClient FaceClient()
+        {
+            HttpClient faceClient = new HttpClient();
+            faceClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", AppSettings.APIKEY);
+            return faceClient;
+        }
 
         //PUT Create person group
         public async Task<HttpResponseMessage> CreatePersonGroupAsync(string GroupID, string GroupName, string GroupDescription)
         {
-            //TODO: using the FaceClient function, add in code
-            //to create a new PersonGroup
+                using (var client = FaceClient())
+                {
+                    string uri = AppSettings.baseuri + "/persongroups/" + GroupID;
 
-            return null;
+                    // Request body
+                    PersonGroup pg = new PersonGroup() { name = GroupName, userData = GroupDescription };
+                    string jsonRequest = JsonConvert.SerializeObject(pg);
+
+                    content = new StringContent(jsonRequest);
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                    responseMessage = await client.PutAsync(uri, content);
+                }
+            return responseMessage;
         }
 
         //POST Train person group
@@ -30,14 +46,17 @@ namespace WoodgrovePortable.Services
         {
             try
             {
-                //TODO: train the person group based of the GroupID
-
+                using (var client = FaceClient())
+                {
+                    string uri = AppSettings.baseuri + "/persongroups/" + GroupID + "/train";
+                    responseMessage = await client.PostAsync(uri, content);
+                }
             }
             catch (Exception ex)
             {
                 return ex;
             }
-            return null;
+            return responseMessage;
         }
 
         //GET all person groups
@@ -46,14 +65,18 @@ namespace WoodgrovePortable.Services
             List<PersonGroupDetails> plist = new List<PersonGroupDetails>();
             try
             {
-                //TODO: get the list of the person groups
-
+                using (var client = FaceClient())
+                {
+                    // Request body
+                    var uri = AppSettings.baseuri + "/persongroups";
+                    responseMessage = await client.GetAsync(uri);
+                }
             }
             catch (Exception ex)
             {
                 return ex;
             }
-            return null;
+            return responseMessage;
         }
 
         //GET all persons in a person group
@@ -62,8 +85,19 @@ namespace WoodgrovePortable.Services
             List<PersonDetails> plist = new List<PersonDetails>();
             try
             {
-                //TODO: list all the persons contained within the person group tied to the GroupID
+                using (var client = FaceClient())
+                {
+                    // Request body
+                    var uri = AppSettings.baseuri + "/persongroups/" + GroupID + "/persons?start=0&top=1000";
 
+                    responseMessage = await client.GetAsync(uri);
+                    var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        plist = JsonConvert.DeserializeObject<List<PersonDetails>>(responseContent);
+                    }
+                    else return false;
+                }
             }
             catch (Exception ex)
             {
@@ -72,12 +106,29 @@ namespace WoodgrovePortable.Services
             return plist;
         }
 
+
         //POST create person in person group
         public async Task<HttpResponseMessage> CreatePersonAsync(string GroupID, string PersonName)
         {
-            //TODO: add in code that will create a new person
+            using (var client = FaceClient())
+            {
+                //Form the request URL
+                string uri = AppSettings.baseuri + "/persongroups/" + GroupID + "/persons?";
 
-            return null;
+                //Create a username using the person's name
+                string username = PersonName.ToLower().Replace(" ", "");
+
+                // Request body
+                string jsonRequest = "{\"name\":\"" + PersonName + "\",\"userData\":\"" + username + "\"}";
+                byte[] byteData = Encoding.UTF8.GetBytes(jsonRequest);
+
+                content = new ByteArrayContent(byteData);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                responseMessage = await client.PostAsync(uri, content);
+                return responseMessage;
+            }
         }
+
     }
 }

@@ -290,9 +290,8 @@ namespace IntelligentKioskSample.Controls
                     // Implement PBI 5, Task 1, Step 4
                     // Call the emojiControl update emotion method
 
-                    this.hostGrid.Children.Add(faceUI);
 
-                    
+                    this.hostGrid.Children.Add(faceUI);
 
                     if (!this.ShowMultipleFaces)
                     {
@@ -318,8 +317,7 @@ namespace IntelligentKioskSample.Controls
                 img.UpdateDecodedImageSize(this.bitmapImage.PixelHeight, this.bitmapImage.PixelWidth);
             }
 
-            // Implement PBI3, Task 3, Step 1
-            // Call the DetectAndShowEmotion method if ShowEmotionRecognition is true
+            // Implement
         }
 
         private async void OnBitmapImageOpened(object sender, RoutedEventArgs e)

@@ -24,9 +24,34 @@ namespace AdatumTaxCorpKnowledgeService.Controllers
         [HttpPost]
         public JsonResult FindTaxAnswer(QnaMakerQuestion inquiry)
         {
-            //TODO : write post method to bot service and initiliaze a webclient to get a result
+            JsonResult result;
+            string kbIdName = "knowledgeBaseID";
+            string keyName = "Ocp-Apim-Subscription-Key";
+            string contentTypeName = "Content-Type";
+            string contentTypeValue = "application/json";
 
-            return null;
+            var kbIdValue = WebConfigurationManager.AppSettings[kbIdName];
+            var keyValue = WebConfigurationManager.AppSettings[keyName];
+
+            if (inquiry.Question is null || inquiry.Question == "")
+            {
+                result = Json("Please provide a question");
+            }
+            else
+            {
+                string url = $"https://westus.api.cognitive.microsoft.com/qnamaker/v2.0/knowledgebases/{kbIdValue}/generateAnswer";
+                string body = JsonConvert.SerializeObject(inquiry);
+
+                using (WebClient client = new WebClient())
+                {
+                    client.Headers.Add($"{keyName}:{keyValue}");
+                    client.Headers.Add($"{contentTypeName}:{contentTypeValue}");
+                    result = Json(client.UploadString(url, body));
+                }
+                
+            }
+
+            return result;
         }
     }
 }

@@ -55,9 +55,8 @@ namespace WoodgroveBankRegistration.Views
             }
             SystemNavigationManager.GetForCurrentView().BackRequested += RegisterPage_BackRequested;
 
-
-            //TODO:  create the default person group if it doesn't exist
-
+            //Create the default person group if it doesn't exist
+            await pgvm.InitializePersonGroupsAsync();
 
             //Load person groups in PersonGroupList Combo Box
             ComboBox_PersonGroups.ItemsSource = pgvm.PersonGroupList;
@@ -107,7 +106,25 @@ namespace WoodgroveBankRegistration.Views
             else
             {
                 //Create the Person using Face API
-                //This will be handled later
+                var response = await faceClient.CreatePersonAsync(selectedGroup, TextBox_Name.Text);
+                var responseMessage = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    msg.Title = "User registered successfully!";
+                    msg.Content = responseMessage;
+                    await msg.ShowAsync();
+                    
+                    //Log In after successfully registering
+                    await LogInAsync();
+
+                }
+                else
+                {
+                    msg.Title = "Unable to register user!";
+                    msg.Content = responseMessage;
+                    await msg.ShowAsync();
+                }
+
             }
             //Disable the button
             Button_RegisterUser.IsEnabled = true;
@@ -115,12 +132,47 @@ namespace WoodgroveBankRegistration.Views
 
         private async Task<bool> LogInAsync()
         {
+            //Encrypt the PIN
+            string password = CryptographicBuffer.EncodeToHexString(HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha256).HashData(CryptographicBuffer.ConvertStringToBinary(PasswordBox_PIN.Password, BinaryStringEncoding.Utf8)));
 
-            //TODO: add code to login the user and if login is successfull 
-            //then verify a person has been created for the user using the Face API
+            //Invoke Log In method
+            var result = await storageService.SignInAsync(TextBox_Name.Text, password);
 
+            //If log in is successful
+            if (result is bool)
+            {
+                var username = TextBox_Name.Text.ToLower().Replace(" ", "");
 
+                //Get all persons in the person group
+                var plist = await faceClient.ListPersonsAsync(AppSettings.defaultPersonGroupID);
+                if (!(plist is bool))
+                {
+                    var personlist = plist as List<PersonDetails>;
 
+                    //Iterate through the persons in the person group to check if username matches
+                    foreach (var item in personlist)
+                    {
+                        if (item.userData == username)
+                        {
+                            //If a Person exists in Face API with the same username
+                            //then save person ID and username in local settings
+                            localSettings.Values["PersonId"] = item.personId;
+                            localSettings.Values["UserName"] = item.userData;
+
+                            //Navigate to Dashboard Page - Successful Log In
+                            Frame.Navigate(typeof(Dashboard));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //Display the failure message
+                msg.Title = "Invalid Log In!";
+                msg.Content = result.ToString();
+                await msg.ShowAsync();
+                return false;
+            }
             return true;
         }
     }

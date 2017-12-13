@@ -30,11 +30,9 @@ namespace WoodgroveBankRegistration.ViewModels
             PersonGroupList = new List<PersonGroupDetails>();
         }
 
-
         public async Task<bool> InitializePersonGroupsAsync()
         {
-            //TODO: uncomment code
-            /*//Get all person groups
+            //Get all person groups
             var response = await faceService.ListAllPersonGroupsAsync();
             if (response is Exception)
             {
@@ -85,11 +83,8 @@ namespace WoodgroveBankRegistration.ViewModels
                     return false;
                 }
                 return true;
-            }*/
-
-            //TODO: remove this returm since there already exists a
-            //return element in both paths of the if statement so this will neve be hit
-            return false;
+            }
         }
+
     }
 }
