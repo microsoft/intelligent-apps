@@ -8,12 +8,14 @@
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Builder.FormFlow;
     using Microsoft.Bot.Connector;
-    using ContosoHelpdeskChatBot.Models;
+    //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
+    //using ContosoHelpdeskChatBot.Models;
 
     [Serializable]
     public class InstallAppDialog : IDialog<object>
     {
-        private Models.App app = new App();
+        //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
+        //private Models.InstallApp install = new InstallApp();
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -29,12 +31,13 @@
             var message = await userReply;
 
             var appname = message.Text;
-            var names = await this.GetAppsAsync(appname);
+            var names = await this.getAppsAsync(appname);
 
             if (names.Count == 1)
             {
-                app.Name = names.First();
-                await context.PostAsync($"Found {app.Name}. What is the name of the machine to install application?");
+                //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
+                //install.AppName = names.First();
+                //await context.PostAsync($"Found {install.AppName}. What is the name of the machine to install application?");
                 context.Wait(machineNameAsync);
             }
             else if (names.Count > 1)
@@ -52,28 +55,30 @@
             }
             else
             {
-                await context.PostAsync($"Sorry, I did not find any application with the name \"{appname}\".");
-                context.Done<object>(null);
+                await context.PostAsync($"Sorry, I did not find any application with the name \"{appname}\".\n\nTry provide only one keyword to broaden search.");
+                //we call this dialog again to get user input
+                context.Wait(appNameAsync);
             }
         }
 
         private async Task multipleAppsAsync(IDialogContext context, IAwaitable<IMessageActivity> userReply)
         {
             //this will trigger a wait for user's reply
-            //in this case we are waiting for an app name which will be used as keyword to search the AppMsi table
+            //here we ask the user which specific app to install when we found more than one
             var message = await userReply;
 
             int choice;
             var isNum = int.TryParse(message.Text, out choice);
             List<string> applist;
-           
+
             context.ConversationData.TryGetValue("AppList", out applist);
 
             if (isNum && choice <= applist.Count && choice > 0)
             {
+                //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
                 //minus becoz index zero base
-                this.app.Name = applist[choice - 1];
-                await context.PostAsync($"What is the name of the machine to install application?");
+                //this.install.AppName = applist[choice - 1];
+                await context.PostAsync($"What is the name of the machine to install?");
                 context.Wait(machineNameAsync);
             }
             else
@@ -86,26 +91,24 @@
         private async Task machineNameAsync(IDialogContext context, IAwaitable<IMessageActivity> userReply)
         {
             //this will trigger a wait for user's reply
-            //in this case we are waiting for an app name which will be used as keyword to search the AppMsi table
+            //finally we ask for the machine name on which to install the app
             var message = await userReply;
 
             var machinename = message.Text;
 
-            this.app.Machine = machinename;
+            //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
+            //this.install.MachineName = machinename;
 
-            //we don't need to do much here for now but in the next PBI we will add saving to database
+            //TODO: Save to database
 
-            await context.PostAsync($"Great, your request to install {this.app.Name} on {this.app.Machine} has been scheduled.");
+            //await context.PostAsync($"Great, your request to install {this.install.AppName} on {this.install.MachineName} has been scheduled.");
             context.Done<object>(null);
         }
 
-        private async Task<List<string>> GetAppsAsync(string Name)
+        private async Task<List<string>> getAppsAsync(string Name)
         {
-            //TODO: Add list of dummy app names
-            //we will switch to using Entity Framework in the next PBI to lookup list from a table
+            //TODO: Add EF to lookup database
             var names = new List<string>();
-            names.Add(Name + " 1");
-            names.Add(Name + " 2");
 
             return names;
         }

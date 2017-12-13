@@ -54,7 +54,11 @@ namespace WoodgroveBankRegistration.Views
                     AppViewBackButtonVisibility.Visible;
             }
             SystemNavigationManager.GetForCurrentView().BackRequested += RegisterPage_BackRequested;
-            
+
+
+            //TODO:  create the default person group if it doesn't exist
+
+
             //Load person groups in PersonGroupList Combo Box
             ComboBox_PersonGroups.ItemsSource = pgvm.PersonGroupList;
             foreach (var item in pgvm.PersonGroupList)
@@ -109,5 +113,15 @@ namespace WoodgroveBankRegistration.Views
             Button_RegisterUser.IsEnabled = true;
         }
 
+        private async Task<bool> LogInAsync()
+        {
+
+            //TODO: add code to login the user and if login is successfull 
+            //then verify a person has been created for the user using the Face API
+
+
+
+            return true;
+        }
     }
 }

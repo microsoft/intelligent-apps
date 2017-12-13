@@ -2,6 +2,13 @@
 
 $(document).ready(function () {
 
+    $('#findtaxanswer').click(function () {
+
+        //TODO: write ajax function to get response which will need to be decoded and then shown in a modal
+       
+    });
+
+
     $('#taxquestion').keypress(function (event) {
         if (event.which == 13) {
 

@@ -19,7 +19,6 @@ namespace CallFabrikamCustomerService
 
         private void StartMicrophone()
         {
-            //create and start mic recognition client
             if (micClient == null)
             {
                 CreateMicrophoneRecoClient();

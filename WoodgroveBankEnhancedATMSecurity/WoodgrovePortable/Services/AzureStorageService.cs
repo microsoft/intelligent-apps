@@ -58,5 +58,18 @@ namespace WoodgrovePortable.Services
             return true;
         }
 
+        public async Task<object> SignInAsync(string username, string PIN)
+        {
+            //Get reference to user table
+            var table = await GetUserTableAsync();
+
+            //Create a retrieve operation that takes a customer entity.
+            TableOperation retrieveOperation = TableOperation.Retrieve<UserEntity>(AppSettings.defaultPersonGroupID, username.ToLower().Replace(" ", ""));
+
+
+            //TODO: Execute the retrieve operation and based off the results return the proper result
+
+            return null;
+        }
     }
 }

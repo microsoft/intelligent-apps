@@ -10,7 +10,7 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 
-USE [AdatumTaxCorpKnowledgeData]
+USE [ContosoHelpdeskData]
 GO
 SET ANSI_NULLS ON
 GO
@@ -18,4 +18,4 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-:r Insert_Faqs.sql
+:r Insert_AppMsi.sql

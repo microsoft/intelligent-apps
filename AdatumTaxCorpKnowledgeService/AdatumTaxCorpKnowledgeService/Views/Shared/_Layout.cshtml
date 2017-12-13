@@ -45,6 +45,19 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#faqs">FAQs</a>
                     </li>
+                    <li class="sidebar-search">
+                        <div class="input-group custom-search-form">
+                            <!-- HTML input box with id so we can look up in jQuery -->
+                            <input id="taxquestion" type="text" class="form-control" placeholder="Ask a tax question...">
+                            <span class="input-group-btn">
+                                <!-- HTML button for invoking jQuery AJAX method in AdatumTaxCorp.Main.js to get answer -->
+                                <button id="findtaxanswer" class="btn btn-default" type="button" data-toggle="modal" data-target="#answerModal">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <!-- /input-group -->
+                    </li>
                 </ul>
             </div>
         </div>
@@ -110,6 +123,8 @@
             <p class="copyright text-muted small">Copyright &copy; Adatum Tax Corp Knowledge Service 2017. All Rights Reserved</p>
         </div>
     </footer>
+
+    <!--TODO: display a modal to show the response to a search inquiry-->
 
     <!-- Bootstrap core JavaScript -->
     <script src="~/Scripts/jquery.min.js"></script>

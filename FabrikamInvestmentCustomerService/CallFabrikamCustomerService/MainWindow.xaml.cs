@@ -32,6 +32,8 @@ namespace CallFabrikamCustomerService
     {
         private string MicrosoftSpeechToTextEndpoint;
         private string MicrosoftSpeechApiKey;
+        private string MicrosoftSpeechAccessTokenEndpoint;
+        private string MicrosoftTextToSpeechEndpoint;
 
         private BitmapImage callButtonImage;
         private BitmapImage hangUpButtonImage;
@@ -46,6 +48,8 @@ namespace CallFabrikamCustomerService
             //Initialize the speech end point & key from app.config
             MicrosoftSpeechToTextEndpoint = ConfigurationManager.AppSettings["MicrosoftSpeechToTextEndpoint"];
             MicrosoftSpeechApiKey = ConfigurationManager.AppSettings["MicrosoftSpeechApiKey"];
+            MicrosoftSpeechAccessTokenEndpoint = ConfigurationManager.AppSettings["MicrosoftSpeechAccessTokenEndpoint"];
+            MicrosoftTextToSpeechEndpoint = ConfigurationManager.AppSettings["MicrosoftTextToSpeechEndpoint"];
 
             //Best practice to add event handler to dispose and cleanup resources whenever this window is closed
             this.Closing += OnMainWindowClosing;
@@ -88,6 +92,16 @@ namespace CallFabrikamCustomerService
             }
             if (this.thinking != null)
                 thinking.Dispose();
+
+            //cleanup text to speech http client, handler & speech audio
+            if (this.httpClient != null)
+                this.httpClient.Dispose();
+
+            if (this.httpHandler != null)
+                this.httpHandler.Dispose();
+
+            if (this.speech != null)
+                this.speech.Dispose();
 
         }
 
@@ -195,6 +209,9 @@ namespace CallFabrikamCustomerService
                         e.PhraseResponse.Results[i].DisplayText);
                 }
                 WriteLine();
+
+                //TODO: Play audio from text to speech API
+                
             }
         }
 

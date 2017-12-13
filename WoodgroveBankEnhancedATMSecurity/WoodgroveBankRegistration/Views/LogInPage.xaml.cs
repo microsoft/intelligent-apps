@@ -64,7 +64,16 @@ namespace WoodgroveBankRegistration.Views
 
         private async void Button_LogIn_Click(object sender, RoutedEventArgs e)
         {
+            //Disable log in button
+            Button_LogIn.IsEnabled = false;
+
+
+            //TODO: add code to login the user and if login is successfull 
+            //then verify a person has been created for the user using the Face API
             
+
+            //Enable the log in button
+            Button_LogIn.IsEnabled = true;
         }
     }
 }

@@ -151,6 +151,10 @@ p.copyright {
   margin: 15px 0 0;
 }
 
+#taxanswer {
+	font-weight: normal;
+}
+
 .faq {
     background-color: #F8F8F8;
     text-indent: 3px;

@@ -20,5 +20,13 @@ namespace AdatumTaxCorpKnowledgeService.Controllers
             ViewBag.FaqsList = allFaqs;
             return View();
         }
+        
+        [HttpPost]
+        public JsonResult FindTaxAnswer(QnaMakerQuestion inquiry)
+        {
+            //TODO : write post method to bot service and initiliaze a webclient to get a result
+
+            return null;
+        }
     }
 }

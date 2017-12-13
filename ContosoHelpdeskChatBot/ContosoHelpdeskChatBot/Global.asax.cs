@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
+using Microsoft.Bot.Builder.Internals.Fibers;
 using Microsoft.Bot.Connector;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -18,6 +20,9 @@ namespace ContosoHelpdeskChatBot
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             BotConfig.UpdateConversationContainer();
+
+            //TODO: Uncomment after adding log4net Nuget package 
+            //log4net.Config.XmlConfigurator.Configure();
         }
 
         //setting Bot data store policy to use last write win
