@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using System;
+using Microsoft.Bot.Builder.Luis;
+using System.Configuration;
 
 namespace FabrikamCustomerServiceBot
 {
@@ -18,7 +21,8 @@ namespace FabrikamCustomerServiceBot
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new Dialogs.EchoDialog());
+                //TODO: send the conversation to root luis dialog
+                
             }
             else
             {
@@ -26,6 +30,19 @@ namespace FabrikamCustomerServiceBot
             }
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
+        }
+
+        //Instead of using the echo dialog we instantiate and return a luis dialog to be used as the root dialog
+        private static Func<IDialog<object>> MakeRootDialog()
+        {
+            //TODO: get the luis app id & key
+            
+
+            Func<IDialog<object>> luisDialog = null;
+            //TODO: instantiate the root luis dialog and encapsulate it in a delegate
+            
+
+            return luisDialog;
         }
 
         private Activity HandleSystemMessage(Activity message)

@@ -133,10 +133,13 @@ namespace CallFabrikamCustomerService
             //we should wait until the dialing tone has been completed before continue
             dial.Wait();
 
-            StartMicrophone();
-
             //transition calling to connected GUI
             TransitionCallGui();
+
+            //TODO: Send "hi" to bot to get welcome message
+
+
+            StartMicrophone();
         }
 
         //Handle the hang up button click
@@ -226,9 +229,8 @@ namespace CallFabrikamCustomerService
                 }
                 WriteLine();
 
-                string result = string.Empty;
                 //send transcribed text to bot and get the response
-                result = await this.GetBotReplyAsync(e.PhraseResponse.Results[0].DisplayText);
+                var result = await this.GetBotReplyAsync(e.PhraseResponse.Results[0].DisplayText);
 
                 //Play audio from text to speech API
                 await PlaySpeechAudioAsync(result);

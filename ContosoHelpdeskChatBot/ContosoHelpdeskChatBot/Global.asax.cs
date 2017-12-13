@@ -20,6 +20,8 @@ namespace ContosoHelpdeskChatBot
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             BotConfig.UpdateConversationContainer();
+            //TODO: Uncomment this to enable cancellation
+            //this.RegisterBotModules();
 
             log4net.Config.XmlConfigurator.Configure();
         }
@@ -41,5 +43,15 @@ namespace ContosoHelpdeskChatBot
                 builder.Update(Conversation.Container);
             }
         }
+
+        //TODO: Uncomment this to enable cancellation
+        //private void RegisterBotModules()
+        //{
+        //    Conversation.UpdateContainer(builder =>
+        //    {
+        //        builder.RegisterModule(new ReflectionSurrogateModule());
+        //        builder.RegisterModule<GlobalMessageHandlersBotModule>();
+        //    });
+        //}
     }
 }

@@ -196,6 +196,54 @@ namespace WoodgrovePortable.Services
             return faceList;
         }
 
+        public async Task<object> DeleteUserAsync(string personGroupID, string username)
+        {
+            try
+            {
+                //Get reference to user table
+                var table = await GetUserTableAsync();
 
+                //TODO: delete the user from the table
+
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public async Task<object> DeleteFaceAsync(string username, string persistedFaceId)
+        {
+            try
+            {
+                //Get reference to face table
+                var table = await GetFaceTableAsync();
+
+                //TODO: delete the face from the table
+
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
+        public async Task<object> DeleteImageAsync(string personGroupID, string fileName)
+        {
+            try
+            {
+                //TODO: delete image from Azure blob storage
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
     }
 }

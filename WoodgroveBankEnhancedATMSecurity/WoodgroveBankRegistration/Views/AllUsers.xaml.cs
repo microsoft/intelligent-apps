@@ -47,7 +47,14 @@ namespace WoodgroveBankRegistration.Views
                     AppViewBackButtonVisibility.Visible;
             }
             SystemNavigationManager.GetForCurrentView().BackRequested += RegisterPage_BackRequested;
-                        
+                      
+            
+
+            //TODO:  get list of all person groups
+            //and set item source of List_PersonGroups to it
+
+
+
             progressRing.IsActive = false;
 
             base.OnNavigatedTo(e);
@@ -70,16 +77,25 @@ namespace WoodgroveBankRegistration.Views
         }
         private async void List_PersonGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            //TODO: add in code to list all persons in a persongroup
         }
 
         private void List_Persons_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
+           //TODO: add in code to list all details of a person
         }
         private async void Button_RemoveUser_Click(object sender, RoutedEventArgs e)
         {
-            
+            string personGroupID = txt_GroupID.Text;
+            string personID = TextBox_PersonID.Text;
+            string username = TextBox_PersonName.Text.ToLower().Replace(" ", "");
+
+            if (List_Persons.SelectedItem != null)
+            {
+                //TODO: delete user including face images and face details
+                //from Azure blob storage, person face and person from Face API
+
+            }
         }
     }
 }

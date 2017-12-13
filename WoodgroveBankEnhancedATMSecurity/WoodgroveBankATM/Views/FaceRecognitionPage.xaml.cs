@@ -42,9 +42,38 @@ namespace WoodgroveBankATM.Views
         {
             this.InitializeComponent();
         }
+
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            //TODO: initialize and start capture of media stream
+
+            base.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            //TODO: Dispose media capture when navigating away from this page
+
+            base.OnNavigatedFrom(e);
+        }
+
         private async void button_LogIn_Click(object sender, RoutedEventArgs e)
         {
-           
+            tb_LogInResult.Text = "";
+
+            try
+            {
+                //TODO: login using facial recognition
+            }
+            catch (Exception ex)
+            {
+                msg.Title = "Unable to log in!";
+                msg.Content = ex.Message;
+                await msg.ShowAsync();
+            }
+
+            progressRing.IsActive = false;
+            PhotoControl.Source = null;
         }
     }
 }

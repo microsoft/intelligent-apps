@@ -109,8 +109,9 @@ namespace CallFabrikamCustomerService
         {
             XDocument ssmlDoc = new XDocument();
 
-            //create SSML XML document that will be the payload for posting to speech api
-            ssmlDoc.Add(new XElement("speak",
+            //do http post to get new token and assign new token to accessToken
+            ssmlDoc = new XDocument(
+                              new XElement("speak",
                                   new XAttribute("version", "1.0"),
                                   new XAttribute(XNamespace.Xml + "lang", "en-US"),
                                   new XElement("voice",

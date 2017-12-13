@@ -85,12 +85,6 @@ namespace ContosoHelpdeskChatBot.Dialogs
             if (prompt.PassCode == passcode)
             {
                 string temppwd = "TempPwd" + new Random().Next(0, 5000);
-                using (var db = new ContosoHelpdeskContext())
-                {
-                    db.ResetPasswords.Where(r => r.EmailAddress == email).First().TempPassword = temppwd;
-                    db.SaveChanges();
-                }
-
                 await context.PostAsync($"Your temp password is {temppwd}");
             }
 

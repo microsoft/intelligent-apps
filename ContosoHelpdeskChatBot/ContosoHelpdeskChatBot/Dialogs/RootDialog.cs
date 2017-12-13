@@ -13,12 +13,14 @@
         private static log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private const string InstallAppOption = "Install Application (install)";
         private const string ResetPasswordOption = "Reset Password (password)";
-        private const string GreetMessage = "Welcome to **Contoso Helpdesk Chat Bot**.\n\nI am mainly designed to use with mobile email app, make sure your replies do not contain signatures. \n\nHere's what I can help you, just reply with word in parenthesis:";
+        private const string LocalAdminOption = "Request Local Admin (admin)";
+        private const string GreetMessage = "Welcome to **Contoso Helpdesk Chat Bot**.\n\nI am designed to use with mobile email app, make sure your replies do not contain signatures. \n\nFollowing is what I can help you with, just reply with word in parenthesis:";
         private const string ErrorMessage = "Not a valid option";
         private static List<string> HelpdeskOptions = new List<string>()
         {
             InstallAppOption,
-            ResetPasswordOption
+            ResetPasswordOption,
+            LocalAdminOption
         };
 
         public async Task StartAsync(IDialogContext context)
@@ -28,7 +30,6 @@
 
         public virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> userReply)
         {
-            //this will trigger a wait for user's reply
             var message = await userReply;
 
             this.ShowOptions(context);
@@ -43,7 +44,6 @@
         {
             try
             {
-                //this will trigger a wait for user's reply
                 string optionSelected = await userReply;
 
                 switch (optionSelected)
@@ -53,6 +53,9 @@
                         break;
                     case ResetPasswordOption:
                         context.Call(new ResetPasswordDialog(), this.ResumeAfterOptionDialog);
+                        break;
+                    case LocalAdminOption:
+                        context.Call(new LocalAdminDialog(), this.ResumeAfterOptionDialog);
                         break;
                 }
             }
@@ -68,7 +71,6 @@
         {
             try
             {
-                //this will trigger a wait for user's reply
                 var message = await userReply;
 
                 var ticketNumber = new Random().Next(0, 20000);
