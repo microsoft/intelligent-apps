@@ -11,6 +11,7 @@ namespace ContosoHelpdeskChatBot.Models
     [Serializable]
     public class ResetPasswordPrompt
     {
-        //TODO: add passcode property and prompt attribute
+        [Prompt("Please provide four digit pass code")]
+        public int PassCode { get; set; }
     }
 }

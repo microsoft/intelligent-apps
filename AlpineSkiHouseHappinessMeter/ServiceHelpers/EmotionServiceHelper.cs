@@ -49,8 +49,6 @@ namespace ServiceHelpers
 
         public static int RetryCountOnQuotaLimitError = 6;
         public static int RetryDelayOnQuotaLimitError = 500;
-        
-        //Implement : You should declare a property, Task 4, Step 1
         private static EmotionServiceClient emotionClient { get; set; }
 
         static EmotionServiceHelper()
@@ -60,8 +58,6 @@ namespace ServiceHelpers
 
         public static Action Throttled;
 
-        // Implement: PBI 2, Task 3, Step 2
-        // Create an ApiKey property 
         private static string apiKey;
         public static string ApiKey
         {
@@ -79,15 +75,11 @@ namespace ServiceHelpers
 
         private static void InitializeEmotionService()
         {
-            // Implement: PBI 2, Task 3, Step 3
-            // Instatiate the EmotionServiceClient object and pass the API key to it so we can communicate with the emotion API.
             emotionClient = new EmotionServiceClient(ApiKey);
         }
 
         private static async Task<TResponse> RunTaskWithAutoRetryOnQuotaLimitExceededError<TResponse>(Func<Task<TResponse>> action)
         {
-            // Optional Task, Implement: PBI 2, Task 3, Step 5
-            // Implement a retry logic to deal with transient events and too much request errors
             int retriesLeft = 6;
             int delay = 500;
 
@@ -120,23 +112,16 @@ namespace ServiceHelpers
 
         public static async Task<Emotion[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
         {
-            // Implement: PBI 2, Task 3, Step 5
-            // You should make a call to the EmotionServiceClient object that support a Stream as parameter to identify emotions
             return await RunTaskWithAutoRetryOnQuotaLimitExceededError<Emotion[]>(async () => await emotionClient.RecognizeAsync(await imageStreamCallback()));
         }
 
         public static async Task<Emotion[]> RecognizeAsync(string url)
         {
-            // Implement: PBI 2, Task 3, Step 5
-            // You should make a call to the EmotionServiceClient object that support an URL as parameter to identify emotions
             return await RunTaskWithAutoRetryOnQuotaLimitExceededError<Emotion[]>(async () => await emotionClient.RecognizeAsync(url));
         }
 
         public static IEnumerable<EmotionData> ScoresToEmotionData(EmotionScores scores)
         {
-            // Implement: PBI 2, Task 3, Step 4
-            // Create a list of emotions and emotion scores to return as a results.
-            // Use the JSON object result of the EmotionAPI_Test project to undestand how to build this list.
             List<EmotionData> result = new List<EmotionData>();
             result.Add(new EmotionData { EmotionName = "Anger", EmotionScore = scores.Anger });
             result.Add(new EmotionData { EmotionName = "Contempt", EmotionScore = scores.Contempt });

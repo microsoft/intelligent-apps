@@ -58,7 +58,6 @@ namespace IntelligentKioskSample
         private List<NavMenuItem> navlist = new List<NavMenuItem>(
             new NavMenuItem[]
             {
-                // Create the navigation items
                 new NavMenuItem()
                 {
                     Symbol = Symbol.Favorite,

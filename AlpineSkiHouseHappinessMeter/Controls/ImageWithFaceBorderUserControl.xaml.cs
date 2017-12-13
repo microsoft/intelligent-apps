@@ -42,6 +42,7 @@ using System.Collections.Generic;
 using System.IO;
 using ServiceHelpers;
 using Newtonsoft.Json.Linq;
+using Microsoft.ProjectOxford.Common.Contract;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -289,7 +290,6 @@ namespace IntelligentKioskSample.Controls
 
                     // Implement PBI 5, Task 1, Step 4
                     // Call the emojiControl update emotion method
-
 
                     this.hostGrid.Children.Add(faceUI);
 

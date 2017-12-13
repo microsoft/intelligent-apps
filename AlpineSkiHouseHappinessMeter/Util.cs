@@ -47,6 +47,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Microsoft.Rest;
+using Microsoft.ProjectOxford.Face;
 
 namespace IntelligentKioskSample
 {

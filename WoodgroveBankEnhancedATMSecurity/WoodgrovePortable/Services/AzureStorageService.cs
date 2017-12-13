@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Collections.Generic;
@@ -90,10 +91,32 @@ namespace WoodgrovePortable.Services
         {
             try
             {
-                //TODO: add in code to upload the image to a blob container
-                //and returns the URI that references the image
-                
-                return null;
+                //Reference to the storage account
+                CloudStorageAccount cloudStorageAccount = new CloudStorageAccount(storageCredentials, useHttps: true);
+
+                //Create a blob client
+                CloudBlobClient client = cloudStorageAccount.CreateCloudBlobClient();
+
+                //Define a container reference to the Person Group ID
+                CloudBlobContainer container = client.GetContainerReference(personGroupID);
+
+                //If a container with the name of the Person Group ID does not exist, then create a new container
+                await container.CreateIfNotExistsAsync();
+
+                //Set container permissions
+                await container.SetPermissionsAsync(new BlobContainerPermissions
+                {
+                    PublicAccess = BlobContainerPublicAccessType.Blob
+                });
+
+                //The image will be uploaded as a block blob
+                CloudBlockBlob cblob = container.GetBlockBlobReference(imageNameWithExtension);
+
+                //Upload to the block blob from the image stream
+                await cblob.UploadFromStreamAsync(ImageStream);
+
+                //Upload process will return a Uri that references the image
+                return cblob.StorageUri.PrimaryUri.ToString();
             }
             catch (Exception ex)
             {
@@ -103,9 +126,18 @@ namespace WoodgrovePortable.Services
 
         private async Task<CloudTable> GetFaceTableAsync()
         {
-            //TODO: create a table
+            CloudStorageAccount cloudStorageAccount = new CloudStorageAccount(storageCredentials, useHttps: true);
 
-            return null;
+            // Create the table client.
+            CloudTableClient tableClient = cloudStorageAccount.CreateCloudTableClient();
+
+            // Retrieve a reference to the table.
+            CloudTable table = tableClient.GetTableReference("faceTable");
+
+            // Create the table if it doesn't exist.
+            await table.CreateIfNotExistsAsync();
+
+            return table;
         }
 
         public async Task<object> AddUserFaceAsync(string Username, string personId, string uri, string persistedFaceID)
@@ -113,14 +145,22 @@ namespace WoodgrovePortable.Services
             //Get reference to face table
             var table = await GetFaceTableAsync();
 
+            //Create face entity
+            FaceEntity face = new FaceEntity();
+            face.UserName = Username;
+            face.ImageUrl = uri;
+            face.Id = persistedFaceID;
+            face.PersonId = personId;
+            face.RowKey = face.Id;
+            face.PartitionKey = face.UserName;
 
-            //TODO: create FaceEntity to be inserted into the table           
-
+            //Create the TableOperation object that inserts the login entity.
+            TableOperation insertOperation = TableOperation.Insert(face);
 
             //Execute the insert operation.
             try
             {
-                //TODO: add code to execute the insert operation
+                await table.ExecuteAsync(insertOperation);
             }
             catch (Exception ex)
             {
@@ -131,10 +171,31 @@ namespace WoodgrovePortable.Services
 
         public async Task<List<FaceEntity>> LoadFacesAsync(string Username, string personId)
         {
-            //TODO: load faces tied to a person
+            //Get reference to face table
+            var table = await GetFaceTableAsync();
+            TableContinuationToken token = null;
 
+            //Get all entities
+            var entities = new List<FaceEntity>();
+            do
+            {
+                var queryResult = await table.ExecuteQuerySegmentedAsync(new TableQuery<FaceEntity>(), token);
+                entities.AddRange(queryResult.Results);
+                token = queryResult.ContinuationToken;
+            } while (token != null);
 
-            return null;
+            //Find all registered faces for the user
+            var faceList = new List<FaceEntity>();
+            foreach (var item in entities)
+            {
+                if ((item.PersonId == personId) && (item.UserName == Username))
+                    faceList.Add(item);
+            }
+
+            //Return list of faces
+            return faceList;
         }
+
+
     }
 }

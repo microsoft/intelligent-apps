@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
 namespace ContosoHelpdeskSms
 {
@@ -10,10 +13,18 @@ namespace ContosoHelpdeskSms
     {
         public static bool SendSms(string ToMobileNumber, string Message)
         {
-            //TODO: Fill in Twilio account SID & auth token
+            string TWILIO_ACCOUNT_SID = "PasteYourTwilioAccountSidHere";
+            string TWILIO_AUTH_TOKEN = "PasteYourAuthTokenHere";
 
+            TwilioClient.Init(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
-            return false;
+            var message = MessageResource.Create(
+                to: new PhoneNumber(ToMobileNumber),
+                from: new PhoneNumber("+12062080995"),
+                body: Message
+                );
+
+            return (message != null) ? true : false;
         }
     }
 }

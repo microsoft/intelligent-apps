@@ -16,11 +16,11 @@ namespace ContosoHelpdeskChatBot.Dialogs
         {
             await context.PostAsync("Alright I will help you create a temp password");
 
-            //TODO: Use form builder to prompt for pass code
             if (sendPassCode(context))
             {
-                //call form builder & resume ResumeAfterResetPasswordFormDialog
+                var resetPasswordDialog = FormDialog.FromForm(this.BuildResetPasswordForm, FormOptions.PromptInStart);
 
+                context.Call(resetPasswordDialog, this.ResumeAfterResetPasswordFormDialog);
             }
             else
             {
@@ -33,26 +33,66 @@ namespace ContosoHelpdeskChatBot.Dialogs
         {
             bool result = false;
 
-            //TODO: Use context.Activity.From.Id to match email stored in database
-            //From Id varies depending on channel
+            //Recipient Id varies depending on channel
             //refer ChannelAccount class https://docs.botframework.com/en-us/csharp/builder/sdkreference/dd/def/class_microsoft_1_1_bot_1_1_connector_1_1_channel_account.html#a0b89cf01fdd73cbc00a524dce9e2ad1a
             //as well as Activity class https://docs.botframework.com/en-us/csharp/builder/sdkreference/dc/d2f/class_microsoft_1_1_bot_1_1_connector_1_1_activity.html
+            var email = context.Activity.From.Id;
+            int passcode = new Random().Next(1000, 9999);
+            Int64? smsNumber = 0;
+            string smsMessage = "Your Contoso Pass Code is ";
+            string countryDialPrefix = "+1";
 
+            //save PassCode to database
+            using (var db = new ContosoHelpdeskContext())
+            {
+                var reset = db.ResetPasswords.Where(r => r.EmailAddress == email).ToList();
+                if (reset.Count >= 1)
+                {
+                    reset.First().PassCode = passcode;
+                    smsNumber = reset.First().MobileNumber;
+                    result = true;
+                }
+                
+                db.SaveChanges();
+            }
 
-            //TODO: Save PassCode to database
-
-
-            //TODO: Send SMS to mobile number looked up from ResetPassword table
+            if (result)
+            {
+                result = Helper.SendSms($"{countryDialPrefix}{smsNumber.ToString()}", $"{smsMessage} {passcode}");
+            }
 
             return result;
+        }
+
+        private IForm<ResetPasswordPrompt> BuildResetPasswordForm()
+        {
+            return new FormBuilder<ResetPasswordPrompt>()
+                .Field(nameof(ResetPasswordPrompt.PassCode))
+                .Build();
         }
 
         private async Task ResumeAfterResetPasswordFormDialog(IDialogContext context, IAwaitable<ResetPasswordPrompt> userReply)
         {
             var prompt = await userReply;
+            var email = context.Activity.From.Id;
+            int? passcode;
 
-            //TODO: Lookup ResetPassword table and generate temporary password if pass code matches
+            using (var db = new ContosoHelpdeskContext())
+            {
+                passcode = db.ResetPasswords.Where(r => r.EmailAddress == email).First().PassCode;
+            }
 
+            if (prompt.PassCode == passcode)
+            {
+                string temppwd = "TempPwd" + new Random().Next(0, 5000);
+                using (var db = new ContosoHelpdeskContext())
+                {
+                    db.ResetPasswords.Where(r => r.EmailAddress == email).First().TempPassword = temppwd;
+                    db.SaveChanges();
+                }
+
+                await context.PostAsync($"Your temp password is {temppwd}");
+            }
 
             context.Done<object>(null);
         }

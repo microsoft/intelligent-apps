@@ -16,15 +16,24 @@ namespace CallFabrikamCustomerService
         {
             string result = "";
 
-            //TODO: check to see if bot client has been created
+            //check to see if bot client has been created
+            if (botClient == null)
+            {
+                await CreateBotConversationAsync();
+            }
 
-
-            //TODO: create an activity to send a message to bot
+            //create an activity to send a message to bot
             //any correspondence with a bot is an activity
+            Activity userMessage = new Activity
+            {
+                From = new ChannelAccount(fromUser),
+                Text = text,
+                Type = ActivityTypes.Message
+            };
 
-
-            //TODO: post message to bot
-
+            //post message to bot
+            await botClient.Conversations.PostActivityAsync(conversation.ConversationId, userMessage);
+            result = await ReadBotMessagesAsync(botClient, conversation.ConversationId);
 
             return result;
         }
@@ -32,11 +41,11 @@ namespace CallFabrikamCustomerService
         //Setup for conversation if not already
         private async Task CreateBotConversationAsync()
         {
-            //TODO: instantiate a directline client to talk to bot
+            //instantiate a directline client to talk to bot
+            botClient = new DirectLineClient(MicrosoftBotDirectLineKey);
 
-
-            //TODO: we are starting a conversation with the bot
-
+            //we are starting a conversation with the bot
+            conversation = await botClient.Conversations.StartConversationAsync();
         }
 
         //Get bot Activities i.e. messages from the bot
@@ -47,20 +56,27 @@ namespace CallFabrikamCustomerService
             IEnumerable<Activity> activities;
             int retry = 3;
 
-            
             //the http get on activities for directline uses a poll pattern
             //because of that it is possible to be in a race condition where we are not receiving messages/activities on a premature call
             //here we use a simple retry and delay in between to address that but consider using web sockets
             do
             {
-                //TODO: get bot replies on the conversation we started earlier
-                
+                //get bot replies on the conversation we started earlier
+                activitySet = await client.Conversations.GetActivitiesAsync(conversationId, watermark);
 
-                //TODO: activity watermark helps determine if we have the latest messages
-                
+                //activity watermark helps determine if we have the latest messages
+                watermark = activitySet?.Watermark;
 
-                //TODO: get the replies from botId and get the latest Text which is where the message is
+                //get the replies from botId and get the latest Text which is where the message is
+                activities = from x in activitySet.Activities
+                             where x.From.Id == botId
+                             select x;
 
+                if (activities.Count() > 0)
+                {
+                    result = activities.First().Text;
+                    break;
+                }
 
                 retry--;
 

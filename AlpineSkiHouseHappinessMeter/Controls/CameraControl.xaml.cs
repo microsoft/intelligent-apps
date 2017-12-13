@@ -31,6 +31,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
+using Microsoft.ProjectOxford.Common.Contract;
+using Microsoft.ProjectOxford.Face.Contract;
 using ServiceHelpers;
 using System;
 using System.Collections.Generic;

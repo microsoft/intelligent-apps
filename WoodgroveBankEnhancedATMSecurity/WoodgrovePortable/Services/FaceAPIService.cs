@@ -133,9 +133,7 @@ namespace WoodgrovePortable.Services
         //POST Create a person face
         public async Task<HttpResponseMessage> CreatePersonFaceAsync(string GroupID, string PersonID, string FaceUrl)
         {
-            //TODO: uncomment code
-
-            /*using (var client = FaceClient())
+            using (var client = FaceClient())
             {
                 string uri = AppSettings.baseuri + "/persongroups/" + GroupID + "/persons/" + PersonID + "/persistedFaces?";
 
@@ -148,17 +146,26 @@ namespace WoodgrovePortable.Services
 
                 responseMessage = await client.PostAsync(uri, content);
                 return responseMessage;
-            }*/
-
-            return null;
+            }
         }
 
         //POST Detect face
         public async Task<HttpResponseMessage> DetectFaceAsync(string ImageUrl)
         {
-            //TODO: add in code
+            using (var client = FaceClient())
+            {
+                string uri = AppSettings.baseuri + "/detect";
 
-            return null;
+                // Request body
+                string jsonRequest = "{\"url\":\"" + ImageUrl + "\"}";
+                byte[] byteData = Encoding.UTF8.GetBytes(jsonRequest);
+
+                content = new ByteArrayContent(byteData);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                responseMessage = await client.PostAsync(uri, content);
+                return responseMessage;
+            }
         }
 
         //POST Verify face
@@ -166,11 +173,26 @@ namespace WoodgrovePortable.Services
         {
             using (var client = FaceClient())
             {
-                //TODO: add in code
+                //Request Headers
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", AppSettings.APIKEY);
 
-                return null;
+                //Request Url
+                string uri = AppSettings.baseuri + "/identify";
+
+                var request = new IdenfityFaceRequestModel() { confidenceThreshold = confidenceThreshold, faceIds = faceIds, maxNumOfCandidatesReturned = maxNumOfCandidatesReturned, personGroupId = personGroupId };
+
+                // Request body
+                string jsonRequest = JsonConvert.SerializeObject(request);
+                byte[] byteData = Encoding.UTF8.GetBytes(jsonRequest);
+
+                content = new ByteArrayContent(byteData);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                responseMessage = await client.PostAsync(uri, content);
+                return responseMessage;
             }
         }
+
 
     }
 }

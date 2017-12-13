@@ -227,8 +227,8 @@ namespace CallFabrikamCustomerService
                 WriteLine();
 
                 string result = string.Empty;
-                //TODO: send transcribed text to bot and get the response
-
+                //send transcribed text to bot and get the response
+                result = await this.GetBotReplyAsync(e.PhraseResponse.Results[0].DisplayText);
 
                 //Play audio from text to speech API
                 await PlaySpeechAudioAsync(result);
