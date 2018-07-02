@@ -26,7 +26,7 @@ namespace AdatumTaxCorpKnowledgeService.Controllers
         {
             JsonResult result;
             string kbIdName = "knowledgeBaseID";
-            string keyName = "Ocp-Apim-Subscription-Key";
+            string keyName = "EndpointKey";
             string contentTypeName = "Content-Type";
             string contentTypeValue = "application/json";
 
@@ -44,7 +44,7 @@ namespace AdatumTaxCorpKnowledgeService.Controllers
 
                 using (WebClient client = new WebClient())
                 {
-                    client.Headers.Add($"{keyName}:{keyValue}");
+                    client.Headers.Add("Authorization", $"{keyName} {keyValue}");
                     client.Headers.Add($"{contentTypeName}:{contentTypeValue}");
                     result = Json(client.UploadString(url, body));
                 }
