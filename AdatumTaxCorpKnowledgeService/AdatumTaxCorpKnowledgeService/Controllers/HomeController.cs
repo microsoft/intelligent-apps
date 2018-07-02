@@ -44,7 +44,7 @@ namespace AdatumTaxCorpKnowledgeService.Controllers
 
                 using (WebClient client = new WebClient())
                 {
-                    client.Headers.Add($"{keyName}:{keyValue}");
+                    client.Headers.Add($"Authorization:{keyName} {keyValue}");
                     client.Headers.Add($"{contentTypeName}:{contentTypeValue}");
                     result = Json(client.UploadString(url, body));
                 }
