@@ -32,7 +32,7 @@
 // 
 
 using ServiceHelpers;
-using Microsoft.ProjectOxford.Emotion.Contract;
+using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -52,7 +52,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
-using Microsoft.ProjectOxford.Face.Contract;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -105,7 +104,7 @@ namespace IntelligentKioskSample.Controls
             this.faceRectangle.Visibility = Visibility.Visible;
         }
 
-        public void ShowEmotionData(Emotion emotion)
+        public void ShowEmotionData(FaceEmotionData emotion)
         {
             this.EmotionData = EmotionServiceHelper.ScoresToEmotionData(emotion.Scores).OrderByDescending(e => e.EmotionScore).ToArray();
 

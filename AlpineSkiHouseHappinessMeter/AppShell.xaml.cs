@@ -330,7 +330,6 @@ namespace IntelligentKioskSample
             var handler = this.TogglePaneButtonRectChanged;
             if (handler != null)
             {
-                // handler(this, this.TogglePaneButtonRect);
                 handler.DynamicInvoke(this, this.TogglePaneButtonRect);
             }
         }

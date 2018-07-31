@@ -31,7 +31,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-using Microsoft.ProjectOxford.Common.Contract;
+//using Microsoft.ProjectOxford.Common.Contract;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,7 +48,7 @@ namespace ServiceHelpers
         public string ImageUrl { get; set; }
 
         //Implement : You should declare a property, Task 4, Step 1
-        public IEnumerable<Emotion> DetectedEmotion { get; set; }
+        public IEnumerable<EmotionData> DetectedEmotion { get; set; }
 
 
         // Default to no errors, since this could trigger a stream of popup errors since we might call this
@@ -103,7 +103,8 @@ namespace ServiceHelpers
                 //               and return an empty emotion list
                 ErrorTrackingHelper.TrackException(e, "Emotion API RecognizeAsync error");
 
-                this.DetectedEmotion = Enumerable.Empty<Emotion>();
+                //this.DetectedEmotion = Enumerable.Empty<Emotion>();
+                this.DetectedEmotion = Enumerable.Empty<EmotionData>();
 
                 if (this.ShowDialogOnFaceApiErrors)
                 {
