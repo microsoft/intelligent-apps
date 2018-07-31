@@ -67,13 +67,13 @@ namespace ServiceHelpers
             // Implement a retry logic to deal with transient events and too much request errors
         }
 
-        public static async Task<EmotionData[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
+        public static async Task<Emotion[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
         {
             // Implement: PBI 2, Task 3, Step 5
             // You should make a call to the EmotionServiceClient object that support a Stream as parameter to identify emotions
         }
 
-        public static async Task<EmotionData[]> RecognizeAsync(string url)
+        public static async Task<Emotion[]> RecognizeAsync(string url)
         {
             // Implement: PBI 2, Task 3, Step 5
             // You should make a call to the EmotionServiceClient object that support an URL as parameter to identify emotions

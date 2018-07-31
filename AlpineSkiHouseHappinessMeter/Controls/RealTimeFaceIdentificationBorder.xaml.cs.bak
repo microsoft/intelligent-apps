@@ -31,27 +31,33 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-using ServiceHelpers;
-using ServiceHelpers.Data;
-using System.Linq;
+using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+
+// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace IntelligentKioskSample.Controls
 {
-    /// <summary>
-    /// Interaction logic for EmotionEmojiControl.xaml
-    /// </summary>
-    public partial class EmotionEmojiControl : UserControl
+    public sealed partial class RealTimeFaceIdentificationBorder : UserControl
     {
-        public EmotionEmojiControl()
+        public RealTimeFaceIdentificationBorder()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
-        public void UpdateEmotion(EmotionScores scores)
+        public void ShowFaceRectangle(double left, double top, double width, double height)
         {
-            // Implement PBI 5, Task 1, Step 3 
-            // Set the label and emoji to the predominant emotion
+            this.faceRectangle.Margin = new Thickness(left, top, 0, 0);
+            this.faceRectangle.Width = width;
+            this.faceRectangle.Height = height;
+
+            this.faceRectangle.Visibility = Visibility.Visible;
+        }
+
+        public void ShowRealTimeEmotionData(EmotionScores scores)
+        {
+            this.emotionEmojiControl.UpdateEmotion(scores);
         }
     }
 }
