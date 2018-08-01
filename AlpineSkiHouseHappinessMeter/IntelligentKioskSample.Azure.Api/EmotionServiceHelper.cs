@@ -31,9 +31,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-//using Microsoft.ProjectOxford.Common;
-//using Microsoft.ProjectOxford.Common.Contract;
-//using Microsoft.ProjectOxford.Emotion;
 using Microsoft.Azure.CognitiveServices.Vision.Face;
 using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 using ServiceHelpers.Data;
@@ -54,7 +51,6 @@ namespace ServiceHelpers
         public static int RetryDelayOnQuotaLimitError = 500;
 
         //Implement : You should declare a property, Task 4, Step 1
-        //private static EmotionServiceClient emotionClient { get; set; }
         private static FaceClient emotionClient { get; set; }
         
 
