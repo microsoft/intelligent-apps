@@ -31,27 +31,22 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-using ServiceHelpers;
-using ServiceHelpers.Data;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using Windows.UI.Xaml.Controls;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace IntelligentKioskSample.Controls
+namespace ServiceHelpers
 {
-    /// <summary>
-    /// Interaction logic for EmotionEmojiControl.xaml
-    /// </summary>
-    public partial class EmotionEmojiControl : UserControl
+    public static class ErrorTrackingHelper
     {
-        public EmotionEmojiControl()
-        {
-            InitializeComponent();
-        }
+        // callbacks for exception tracking
+        public static Action<Exception, string> TrackException { get; set; }
+            = (exception, message) => { };
 
-        public void UpdateEmotion(EmotionScores scores)
-        {
-            // Implement PBI 5, Task 1, Step 3 
-            // Set the label and emoji to the predominant emotion
-        }
+        // callbacks for blocking UI error message
+        public static Func<Exception, string, Task> GenericApiCallExceptionHandler { get; set; }
+            = (ex, errorTitle) => Task.FromResult(0);
     }
 }

@@ -58,8 +58,6 @@ namespace ServiceHelpers
 
         public static Action Throttled;
 
-        // Implement: PBI 2, Task 3, Step 2
-        // Create an ApiKey property 
         private static void InitializeEmotionService()
         {
             // Implement: PBI 2, Task 3, Step 3
