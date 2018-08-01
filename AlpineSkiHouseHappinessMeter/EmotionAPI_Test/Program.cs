@@ -145,7 +145,7 @@ namespace EmotionAPI_Test
             // Print all the dimensions and emotion scores
             foreach (DetectedFace df in emotionList)
             {
-                Emotion emotion = df.FaceAttributes.Emotion;                
+                Emotion emotion = df.FaceAttributes.Emotion;             
 
                 Console.WriteLine("Face");
                 Console.WriteLine($"Top: {df.FaceRectangle.Top.ToString()}, Width: {df.FaceRectangle.Width.ToString()}" +
