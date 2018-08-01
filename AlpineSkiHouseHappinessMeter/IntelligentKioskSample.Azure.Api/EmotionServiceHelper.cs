@@ -51,7 +51,7 @@ namespace ServiceHelpers
         public static int RetryDelayOnQuotaLimitError = 500;
 
         //Implement : You should declare a property, Task 4, Step 1
-        //private static EmotionServiceClient emotionClient { get; set; }
+
         static EmotionServiceHelper()
         {
             InitializeEmotionService();
@@ -65,18 +65,21 @@ namespace ServiceHelpers
         {
             // Implement: PBI 2, Task 3, Step 3
             // Instatiate the EmotionServiceClient object and pass the API key to it so we can communicate with the emotion API.
+            throw new NotImplementedException();
         }
 
         private static async Task<TResponse> RunTaskWithAutoRetryOnQuotaLimitExceededError<TResponse>(Func<Task<TResponse>> action)
         {
             // Optional Task, Implement: PBI 2, Task 3, Step 5
             // Implement a retry logic to deal with transient events and too much request errors
+            throw new NotImplementedException("To Be Implemented Later in PBI 2.");
         }
 
         public static async Task<FaceEmotionData[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
         {
             // Implement: PBI 2, Task 3, Step 5
             // You should make a call to the EmotionServiceClient object that support a Stream as parameter to identify emotions
+            throw new NotImplementedException("To Be Implemented Later in PBI 2.");
         }
 
 
@@ -85,6 +88,7 @@ namespace ServiceHelpers
             // Implement: PBI 2, Task 3, Step 4
             // Create a list of emotions and emotion scores to return as a results.
             // Use the JSON object result of the EmotionAPI_Test project to undestand how to build this list.
+            throw new NotImplementedException("To Be Implemented Later in PBI 2.");
         }
     }
 }
