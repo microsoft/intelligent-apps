@@ -317,7 +317,7 @@ namespace IntelligentKioskSample.Controls
                 img.UpdateDecodedImageSize(this.bitmapImage.PixelHeight, this.bitmapImage.PixelWidth);
             }
 
-            // Implement a detection and emotion showing
+            // Implement
         }
 
         private async void OnBitmapImageOpened(object sender, RoutedEventArgs e)
