@@ -31,6 +31,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
+using Microsoft.Azure.CognitiveServices.Vision.Face;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
@@ -48,6 +50,8 @@ namespace ServiceHelpers
         public static int RetryCountOnQuotaLimitError = 6;
         public static int RetryDelayOnQuotaLimitError = 500;
 
+        //Implement : You should declare a property, Task 4, Step 1
+        //private static EmotionServiceClient emotionClient { get; set; }
         static EmotionServiceHelper()
         {
             InitializeEmotionService();
@@ -55,6 +59,8 @@ namespace ServiceHelpers
 
         public static Action Throttled;
 
+        // Implement: PBI 2, Task 3, Step 2
+        // Create an ApiKey property 
         private static void InitializeEmotionService()
         {
             // Implement: PBI 2, Task 3, Step 3
@@ -67,17 +73,12 @@ namespace ServiceHelpers
             // Implement a retry logic to deal with transient events and too much request errors
         }
 
-        public static async Task<EmotionData[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
+        public static async Task<FaceEmotionData[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
         {
             // Implement: PBI 2, Task 3, Step 5
             // You should make a call to the EmotionServiceClient object that support a Stream as parameter to identify emotions
         }
 
-        public static async Task<EmotionData[]> RecognizeAsync(string url)
-        {
-            // Implement: PBI 2, Task 3, Step 5
-            // You should make a call to the EmotionServiceClient object that support an URL as parameter to identify emotions
-        }
 
         public static IEnumerable<EmotionData> ScoresToEmotionData(EmotionScores scores)
         {
