@@ -32,6 +32,7 @@
 // 
 
 //using Microsoft.ProjectOxford.Common.Contract;
+using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,10 +46,10 @@ namespace ServiceHelpers
         public event EventHandler EmotionRecognitionCompleted;
 
         public Func<Task<Stream>> GetImageStreamCallback { get; set; }
-        public string ImageUrl { get; set; }
+        //public string ImageUrl { get; set; }
 
         //Implement : You should declare a property, Task 4, Step 1
-        public IEnumerable<EmotionData> DetectedEmotion { get; set; }
+        public IList<FaceEmotionData> DetectedEmotion { get; set; }
 
 
         // Default to no errors, since this could trigger a stream of popup errors since we might call this
@@ -59,10 +60,10 @@ namespace ServiceHelpers
         public int DecodedImageWidth { get; private set; }
         public byte[] Data { get; set; }
 
-        public ImageAnalyzer(string url)
-        {
-            this.ImageUrl = url;
-        }
+        //public ImageAnalyzer(string url)
+        //{
+        //    this.ImageUrl = url;
+        //}
 
         public ImageAnalyzer(byte[] data)
         {
@@ -81,12 +82,14 @@ namespace ServiceHelpers
             try
             {
                 // Implement #1: If there is ImageUrl you should call the proper EmotionServiceHelper method to detect emotions
-                if (this.ImageUrl != null)
-                {
-                    this.DetectedEmotion = await EmotionServiceHelper.RecognizeAsync(this.ImageUrl);
-                }
+                //if (this.ImageUrl != null)
+                //{
+                //    //this.DetectedEmotion = await EmotionServiceHelper.RecognizeAsync(this.ImageUrl);
+                //    throw new NotImplementedException();
+                //}
                 // Implement #2: If GetImageStreamCallback is not null, you should call the proper EmotionServiceHelper method to detect emotions
-                else if (this.GetImageStreamCallback != null)
+                //else 
+                if (this.GetImageStreamCallback != null)
                 {
                     this.DetectedEmotion = await EmotionServiceHelper.RecognizeAsync(this.GetImageStreamCallback);
                 }
@@ -94,7 +97,7 @@ namespace ServiceHelpers
                 // Implement #3: If FilterOutSmallFaces is enabled, filter the DetectedEmotion using the CoreUtil IsFaceBigEnoughForDetection method results
                 if (this.FilterOutSmallFaces)
                 {
-                    this.DetectedEmotion = this.DetectedEmotion.Where(f => CoreUtil.IsFaceBigEnoughForDetection(f.FaceRectangle.Height, this.DecodedImageHeight));
+                    this.DetectedEmotion = this.DetectedEmotion.Where(f => CoreUtil.IsFaceBigEnoughForDetection(f.FaceRectangle.Height, this.DecodedImageHeight)).ToList();
                 }
             }
             catch (Exception e)
@@ -104,12 +107,16 @@ namespace ServiceHelpers
                 ErrorTrackingHelper.TrackException(e, "Emotion API RecognizeAsync error");
 
                 //this.DetectedEmotion = Enumerable.Empty<Emotion>();
-                this.DetectedEmotion = Enumerable.Empty<EmotionData>();
+                this.DetectedEmotion = null;
 
                 if (this.ShowDialogOnFaceApiErrors)
                 {
                     await ErrorTrackingHelper.GenericApiCallExceptionHandler(e, "Emotion detection failed.");
                 }
+
+#if DEBUG
+                throw e;
+#endif
             }
             finally
             {

@@ -34,6 +34,8 @@
 //using Microsoft.ProjectOxford.Common;
 //using Microsoft.ProjectOxford.Common.Contract;
 //using Microsoft.ProjectOxford.Emotion;
+using Microsoft.Azure.CognitiveServices.Vision.Face;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
@@ -63,9 +65,11 @@ namespace ServiceHelpers
 
         public static Action Throttled;
 
+        private const string baseUri = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0";
+
         // Implement: PBI 2, Task 3, Step 2
         // Create an ApiKey property 
-        private static string apiKey;
+        private static string apiKey = "404aa004236c4dd685fb928884bc4463";
         public static string ApiKey
         {
             get { return apiKey; }
@@ -80,11 +84,27 @@ namespace ServiceHelpers
             }
         }
 
+        // The list of Face attributes to return.
+        private static IList<FaceAttributeType> faceAttributes =
+            new FaceAttributeType[]
+            {
+                    //FaceAttributeType.Gender,
+                    FaceAttributeType.Age,
+                    FaceAttributeType.Smile,
+                    FaceAttributeType.Emotion,
+                    //FaceAttributeType.Glasses,
+                    //FaceAttributeType.Hair
+            };
+
         private static void InitializeEmotionService()
         {
             // Implement: PBI 2, Task 3, Step 3
             // Instatiate the EmotionServiceClient object and pass the API key to it so we can communicate with the emotion API.
-            emotionClient = new EmotionServiceClient(ApiKey);
+            emotionClient = new FaceClient(
+                                    new ApiKeyServiceClientCredentials(ApiKey),
+                                    new System.Net.Http.DelegatingHandler[] { });
+
+            emotionClient.BaseUri = new Uri(baseUri);
         }
 
         private static async Task<TResponse> RunTaskWithAutoRetryOnQuotaLimitExceededError<TResponse>(Func<Task<TResponse>> action)
@@ -102,9 +122,9 @@ namespace ServiceHelpers
                     response = await action();
                     break;
                 }
-                catch (ClientException exception) when (exception.HttpStatus == (System.Net.HttpStatusCode)429 && retriesLeft > 0)
+                catch (APIErrorException ex) when (ex.Response != null && ex.Response.StatusCode == (System.Net.HttpStatusCode)429 && retriesLeft > 0)
                 {
-                    ErrorTrackingHelper.TrackException(exception, "Emotion API throttling error");
+                    ErrorTrackingHelper.TrackException(ex, "Emotion API throttling error");
                     if (retriesLeft == 1 && Throttled != null)
                     {
                         Throttled();
@@ -120,19 +140,83 @@ namespace ServiceHelpers
             return response;
         }
 
-        public static async Task<EmotionData[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
+        public static async Task<FaceEmotionData[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
         {
             // Implement: PBI 2, Task 3, Step 5
             // You should make a call to the EmotionServiceClient object that support a Stream as parameter to identify emotions
-            return await RunTaskWithAutoRetryOnQuotaLimitExceededError<EmotionData[]>(async () => await emotionClient.RecognizeAsync(await imageStreamCallback()));
+            //return await RunTaskWithAutoRetryOnQuotaLimitExceededError<EmotionData[]>(async () => await emotionClient.RecognizeAsync(await imageStreamCallback()));
+            Stream imgData = await imageStreamCallback();
+            IList<DetectedFace> result = await RunTaskWithAutoRetryOnQuotaLimitExceededError<IList<DetectedFace>>(async () => await emotionClient.Face.DetectWithStreamAsync(imgData, true, false, faceAttributes)); //.RecognizeAsync(await imageStreamCallback()));
+
+            //int i = GetDefaultResultIndex(result);
+
+            FaceEmotionData[] fed = new FaceEmotionData[result.Count];
+
+            for (int i = 0; i < result.Count; i++)
+            {
+
+                FaceEmotionData emData = new FaceEmotionData
+                {
+                    Scores = new EmotionScores(),
+                    FaceRectangle = new Rectangle()
+                };
+
+                emData.Scores.Anger = result[i].FaceAttributes.Emotion.Anger;
+                emData.Scores.Contempt = result[i].FaceAttributes.Emotion.Contempt;
+                emData.Scores.Disgust = result[i].FaceAttributes.Emotion.Disgust;
+                emData.Scores.Fear = result[i].FaceAttributes.Emotion.Fear;
+                emData.Scores.Happiness = result[i].FaceAttributes.Emotion.Happiness;
+                emData.Scores.Neutral = result[i].FaceAttributes.Emotion.Neutral;
+                emData.Scores.Sadness = result[i].FaceAttributes.Emotion.Sadness;
+                emData.Scores.Surprise = result[i].FaceAttributes.Emotion.Surprise;
+
+                emData.FaceRectangle.Height = result[i].FaceRectangle.Height;
+                emData.FaceRectangle.Left = result[i].FaceRectangle.Left;
+                emData.FaceRectangle.Top = result[i].FaceRectangle.Top;
+                emData.FaceRectangle.Width = result[i].FaceRectangle.Width;
+
+                fed[i] = emData;
+            }
+
+            return fed;
         }
 
-        public static async Task<EmotionData[]> RecognizeAsync(string url)
-        {
-            // Implement: PBI 2, Task 3, Step 5
-            // You should make a call to the EmotionServiceClient object that support an URL as parameter to identify emotions
-            return await RunTaskWithAutoRetryOnQuotaLimitExceededError<EmotionData[]>(async () => await emotionClient.RecognizeAsync(url));
-        }
+        //private static int GetDefaultResultIndex(IList<DetectedFace> result)
+        //{
+        //    if (result == null)
+        //        throw new ArgumentNullException();
+        //    else if (result.Count == 0)
+        //        throw new ArgumentOutOfRangeException();
+        //    else if (result.Count == 1)
+        //        return 0;
+
+
+        //    int i = 0, index = 0;
+        //    double maxArea = -1d;
+        //    double area = 0;
+
+        //    foreach (DetectedFace df in result)
+        //    {
+        //        area = df.FaceRectangle.Height * df.FaceRectangle.Width;
+
+        //        if (maxArea < area)
+        //        {
+        //            maxArea = area;
+        //            index = i;
+        //        }
+
+        //        i++;
+        //    }
+
+        //    return index;
+        //}
+
+        //public static async Task<EmotionData[]> RecognizeAsync(string url)
+        //{
+        //    // Implement: PBI 2, Task 3, Step 5
+        //    // You should make a call to the EmotionServiceClient object that support an URL as parameter to identify emotions
+        //    return await RunTaskWithAutoRetryOnQuotaLimitExceededError<EmotionData[]>(async () => await emotionClient.RecognizeAsync(url));
+        //}
 
         public static IEnumerable<EmotionData> ScoresToEmotionData(EmotionScores scores)
         {

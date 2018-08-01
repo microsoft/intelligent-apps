@@ -32,7 +32,6 @@
 // 
 
 using ServiceHelpers;
-using Microsoft.ProjectOxford.Face;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,6 +47,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Microsoft.Rest;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 
 namespace IntelligentKioskSample
 {
@@ -63,16 +63,10 @@ namespace IntelligentKioskSample
         {
             string errorDetails = ex.Message;
 
-            FaceAPIException faceApiException = ex as FaceAPIException;
-            if (faceApiException?.ErrorMessage != null)
+            APIErrorException faceApiException = ex as APIErrorException;
+            if (faceApiException?.Message != null)
             {
-                errorDetails = faceApiException.ErrorMessage;
-            }
-
-            Microsoft.ProjectOxford.Common.ClientException commonException = ex as Microsoft.ProjectOxford.Common.ClientException;
-            if (commonException?.Error?.Message != null)
-            {
-                errorDetails = commonException.Error.Message;
+                errorDetails = faceApiException.Message;
             }
 
             HttpOperationException httpException = ex as HttpOperationException;

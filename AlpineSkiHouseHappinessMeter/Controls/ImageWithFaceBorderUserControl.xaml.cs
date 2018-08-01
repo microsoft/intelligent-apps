@@ -31,8 +31,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-using Microsoft.ProjectOxford.Emotion.Contract;
-using Microsoft.ProjectOxford.Face.Contract;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -44,6 +42,7 @@ using System.Collections.Generic;
 using System.IO;
 using ServiceHelpers;
 using Newtonsoft.Json.Linq;
+using ServiceHelpers.Data;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -215,13 +214,13 @@ namespace IntelligentKioskSample.Controls
             {
                 try
                 {
-                    if (dataContext.ImageUrl != null)
-                    {
-                        this.bitmapImage.UriSource = new Uri(dataContext.ImageUrl);
-                    }
-                    else if (dataContext.GetImageStreamCallback != null)
+                    if (dataContext.GetImageStreamCallback != null)
                     {
                         await this.bitmapImage.SetSourceAsync((await dataContext.GetImageStreamCallback()).AsRandomAccessStream());
+                    }
+                    else
+                    {
+                        throw new ArgumentNullException("this.DataContext.GetImageStreamCallback");
                     }
                 }
                 catch (Exception ex)
@@ -272,7 +271,7 @@ namespace IntelligentKioskSample.Controls
                 double renderedImageXTransform = this.imageControl.RenderSize.Width / this.bitmapImage.PixelWidth;
                 double renderedImageYTransform = this.imageControl.RenderSize.Height / this.bitmapImage.PixelHeight;
 
-                foreach (Emotion emotion in imageWithFace.DetectedEmotion)
+                foreach (FaceEmotionData emotion in imageWithFace.DetectedEmotion)
                 {
                     FaceIdentificationBorder faceUI = new FaceIdentificationBorder();
 
@@ -296,7 +295,6 @@ namespace IntelligentKioskSample.Controls
                 }
             }
 
-            //this.progressIndicator.IsActive = false;
             HideProgressBar();
         }
 

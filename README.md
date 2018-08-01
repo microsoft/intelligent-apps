@@ -8,7 +8,7 @@ There are five proof of concept applications in this repo written to illustrate 
 
 **Alpine Ski House Happiness Meter**
 * Simple greetings app to evaluate the satisfaction of arriving visitors by analyzing their emotions.
-* Uses Emotion API (Project Oxford)
+* Uses Emotion API (Former Project Oxford)
 
 **Contoso Helpdesk Chat Bot**
 * Employee helpdesk solution to enable self-service app install, password reset and local admin elevation with a bot. 

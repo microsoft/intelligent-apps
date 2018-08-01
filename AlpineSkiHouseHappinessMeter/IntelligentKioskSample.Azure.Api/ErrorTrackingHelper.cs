@@ -31,34 +31,22 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-using ServiceHelpers.Data;
 using System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
-
-namespace IntelligentKioskSample.Controls
+namespace ServiceHelpers
 {
-    public sealed partial class RealTimeFaceIdentificationBorder : UserControl
+    public static class ErrorTrackingHelper
     {
-        public RealTimeFaceIdentificationBorder()
-        {
-            this.InitializeComponent();
-        }
+        // callbacks for exception tracking
+        public static Action<Exception, string> TrackException { get; set; }
+            = (exception, message) => { };
 
-        public void ShowFaceRectangle(double left, double top, double width, double height)
-        {
-            this.faceRectangle.Margin = new Thickness(left, top, 0, 0);
-            this.faceRectangle.Width = width;
-            this.faceRectangle.Height = height;
-
-            this.faceRectangle.Visibility = Visibility.Visible;
-        }
-
-        public void ShowRealTimeEmotionData(EmotionScores scores)
-        {
-            this.emotionEmojiControl.UpdateEmotion(scores);
-        }
+        // callbacks for blocking UI error message
+        public static Func<Exception, string, Task> GenericApiCallExceptionHandler { get; set; }
+            = (ex, errorTitle) => Task.FromResult(0);
     }
 }
