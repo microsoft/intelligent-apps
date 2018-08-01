@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelligentKioskSample", "IntelligentKioskSample.csproj", "{B08D337A-AF9F-4705-B8C1-C7F07FACD8C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionAPI_Test", "EmotionAPI_Test\EmotionAPI_Test.csproj", "{688FD938-16ED-4EBB-A0E3-0801D9461823}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelligentKioskSample.Azure.Api", "IntelligentKioskSample.Azure.Api\IntelligentKioskSample.Azure.Api.csproj", "{143E2515-08C4-4C1C-9605-0C0935154A07}"
 EndProject
 Global
