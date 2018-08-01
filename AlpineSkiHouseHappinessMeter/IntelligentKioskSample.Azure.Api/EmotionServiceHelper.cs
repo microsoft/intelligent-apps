@@ -31,6 +31,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
+using Microsoft.Azure.CognitiveServices.Vision.Face;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
@@ -60,6 +62,7 @@ namespace ServiceHelpers
 
         // Implement: PBI 2, Task 3, Step 2
         // Create an ApiKey property 
+		private static string apiKey = "404aa004236c4dd685fb928884bc4463";
         private static void InitializeEmotionService()
         {
             // Implement: PBI 2, Task 3, Step 3
@@ -72,16 +75,10 @@ namespace ServiceHelpers
             // Implement a retry logic to deal with transient events and too much request errors
         }
 
-        public static async Task<Emotion[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
+        public static async Task<FaceEmotionData[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
         {
             // Implement: PBI 2, Task 3, Step 5
             // You should make a call to the EmotionServiceClient object that support a Stream as parameter to identify emotions
-        }
-
-        public static async Task<Emotion[]> RecognizeAsync(string url)
-        {
-            // Implement: PBI 2, Task 3, Step 5
-            // You should make a call to the EmotionServiceClient object that support an URL as parameter to identify emotions
         }
 
         public static IEnumerable<EmotionData> ScoresToEmotionData(EmotionScores scores)

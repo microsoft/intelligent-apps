@@ -31,6 +31,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
+using Microsoft.Azure.CognitiveServices.Vision.Face;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
 using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
@@ -60,6 +62,7 @@ namespace ServiceHelpers
 
         // Implement: PBI 2, Task 3, Step 2
         // Create an ApiKey property 
+		private static string apiKey = "404aa004236c4dd685fb928884bc4463";
         private static void InitializeEmotionService()
         {
             // Implement: PBI 2, Task 3, Step 3

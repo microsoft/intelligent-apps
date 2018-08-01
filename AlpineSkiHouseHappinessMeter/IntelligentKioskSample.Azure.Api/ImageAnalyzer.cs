@@ -31,7 +31,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-//using Microsoft.ProjectOxford.Common.Contract;
 using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
@@ -46,7 +45,6 @@ namespace ServiceHelpers
         public event EventHandler EmotionRecognitionCompleted;
 
         public Func<Task<Stream>> GetImageStreamCallback { get; set; }
-        //public string ImageUrl { get; set; }
 
         //Implement : You should declare a property, Task 4, Step 1
         public IList<FaceEmotionData> DetectedEmotion { get; set; }
@@ -59,11 +57,6 @@ namespace ServiceHelpers
         public int DecodedImageHeight { get; private set; }
         public int DecodedImageWidth { get; private set; }
         public byte[] Data { get; set; }
-
-        //public ImageAnalyzer(string url)
-        //{
-        //    this.ImageUrl = url;
-        //}
 
         public ImageAnalyzer(byte[] data)
         {
@@ -81,28 +74,13 @@ namespace ServiceHelpers
         {
             try
             {
-                // Implement #1: If there is ImageUrl you should call the proper EmotionServiceHelper method to detect emotions
-                //if (this.ImageUrl != null)
-                //{
-                //    //this.DetectedEmotion = await EmotionServiceHelper.RecognizeAsync(this.ImageUrl);
-                //    throw new NotImplementedException();
-                //}
-                // Implement #2: If GetImageStreamCallback is not null, you should call the proper EmotionServiceHelper method to detect emotions
-                //else 
-                if (this.GetImageStreamCallback != null)
-                {
-                    this.DetectedEmotion = await EmotionServiceHelper.RecognizeAsync(this.GetImageStreamCallback);
-                }
+                // Implement #1: If GetImageStreamCallback is not null, you should call the proper EmotionServiceHelper method to detect emotions
 
-                // Implement #3: If FilterOutSmallFaces is enabled, filter the DetectedEmotion using the CoreUtil IsFaceBigEnoughForDetection method results
-                if (this.FilterOutSmallFaces)
-                {
-                    this.DetectedEmotion = this.DetectedEmotion.Where(f => CoreUtil.IsFaceBigEnoughForDetection(f.FaceRectangle.Height, this.DecodedImageHeight)).ToList();
-                }
+                // Implement #2: If FilterOutSmallFaces is enabled, filter the DetectedEmotion using the CoreUtil IsFaceBigEnoughForDetection method results
             }
             catch (Exception e)
             {
-                // Implement #4: If there is an error, call the ErrorTrackingHelper helper class to record the issue.
+                // Implement #3: If there is an error, call the ErrorTrackingHelper helper class to record the issue.
                 //               and return an empty emotion list
                 ErrorTrackingHelper.TrackException(e, "Emotion API RecognizeAsync error");
 
@@ -120,7 +98,7 @@ namespace ServiceHelpers
             }
             finally
             {
-                // Implement #5: Call the event OnEmotionRecognitionCompleted
+                // Implement #4: Call the event OnEmotionRecognitionCompleted
                 this.OnEmotionRecognitionCompleted();
             }
         }
