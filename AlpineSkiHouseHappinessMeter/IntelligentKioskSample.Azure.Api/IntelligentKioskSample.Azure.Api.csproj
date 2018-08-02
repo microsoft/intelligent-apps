@@ -108,7 +108,6 @@
   <ItemGroup>
     <Compile Include="CoreUtil.cs" />
     <Compile Include="Data\FaceEmotionData.cs" />
-    <Compile Include="EmotionData.cs" />
     <Compile Include="EmotionServiceHelper.cs" />
     <Compile Include="ErrorTrackingHelper.cs" />
     <Compile Include="ImageAnalyzer.cs" />
