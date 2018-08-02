@@ -31,9 +31,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-using Microsoft.ProjectOxford.Common.Contract;
-using Microsoft.ProjectOxford.Face.Contract;
 using ServiceHelpers;
+using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,7 +64,6 @@ namespace IntelligentKioskSample.Controls
     public interface IRealTimeDataProvider
     {
         EmotionScores GetLastEmotionForFace(BitmapBounds faceBox);
-        Face GetLastFaceAttributesForFace(BitmapBounds faceBox);
     }
 
     public sealed partial class CameraControl : UserControl
