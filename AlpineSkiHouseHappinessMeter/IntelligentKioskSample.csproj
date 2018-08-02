@@ -237,9 +237,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="ServiceHelpers\ServiceHelpers.csproj">
-      <Project>{5d9320af-a9e4-48e3-89bc-9f7f0954b298}</Project>
-      <Name>ServiceHelpers</Name>
+    <ProjectReference Include="IntelligentKioskSample.Azure.Api\IntelligentKioskSample.Azure.Api.csproj">
+      <Project>{143e2515-08c4-4c1c-9605-0c0935154a07}</Project>
+      <Name>IntelligentKioskSample.Azure.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -42,7 +42,7 @@ using System.Collections.Generic;
 using System.IO;
 using ServiceHelpers;
 using Newtonsoft.Json.Linq;
-using Microsoft.ProjectOxford.Common.Contract;
+using ServiceHelpers.Data;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -214,13 +214,13 @@ namespace IntelligentKioskSample.Controls
             {
                 try
                 {
-                    if (dataContext.ImageUrl != null)
-                    {
-                        this.bitmapImage.UriSource = new Uri(dataContext.ImageUrl);
-                    }
-                    else if (dataContext.GetImageStreamCallback != null)
+                    if (dataContext.GetImageStreamCallback != null)
                     {
                         await this.bitmapImage.SetSourceAsync((await dataContext.GetImageStreamCallback()).AsRandomAccessStream());
+                    }
+                    else
+                    {
+                        throw new ArgumentNullException("this.DataContext.GetImageStreamCallback");
                     }
                 }
                 catch (Exception ex)
@@ -271,7 +271,7 @@ namespace IntelligentKioskSample.Controls
                 double renderedImageXTransform = this.imageControl.RenderSize.Width / this.bitmapImage.PixelWidth;
                 double renderedImageYTransform = this.imageControl.RenderSize.Height / this.bitmapImage.PixelHeight;
 
-                foreach (Emotion emotion in imageWithFace.DetectedEmotion)
+                foreach (FaceEmotionData emotion in imageWithFace.DetectedEmotion)
                 {
                     FaceIdentificationBorder faceUI = new FaceIdentificationBorder();
 
@@ -291,6 +291,7 @@ namespace IntelligentKioskSample.Controls
                     // Implement PBI 5, Task 1, Step 4
                     // Call the emojiControl update emotion method
 
+
                     this.hostGrid.Children.Add(faceUI);
 
                     if (!this.ShowMultipleFaces)
@@ -300,7 +301,6 @@ namespace IntelligentKioskSample.Controls
                 }
             }
 
-            //this.progressIndicator.IsActive = false;
             HideProgressBar();
         }
 
@@ -317,7 +317,8 @@ namespace IntelligentKioskSample.Controls
                 img.UpdateDecodedImageSize(this.bitmapImage.PixelHeight, this.bitmapImage.PixelWidth);
             }
 
-            // Implement
+            //PBI4 Task #2
+            //Add call to DetectAndShowEmotion method if ShowEmotionRecognition is true
         }
 
         private async void OnBitmapImageOpened(object sender, RoutedEventArgs e)

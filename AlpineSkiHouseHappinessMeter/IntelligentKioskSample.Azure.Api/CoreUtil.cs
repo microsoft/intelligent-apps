@@ -31,8 +31,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-using Microsoft.ProjectOxford.Common;
-using Microsoft.ProjectOxford.Face.Contract;
+using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +55,7 @@ namespace ServiceHelpers
             return faceHeightPercentage >= MinDetectableFaceCoveragePercentage;
         }
 
-        public static bool AreFacesPotentiallyTheSame(Rectangle face1, FaceRectangle face2)
+        public static bool AreFacesPotentiallyTheSame(Rectangle face1, Rectangle face2)
         {
             return AreFacesPotentiallyTheSame((int)face1.Left, (int)face1.Top, (int)face1.Width, (int)face1.Height, face2.Left, face2.Top, face2.Width, face2.Height);
         }
