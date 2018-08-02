@@ -1,11 +1,11 @@
 ﻿{
   "dependencies": {
-    "Microsoft.Azure.CognitiveServices.Vision.Face": "2.0.0-preview",
     "Microsoft.Bcl.Build": "1.0.21",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "6.1.7",
-    "Microsoft.Rest.ClientRuntime": "2.3.12",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.2",
+    "Microsoft.Rest.ClientRuntime": "2.3.10",
+    "Newtonsoft.Json": "10.0.3",
     "System.Net.NameResolution": "4.3.0",
-    "WriteableBitmapEx": "1.5.0"
+    "WriteableBitmapEx": "1.5.1"
   },
   "frameworks": {
     "uap10.0.10240": {}
