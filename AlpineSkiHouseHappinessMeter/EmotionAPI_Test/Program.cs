@@ -74,7 +74,7 @@ namespace EmotionAPI_Test
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", ApiKey);
 
             // This url will have to match the region where the cognitive services API was created
-            string url = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,gender,emotion";
+            string url = "https://<region>.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,gender,emotion";
 
             // Get the image as a byte array
             byte[] byteData = GetImageAsByteArray(imageFilePath);
