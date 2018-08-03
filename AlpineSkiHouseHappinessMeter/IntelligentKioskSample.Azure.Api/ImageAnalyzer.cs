@@ -47,7 +47,7 @@ namespace ServiceHelpers
         public Func<Task<Stream>> GetImageStreamCallback { get; set; }
 
         //Implement : You should declare a property, Task 4, Step 1
-        public IList<FaceEmotionData> DetectedEmotion { get; set; }
+        //e.g.: public IList<FaceEmotionData> DetectedEmotion { get; set; }
 
 
         // Default to no errors, since this could trigger a stream of popup errors since we might call this
@@ -82,24 +82,10 @@ namespace ServiceHelpers
             {
                 // Implement #3: If there is an error, call the ErrorTrackingHelper helper class to record the issue.
                 //               and return an empty emotion list
-                ErrorTrackingHelper.TrackException(e, "Emotion API RecognizeAsync error");
-
-                //this.DetectedEmotion = Enumerable.Empty<Emotion>();
-                this.DetectedEmotion = null;
-
-                if (this.ShowDialogOnFaceApiErrors)
-                {
-                    await ErrorTrackingHelper.GenericApiCallExceptionHandler(e, "Emotion detection failed.");
-                }
-
-#if DEBUG
-                throw e;
-#endif
             }
             finally
             {
                 // Implement #4: Call the event OnEmotionRecognitionCompleted
-                this.OnEmotionRecognitionCompleted();
             }
         }
 
