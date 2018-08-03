@@ -90,13 +90,44 @@ namespace ServiceHelpers
         private static async Task<TResponse> RunTaskWithAutoRetryOnQuotaLimitExceededError<TResponse>(Func<Task<TResponse>> action)
         {
             // Optional Task, Implement: PBI 2, Task 3, Step 5
-            // Implement a retry logic to deal with transient events and too much request errors
+            // Implement a retry logic to deal with transient events and too much request errors            
         }
 
         public static async Task<FaceEmotionData[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
         {
             // Implement: PBI 2, Task 3, Step 5
             // You should make a call to the EmotionServiceClient object that support a Stream as parameter to identify emotions
+            //e.g: IList<DetectedFace> result = await emotionClient.Face.DetectWithStreamAsync(...);
+
+            FaceEmotionData[] fed = new FaceEmotionData[result.Count];
+
+            for (int i = 0; i < result.Count; i++)
+            {
+
+                FaceEmotionData emData = new FaceEmotionData
+                {
+                    Scores = new EmotionScores(),
+                    FaceRectangle = new Rectangle()
+                };
+
+                emData.Scores.Anger = result[i].FaceAttributes.Emotion.Anger;
+                emData.Scores.Contempt = result[i].FaceAttributes.Emotion.Contempt;
+                emData.Scores.Disgust = result[i].FaceAttributes.Emotion.Disgust;
+                emData.Scores.Fear = result[i].FaceAttributes.Emotion.Fear;
+                emData.Scores.Happiness = result[i].FaceAttributes.Emotion.Happiness;
+                emData.Scores.Neutral = result[i].FaceAttributes.Emotion.Neutral;
+                emData.Scores.Sadness = result[i].FaceAttributes.Emotion.Sadness;
+                emData.Scores.Surprise = result[i].FaceAttributes.Emotion.Surprise;
+
+                emData.FaceRectangle.Height = result[i].FaceRectangle.Height;
+                emData.FaceRectangle.Left = result[i].FaceRectangle.Left;
+                emData.FaceRectangle.Top = result[i].FaceRectangle.Top;
+                emData.FaceRectangle.Width = result[i].FaceRectangle.Width;
+
+                fed[i] = emData;
+            }
+
+            return fed;
         }
 
         public static IEnumerable<EmotionData> ScoresToEmotionData(EmotionScores scores)
