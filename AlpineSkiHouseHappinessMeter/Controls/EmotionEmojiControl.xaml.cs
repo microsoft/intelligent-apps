@@ -50,7 +50,7 @@ namespace IntelligentKioskSample.Controls
 
         public void UpdateEmotion(EmotionScores scores)
         {
-            // Implement PBI 4, Task 3, Step 1
+            // Implement PBI 4, Task 3, Step 3
             // Set the label and emoji to the predominant emotion
         }
     }

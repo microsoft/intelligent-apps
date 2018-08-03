@@ -19,8 +19,7 @@
                 </Image.Source>
             </Image>
         </Grid>
-        
-        <!--<ProgressRing x:Name="progressIndicator"  />-->
+        <!-- PBI4, Task 3, Step 4: ADD EmotionEmojiControl CONTROL HERE-->
         <ProgressBar x:Name="progressIndicator" IsIndeterminate="False" Visibility="Collapsed" Height="32" ></ProgressBar>
     </Grid>
 </UserControl>

@@ -275,20 +275,21 @@ namespace IntelligentKioskSample.Controls
                 {
                     FaceIdentificationBorder faceUI = new FaceIdentificationBorder();
 
-                    // Implement PBI 4, Task 3, Step 2
+                    // Implement PBI 4, Task 2, Step 2.b
                     // Call the ShowFaceRectangle with the FaceRectangle coordinates 
 
-                    // Implement PBI 4, Task 3, Step 2
+                    // Implement PBI 4, Task 2, Step 2.a
                     // Set the FaceIdentificationBorder Margin by using the FaceRectangle coordinates and the renderedImageXTransform and
                     // renderedImageYTransform objects. This will set the margin of the Rectangle
+                    
 
-                    // Implement PBI 4, Task 3, Step 2
+                    // Implement PBI 4, Task 2, Step 2.c
                     // Set the FaceIdentificationBorder BalloonBackground and BalloonForeground by using the declared properties
 
-                    // Implement PBI 4, Task 3, Step 2
+                    // Implement PBI 4, Task 2, Step 2.d
                     // Show the emotion by calling the ShowEmotionData method 
 
-                    // Implement PBI 5, Task 1, Step 4
+                    // Implement PBI 4, Task 3, Step 1
                     // Call the emojiControl update emotion method
 
 
@@ -319,6 +320,8 @@ namespace IntelligentKioskSample.Controls
 
             //PBI4 Task #2
             //Add call to DetectAndShowEmotion method if ShowEmotionRecognition is true
+            if (ShowEmotionRecognition)
+                await DetectAndShowEmotion();
         }
 
         private async void OnBitmapImageOpened(object sender, RoutedEventArgs e)
