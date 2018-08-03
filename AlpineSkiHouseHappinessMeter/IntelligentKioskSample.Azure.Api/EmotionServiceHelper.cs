@@ -61,7 +61,7 @@ namespace ServiceHelpers
 
         public static Action Throttled;
 
-        private const string baseUri = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0";
+        private const string baseUri = "https://<region>.api.cognitive.microsoft.com/face/v1.0";
 
         // Implement: PBI 2, Task 3, Step 2
         // Create an ApiKey property 
@@ -143,8 +143,6 @@ namespace ServiceHelpers
             //return await RunTaskWithAutoRetryOnQuotaLimitExceededError<EmotionData[]>(async () => await emotionClient.RecognizeAsync(await imageStreamCallback()));
             Stream imgData = await imageStreamCallback();
             IList<DetectedFace> result = await RunTaskWithAutoRetryOnQuotaLimitExceededError<IList<DetectedFace>>(async () => await emotionClient.Face.DetectWithStreamAsync(imgData, true, false, faceAttributes)); //.RecognizeAsync(await imageStreamCallback()));
-
-            //int i = GetDefaultResultIndex(result);
 
             FaceEmotionData[] fed = new FaceEmotionData[result.Count];
 
