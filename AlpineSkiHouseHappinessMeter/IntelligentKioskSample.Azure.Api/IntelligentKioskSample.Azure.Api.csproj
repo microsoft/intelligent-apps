@@ -7,8 +7,8 @@
     <ProjectGuid>{143E2515-08C4-4C1C-9605-0C0935154A07}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IntelligentKioskSample.Azure.Api</RootNamespace>
-    <AssemblyName>IntelligentKioskSample.Azure.Api</AssemblyName>
+    <RootNamespace>ServiceHelpers</RootNamespace>
+    <AssemblyName>ServiceHelpers</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.10240.0</TargetPlatformVersion>
