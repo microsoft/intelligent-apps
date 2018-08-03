@@ -320,8 +320,6 @@ namespace IntelligentKioskSample.Controls
 
             //PBI4 Task #2
             //Add call to DetectAndShowEmotion method if ShowEmotionRecognition is true
-            if (ShowEmotionRecognition)
-                await DetectAndShowEmotion();
         }
 
         private async void OnBitmapImageOpened(object sender, RoutedEventArgs e)
