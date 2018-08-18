@@ -26,7 +26,7 @@ namespace AdatumTaxCorpKnowledgeService.Controllers
         {
             JsonResult result;
             string kbIdName = "knowledgeBaseID";
-            string keyName = "Ocp-Apim-Subscription-Key";
+            string keyName = "authorization";
             string contentTypeName = "Content-Type";
             string contentTypeValue = "application/json";
 
