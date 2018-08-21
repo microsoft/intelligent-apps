@@ -32,6 +32,7 @@
 // 
 
 using ServiceHelpers;
+using ServiceHelpers.Data;
 using System.Linq;
 using Windows.UI.Xaml.Controls;
 

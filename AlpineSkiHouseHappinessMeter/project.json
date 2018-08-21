@@ -1,8 +1,8 @@
 ﻿{
   "dependencies": {
     "Microsoft.Bcl.Build": "1.0.21",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.2",
-    "Microsoft.Rest.ClientRuntime": "2.3.10",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "6.1.7",
+    "Microsoft.Rest.ClientRuntime": "2.3.12",
     "Newtonsoft.Json": "10.0.3",
     "System.Net.NameResolution": "4.3.0",
     "WriteableBitmapEx": "1.5.1"
