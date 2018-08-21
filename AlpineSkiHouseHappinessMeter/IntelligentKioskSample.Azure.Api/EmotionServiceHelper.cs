@@ -31,6 +31,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
+
+using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,6 +49,28 @@ namespace ServiceHelpers
         public static int RetryCountOnQuotaLimitError = 6;
         public static int RetryDelayOnQuotaLimitError = 500;
 
+        //Implement : You should declare a property, Task 4, Step 1
+
+        // Implement: PBI 2, Task 3, Step 2
+        // Create an ApiKey property 
+        private static string apiKey = "404aa004236c4dd685fb920004bc4463";
+
+        // Implement: PBI 2, Task 3, Step 9
+        // Set correct region in Face API Uri
+        private const string baseUri = "https://<region>.api.cognitive.microsoft.com/face/v1.0";
+
+        // The list of Face attributes to return.
+        private static IList<FaceAttributeType> faceAttributes =
+            new FaceAttributeType[]
+            {
+                    //FaceAttributeType.Gender,
+                    FaceAttributeType.Age,
+                    FaceAttributeType.Smile,
+                    FaceAttributeType.Emotion,
+                    //FaceAttributeType.Glasses,
+                    //FaceAttributeType.Hair
+            };
+
         static EmotionServiceHelper()
         {
             InitializeEmotionService();
@@ -54,28 +78,56 @@ namespace ServiceHelpers
 
         public static Action Throttled;
 
+
         private static void InitializeEmotionService()
         {
             // Implement: PBI 2, Task 3, Step 3
             // Instatiate the EmotionServiceClient object and pass the API key to it so we can communicate with the emotion API.
+
+            emotionClient.BaseUri = new Uri(baseUri);
         }
 
         private static async Task<TResponse> RunTaskWithAutoRetryOnQuotaLimitExceededError<TResponse>(Func<Task<TResponse>> action)
         {
             // Optional Task, Implement: PBI 2, Task 3, Step 5
-            // Implement a retry logic to deal with transient events and too much request errors
+            // Implement a retry logic to deal with transient events and too much request errors            
         }
 
-        public static async Task<Emotion[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
+        public static async Task<FaceEmotionData[]> RecognizeAsync(Func<Task<Stream>> imageStreamCallback)
         {
             // Implement: PBI 2, Task 3, Step 5
             // You should make a call to the EmotionServiceClient object that support a Stream as parameter to identify emotions
-        }
+            //e.g: IList<DetectedFace> result = await emotionClient.Face.DetectWithStreamAsync(...);
 
-        public static async Task<Emotion[]> RecognizeAsync(string url)
-        {
-            // Implement: PBI 2, Task 3, Step 5
-            // You should make a call to the EmotionServiceClient object that support an URL as parameter to identify emotions
+            FaceEmotionData[] fed = new FaceEmotionData[result.Count];
+
+            for (int i = 0; i < result.Count; i++)
+            {
+
+                FaceEmotionData emData = new FaceEmotionData
+                {
+                    Scores = new EmotionScores(),
+                    FaceRectangle = new Rectangle()
+                };
+
+                emData.Scores.Anger = result[i].FaceAttributes.Emotion.Anger;
+                emData.Scores.Contempt = result[i].FaceAttributes.Emotion.Contempt;
+                emData.Scores.Disgust = result[i].FaceAttributes.Emotion.Disgust;
+                emData.Scores.Fear = result[i].FaceAttributes.Emotion.Fear;
+                emData.Scores.Happiness = result[i].FaceAttributes.Emotion.Happiness;
+                emData.Scores.Neutral = result[i].FaceAttributes.Emotion.Neutral;
+                emData.Scores.Sadness = result[i].FaceAttributes.Emotion.Sadness;
+                emData.Scores.Surprise = result[i].FaceAttributes.Emotion.Surprise;
+
+                emData.FaceRectangle.Height = result[i].FaceRectangle.Height;
+                emData.FaceRectangle.Left = result[i].FaceRectangle.Left;
+                emData.FaceRectangle.Top = result[i].FaceRectangle.Top;
+                emData.FaceRectangle.Width = result[i].FaceRectangle.Width;
+
+                fed[i] = emData;
+            }
+
+            return fed;
         }
 
         public static IEnumerable<EmotionData> ScoresToEmotionData(EmotionScores scores)

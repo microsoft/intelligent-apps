@@ -32,6 +32,7 @@
 // 
 
 using ServiceHelpers;
+using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -103,7 +104,7 @@ namespace IntelligentKioskSample.Controls
             this.faceRectangle.Visibility = Visibility.Visible;
         }
 
-        public void ShowEmotionData(Emotion emotion)
+        public void ShowEmotionData(FaceEmotionData emotion)
         {
             this.EmotionData = EmotionServiceHelper.ScoresToEmotionData(emotion.Scores).OrderByDescending(e => e.EmotionScore).ToArray();
 

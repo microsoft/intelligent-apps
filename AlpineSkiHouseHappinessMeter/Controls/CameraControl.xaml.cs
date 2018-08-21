@@ -32,6 +32,7 @@
 // 
 
 using ServiceHelpers;
+using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +64,6 @@ namespace IntelligentKioskSample.Controls
     public interface IRealTimeDataProvider
     {
         EmotionScores GetLastEmotionForFace(BitmapBounds faceBox);
-        Face GetLastFaceAttributesForFace(BitmapBounds faceBox);
     }
 
     public sealed partial class CameraControl : UserControl

@@ -31,6 +31,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
+using ServiceHelpers.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,10 +45,9 @@ namespace ServiceHelpers
         public event EventHandler EmotionRecognitionCompleted;
 
         public Func<Task<Stream>> GetImageStreamCallback { get; set; }
-        public string ImageUrl { get; set; }
-
 
         //Implement : You should declare a property, Task 4, Step 1
+        //e.g.: public IList<FaceEmotionData> DetectedEmotion { get; set; }
 
 
         // Default to no errors, since this could trigger a stream of popup errors since we might call this
@@ -57,11 +57,6 @@ namespace ServiceHelpers
         public int DecodedImageHeight { get; private set; }
         public int DecodedImageWidth { get; private set; }
         public byte[] Data { get; set; }
-
-        public ImageAnalyzer(string url)
-        {
-            this.ImageUrl = url;
-        }
 
         public ImageAnalyzer(byte[] data)
         {
@@ -79,20 +74,18 @@ namespace ServiceHelpers
         {
             try
             {
-                // Implement #1: If there is ImageUrl you should call the proper EmotionServiceHelper method to detect emotions
+                // Implement #1: If GetImageStreamCallback is not null, you should call the proper EmotionServiceHelper method to detect emotions
 
-                // Implement #2: If GetImageStreamCallback is not null, you should call the proper EmotionServiceHelper method to detect emotions
-
-                // Implement #3: If FilterOutSmallFaces is enabled, filter the DetectedEmotion using the CoreUtil IsFaceBigEnoughForDetection method results
+                // Implement #2: If FilterOutSmallFaces is enabled, filter the DetectedEmotion using the CoreUtil IsFaceBigEnoughForDetection method results
             }
             catch (Exception e)
             {
-                // Implement #4: If there is an error, call the ErrorTrackingHelper helper class to record the issue.
+                // Implement #3: If there is an error, call the ErrorTrackingHelper helper class to record the issue.
                 //               and return an empty emotion list
             }
             finally
             {
-                // Implement #5: Call the event OnEmotionRecognitionCompleted
+                // Implement #4: Call the event OnEmotionRecognitionCompleted
             }
         }
 
@@ -105,4 +98,3 @@ namespace ServiceHelpers
         }
     }
 }
-    
