@@ -65,7 +65,7 @@ namespace ServiceHelpers
 
         // Implement: PBI 2, Task 3, Step 2
         // Create an ApiKey property 
-        private static string apiKey = "404aa004236c4dd685fb920004bc4463";
+        private static string apiKey = "<replace key here>";
         public static string ApiKey
         {
             get { return apiKey; }
