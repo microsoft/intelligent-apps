@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Azure.CognitiveServices.Vision.Face;
+using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -7,8 +9,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.ProjectOxford.Emotion;
-using Microsoft.ProjectOxford.Common.Contract;
 
 namespace EmotionAPI_Test
 {
@@ -24,6 +24,15 @@ namespace EmotionAPI_Test
                 return _apiKey;
             }
         }
+
+        // The list of Face attributes to return.
+        private static IList<FaceAttributeType> faceAttributes =
+            new FaceAttributeType[]
+            {
+                    FaceAttributeType.Age,
+                    FaceAttributeType.Smile,
+                    FaceAttributeType.Emotion,
+            };
 
         static void Main(string[] args)
         {
@@ -65,7 +74,7 @@ namespace EmotionAPI_Test
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", ApiKey);
 
             // This url will have to match the region where the cognitive services API was created
-            string url = "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?";
+            string url = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,gender,emotion";
 
             // Get the image as a byte array
             byte[] byteData = GetImageAsByteArray(imageFilePath);
@@ -98,7 +107,7 @@ namespace EmotionAPI_Test
 
             Console.WriteLine();
             Console.WriteLine("Face Rectangle");
-            
+
             // Navigate through each face rectangle coordinate
             foreach (JToken size in faceDimension.First.Children())
             {
@@ -118,32 +127,39 @@ namespace EmotionAPI_Test
         static async void CallProjectOxford(string imageFilePath)
         {
             // Declare an EmotionServiceClient object, we will use this object to communicate with our Emotion API
-            EmotionServiceClient client = new EmotionServiceClient(ApiKey);
+            FaceClient client = new FaceClient(
+                                         new ApiKeyServiceClientCredentials(ApiKey),
+                                         new System.Net.Http.DelegatingHandler[] { }
+                                         );
+
+            client.BaseUri = new Uri("https://<region>.api.cognitive.microsoft.com/face/v1.0");
 
             // Convert the Image file to a MemoryStream
             MemoryStream mem = new MemoryStream(GetImageAsByteArray(imageFilePath));
             // Store the result in an emotion list
             // With this 3 lines we already make all the communications with the API and store the result
             // ProjectOxford libraries help us to work easier with cognitive services APIs.
-            IEnumerable<Emotion> emotionList = await client.RecognizeAsync(mem);
+            IEnumerable<DetectedFace> emotionList = await client.Face.DetectWithStreamAsync(mem, true, false, faceAttributes);
 
             // Print all the dimensions and emotion scores
-            foreach (Emotion emotion in emotionList)
+            foreach (DetectedFace df in emotionList)
             {
+                Emotion emotion = df.FaceAttributes.Emotion;
+
                 Console.WriteLine("Face");
-                Console.WriteLine($"Top: {emotion.FaceRectangle.Top.ToString()}, Width: {emotion.FaceRectangle.Width.ToString()}" +
-                    $"Left: {emotion.FaceRectangle.Left.ToString()}, Height: {emotion.FaceRectangle.Height.ToString()}");
+                Console.WriteLine($"Top: {df.FaceRectangle.Top.ToString()}, Width: {df.FaceRectangle.Width.ToString()}" +
+                    $"Left: {df.FaceRectangle.Left.ToString()}, Height: {df.FaceRectangle.Height.ToString()}");
                 Console.WriteLine();
 
                 Console.WriteLine("Emotion");
-                Console.WriteLine($"Anger: {emotion.Scores.Anger.ToString()}," +
-                    $"Contempt: {emotion.Scores.Contempt.ToString()}," +
-                    $"Disgust: {emotion.Scores.Disgust.ToString()}," +
-                    $"Fear: {emotion.Scores.Fear.ToString()}," +
-                    $"Happiness: {emotion.Scores.Happiness.ToString()}," +
-                    $"Neutral: {emotion.Scores.Neutral.ToString()}," +
-                    $"Sadness: {emotion.Scores.Sadness.ToString()}," +
-                    $"Surprise: {emotion.Scores.Surprise.ToString()}");
+                Console.WriteLine($"Anger: {emotion.Anger.ToString()}," +
+                    $"Contempt: {emotion.Contempt.ToString()}," +
+                    $"Disgust: {emotion.Disgust.ToString()}," +
+                    $"Fear: {emotion.Fear.ToString()}," +
+                    $"Happiness: {emotion.Happiness.ToString()}," +
+                    $"Neutral: {emotion.Neutral.ToString()}," +
+                    $"Sadness: {emotion.Sadness.ToString()}," +
+                    $"Surprise: {emotion.Surprise.ToString()}");
             }
         }
     }
