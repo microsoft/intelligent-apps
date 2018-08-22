@@ -50,7 +50,7 @@ namespace ServiceHelpers
         public static int RetryCountOnQuotaLimitError = 6;
         public static int RetryDelayOnQuotaLimitError = 500;
 
-        //Implement : You should declare a property, Task 4, Step 1
+        //Implement : You should declare the emotionClient property here, PBI2 Task 3, Step 1
         private static FaceClient emotionClient { get; set; }
         
 
