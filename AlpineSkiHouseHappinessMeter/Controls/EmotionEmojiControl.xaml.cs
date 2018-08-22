@@ -31,8 +31,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-using Microsoft.ProjectOxford.Common.Contract;
 using ServiceHelpers;
+using ServiceHelpers.Data;
 using System.Linq;
 using Windows.UI.Xaml.Controls;
 
@@ -46,6 +46,9 @@ namespace IntelligentKioskSample.Controls
         public EmotionEmojiControl()
         {
             InitializeComponent();
+
+            //this.emotionEmoji.Text = "\U0001f614";
+            //this.emotionText.Text = "Neutral";
         }
 
         public void UpdateEmotion(EmotionScores scores)

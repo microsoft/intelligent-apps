@@ -9,6 +9,6 @@ namespace ServiceHelpers
     public class EmotionData
     {
         public string EmotionName { get; set; }
-        public float EmotionScore { get; set; }
+        public double EmotionScore { get; set; }
     }
 }
