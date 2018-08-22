@@ -42,7 +42,7 @@ using System.Collections.Generic;
 using System.IO;
 using ServiceHelpers;
 using Newtonsoft.Json.Linq;
-using Microsoft.ProjectOxford.Common.Contract;
+using ServiceHelpers.Data;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -214,13 +214,13 @@ namespace IntelligentKioskSample.Controls
             {
                 try
                 {
-                    if (dataContext.ImageUrl != null)
-                    {
-                        this.bitmapImage.UriSource = new Uri(dataContext.ImageUrl);
-                    }
-                    else if (dataContext.GetImageStreamCallback != null)
+                    if (dataContext.GetImageStreamCallback != null)
                     {
                         await this.bitmapImage.SetSourceAsync((await dataContext.GetImageStreamCallback()).AsRandomAccessStream());
+                    }
+                    else
+                    {
+                        throw new ArgumentNullException("this.DataContext.GetImageStreamCallback");
                     }
                 }
                 catch (Exception ex)
@@ -271,25 +271,27 @@ namespace IntelligentKioskSample.Controls
                 double renderedImageXTransform = this.imageControl.RenderSize.Width / this.bitmapImage.PixelWidth;
                 double renderedImageYTransform = this.imageControl.RenderSize.Height / this.bitmapImage.PixelHeight;
 
-                foreach (Emotion emotion in imageWithFace.DetectedEmotion)
+                foreach (FaceEmotionData emotion in imageWithFace.DetectedEmotion)
                 {
                     FaceIdentificationBorder faceUI = new FaceIdentificationBorder();
 
-                    // Implement PBI 4, Task 3, Step 2
+                    // Implement PBI 4, Task 2, Step 2.b
                     // Call the ShowFaceRectangle with the FaceRectangle coordinates 
 
-                    // Implement PBI 4, Task 3, Step 2
+                    // Implement PBI 4, Task 2, Step 2.a
                     // Set the FaceIdentificationBorder Margin by using the FaceRectangle coordinates and the renderedImageXTransform and
                     // renderedImageYTransform objects. This will set the margin of the Rectangle
+                    
 
-                    // Implement PBI 4, Task 3, Step 2
+                    // Implement PBI 4, Task 2, Step 2.c
                     // Set the FaceIdentificationBorder BalloonBackground and BalloonForeground by using the declared properties
 
-                    // Implement PBI 4, Task 3, Step 2
+                    // Implement PBI 4, Task 2, Step 2.d
                     // Show the emotion by calling the ShowEmotionData method 
 
-                    // Implement PBI 5, Task 1, Step 4
+                    // Implement PBI 4, Task 3, Step 1
                     // Call the emojiControl update emotion method
+
 
                     this.hostGrid.Children.Add(faceUI);
 
@@ -300,7 +302,6 @@ namespace IntelligentKioskSample.Controls
                 }
             }
 
-            //this.progressIndicator.IsActive = false;
             HideProgressBar();
         }
 
@@ -317,7 +318,8 @@ namespace IntelligentKioskSample.Controls
                 img.UpdateDecodedImageSize(this.bitmapImage.PixelHeight, this.bitmapImage.PixelWidth);
             }
 
-            // Implement
+            //PBI4 Task #2
+            //Add call to DetectAndShowEmotion method if ShowEmotionRecognition is true
         }
 
         private async void OnBitmapImageOpened(object sender, RoutedEventArgs e)

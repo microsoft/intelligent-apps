@@ -58,13 +58,14 @@ namespace IntelligentKioskSample
         private List<NavMenuItem> navlist = new List<NavMenuItem>(
             new NavMenuItem[]
             {
+                // Create the navigation items
                 new NavMenuItem()
                 {
                     Symbol = Symbol.Favorite,
                     Label = "Emotion",
                     DestPage = typeof(EmotionRecognitionPage)
                 },
-
+                
                 new NavMenuItem()
                 {
                     Symbol = Symbol.Setting,
@@ -330,7 +331,6 @@ namespace IntelligentKioskSample
             var handler = this.TogglePaneButtonRectChanged;
             if (handler != null)
             {
-                // handler(this, this.TogglePaneButtonRect);
                 handler.DynamicInvoke(this, this.TogglePaneButtonRect);
             }
         }

@@ -66,7 +66,6 @@ namespace IntelligentKioskSample.Views
             {
                 await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    //this.cameraControl.CameraControlButtonClick(this, new RoutedEventArgs());
                     this.cameraControl.RestartAutoCaptureCycle();
                     this.PrgRing1.IsActive = false;
                 });

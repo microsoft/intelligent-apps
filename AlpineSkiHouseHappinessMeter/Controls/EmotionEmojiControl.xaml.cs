@@ -31,8 +31,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-using Microsoft.ProjectOxford.Common.Contract;
 using ServiceHelpers;
+using ServiceHelpers.Data;
 using System.Linq;
 using Windows.UI.Xaml.Controls;
 
@@ -50,7 +50,7 @@ namespace IntelligentKioskSample.Controls
 
         public void UpdateEmotion(EmotionScores scores)
         {
-            // Implement PBI 5, Task 1, Step 3 
+            // Implement PBI 4, Task 3, Step 3
             // Set the label and emoji to the predominant emotion
         }
     }
