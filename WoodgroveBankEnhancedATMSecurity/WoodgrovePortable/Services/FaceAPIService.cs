@@ -192,7 +192,35 @@ namespace WoodgrovePortable.Services
                 return responseMessage;
             }
         }
+        
+        //DELETE Person using person ID
+        public async Task<HttpResponseMessage> DeletePersonAsync(string GroupID, string PersonID)
+        {
+            using (var client = FaceClient())
+            {
+                //TODO: Delete person using PersonID
 
+                return null;
+            }
+        }
+
+        //DELETE a person face
+        public async Task<object> DeleteFaceAsync(string GroupID, string PersonID, string persistedFaceID)
+        {
+            try
+            {
+                using (var client = FaceClient())
+                {
+                    //TODO: Delete face using persistedFaceID
+
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
 
     }
 }
