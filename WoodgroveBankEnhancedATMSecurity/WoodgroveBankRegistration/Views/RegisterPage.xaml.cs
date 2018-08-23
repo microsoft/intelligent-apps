@@ -55,6 +55,9 @@ namespace WoodgroveBankRegistration.Views
             }
             SystemNavigationManager.GetForCurrentView().BackRequested += RegisterPage_BackRequested;
 
+            //Create the default person group if it doesn't exist
+            await pgvm.InitializePersonGroupsAsync();
+
             //Load person groups in PersonGroupList Combo Box
             ComboBox_PersonGroups.ItemsSource = pgvm.PersonGroupList;
             foreach (var item in pgvm.PersonGroupList)
@@ -62,9 +65,6 @@ namespace WoodgroveBankRegistration.Views
                 if (item.personGroupId == AppSettings.defaultPersonGroupID)
                     ComboBox_PersonGroups.SelectedItem = item;
             }
-
-            //Create the default person group if it doesn't exist
-            await pgvm.InitializePersonGroupsAsync();
 
             base.OnNavigatedTo(e);
         }
