@@ -18,7 +18,7 @@ namespace WoodgrovePortable.Services
         private HttpClient FaceClient()
         {
             HttpClient faceClient = new HttpClient();
-            faceClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", AppSettings.APIKEY);
+            faceClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", AppSettings.FaceAPIKey);
             return faceClient;
         }
 
