@@ -246,7 +246,7 @@ namespace WoodgrovePortable.Services
             using (var client = FaceClient())
             {
                 //Request Headers
-                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", AppSettings.APIKEY);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", AppSettings.FaceAPIKey);
 
                 //Request Url
                 string uri = AppSettings.baseuri + "/identify";
