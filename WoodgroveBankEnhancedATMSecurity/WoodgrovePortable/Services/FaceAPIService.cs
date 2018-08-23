@@ -130,5 +130,69 @@ namespace WoodgrovePortable.Services
             }
         }
 
+        //POST Create a person face
+        public async Task<HttpResponseMessage> CreatePersonFaceAsync(string GroupID, string PersonID, string FaceUrl)
+        {
+            using (var client = FaceClient())
+            {
+                string uri = AppSettings.FaceAPIEndpoint + "/persongroups/" + GroupID + "/persons/" + PersonID + "/persistedFaces?";
+
+                // Request body
+                string jsonRequest = "{\"url\":\"" + FaceUrl + "\"}";
+                byte[] byteData = Encoding.UTF8.GetBytes(jsonRequest);
+
+                content = new ByteArrayContent(byteData);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                responseMessage = await client.PostAsync(uri, content);
+                return responseMessage;
+            }
+        }
+
+        //POST Detect face
+        public async Task<HttpResponseMessage> DetectFaceAsync(string ImageUrl)
+        {
+            using (var client = FaceClient())
+            {
+                string uri = AppSettings.FaceAPIEndpoint + "/detect";
+
+                // Request body
+                string jsonRequest = "{\"url\":\"" + ImageUrl + "\"}";
+                byte[] byteData = Encoding.UTF8.GetBytes(jsonRequest);
+
+                content = new ByteArrayContent(byteData);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                responseMessage = await client.PostAsync(uri, content);
+                return responseMessage;
+            }
+        }
+
+        //POST Verify face
+        public async Task<HttpResponseMessage> IdentifyFaceAsync(float confidenceThreshold, string[] faceIds, int maxNumOfCandidatesReturned, string personGroupId)
+        {
+            using (var client = FaceClient())
+            {
+                //Request Headers
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", AppSettings.FaceAPIKey);
+
+                //Request Url
+                string uri = AppSettings.FaceAPIEndpoint + "/identify";
+
+                var request = new IdenfityFaceRequestModel() { confidenceThreshold = confidenceThreshold, faceIds = faceIds, maxNumOfCandidatesReturned = maxNumOfCandidatesReturned, personGroupId = personGroupId };
+
+                // Request body
+                string jsonRequest = JsonConvert.SerializeObject(request);
+                byte[] byteData = Encoding.UTF8.GetBytes(jsonRequest);
+
+                content = new ByteArrayContent(byteData);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                responseMessage = await client.PostAsync(uri, content);
+                return responseMessage;
+            }
+        }
+
+
     }
 }
