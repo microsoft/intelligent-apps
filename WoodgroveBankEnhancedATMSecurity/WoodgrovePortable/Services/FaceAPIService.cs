@@ -214,6 +214,8 @@ namespace WoodgrovePortable.Services
                 {
                     //TODO: Delete face using persistedFaceID
                     var uri = AppSettings.FaceAPIEndpoint + "/persongroups/" + GroupID + "/persons/" + PersonID + "/persistedFaces/" + persistedFaceID;
+                    var response = await client.DeleteAsync(uri);
+                    return response;
                 }
             }
             catch (Exception ex)
