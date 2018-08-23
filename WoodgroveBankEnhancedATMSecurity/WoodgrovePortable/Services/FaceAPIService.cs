@@ -199,8 +199,9 @@ namespace WoodgrovePortable.Services
             using (var client = FaceClient())
             {
                 //TODO: Delete person using PersonID
-
-                return null;
+                var uri = AppSettings.FaceAPIEndpoint + "/persongroups/" + GroupID + "/persons/" + PersonID;
+                var response = await client.DeleteAsync(uri);
+                return response;
             }
         }
 
@@ -212,8 +213,7 @@ namespace WoodgrovePortable.Services
                 using (var client = FaceClient())
                 {
                     //TODO: Delete face using persistedFaceID
-
-                    return null;
+                    var uri = AppSettings.FaceAPIEndpoint + "/persongroups/" + GroupID + "/persons/" + PersonID + "/persistedFaces/" + persistedFaceID;
                 }
             }
             catch (Exception ex)
