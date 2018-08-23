@@ -135,7 +135,7 @@ namespace WoodgrovePortable.Services
         {
             using (var client = FaceClient())
             {
-                string uri = AppSettings.baseuri + "/persongroups/" + GroupID + "/persons/" + PersonID + "/persistedFaces?";
+                string uri = AppSettings.FaceAPIEndpoint + "/persongroups/" + GroupID + "/persons/" + PersonID + "/persistedFaces?";
 
                 // Request body
                 string jsonRequest = "{\"url\":\"" + FaceUrl + "\"}";
@@ -154,7 +154,7 @@ namespace WoodgrovePortable.Services
         {
             using (var client = FaceClient())
             {
-                string uri = AppSettings.baseuri + "/detect";
+                string uri = AppSettings.FaceAPIEndpoint + "/detect";
 
                 // Request body
                 string jsonRequest = "{\"url\":\"" + ImageUrl + "\"}";
@@ -177,7 +177,7 @@ namespace WoodgrovePortable.Services
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", AppSettings.FaceAPIKey);
 
                 //Request Url
-                string uri = AppSettings.baseuri + "/identify";
+                string uri = AppSettings.FaceAPIEndpoint + "/identify";
 
                 var request = new IdenfityFaceRequestModel() { confidenceThreshold = confidenceThreshold, faceIds = faceIds, maxNumOfCandidatesReturned = maxNumOfCandidatesReturned, personGroupId = personGroupId };
 
