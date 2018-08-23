@@ -27,7 +27,7 @@ namespace WoodgrovePortable.Services
         {
                 using (var client = FaceClient())
                 {
-                    string uri = AppSettings.baseuri + "/persongroups/" + GroupID;
+                    string uri = AppSettings.FaceAPIEndpoint + "/persongroups/" + GroupID;
 
                     // Request body
                     PersonGroup pg = new PersonGroup() { name = GroupName, userData = GroupDescription };
@@ -48,7 +48,7 @@ namespace WoodgrovePortable.Services
             {
                 using (var client = FaceClient())
                 {
-                    string uri = AppSettings.baseuri + "/persongroups/" + GroupID + "/train";
+                    string uri = AppSettings.FaceAPIEndpoint + "/persongroups/" + GroupID + "/train";
                     responseMessage = await client.PostAsync(uri, content);
                 }
             }
@@ -68,7 +68,7 @@ namespace WoodgrovePortable.Services
                 using (var client = FaceClient())
                 {
                     // Request body
-                    var uri = AppSettings.baseuri + "/persongroups";
+                    var uri = AppSettings.FaceAPIEndpoint + "/persongroups";
                     responseMessage = await client.GetAsync(uri);
                 }
             }
@@ -88,7 +88,7 @@ namespace WoodgrovePortable.Services
                 using (var client = FaceClient())
                 {
                     // Request body
-                    var uri = AppSettings.baseuri + "/persongroups/" + GroupID + "/persons?start=0&top=1000";
+                    var uri = AppSettings.FaceAPIEndpoint + "/persongroups/" + GroupID + "/persons?start=0&top=1000";
 
                     responseMessage = await client.GetAsync(uri);
                     var responseContent = await responseMessage.Content.ReadAsStringAsync();
@@ -113,7 +113,7 @@ namespace WoodgrovePortable.Services
             using (var client = FaceClient())
             {
                 //Form the request URL
-                string uri = AppSettings.baseuri + "/persongroups/" + GroupID + "/persons?";
+                string uri = AppSettings.FaceAPIEndpoint + "/persongroups/" + GroupID + "/persons?";
 
                 //Create a username using the person's name
                 string username = PersonName.ToLower().Replace(" ", "");
