@@ -80,6 +80,15 @@ namespace WoodgroveBankRegistration.Views
 
         private async void Button_RegisterUser_Click(object sender, RoutedEventArgs e)
         {
+            bool IsValid = Validate();
+
+            if (!IsValid)
+            {
+                MessageDialog msg = new MessageDialog("Please enter username and PIN to proceed!", "Unable to register!");
+                await msg.ShowAsync();
+                return;
+            }
+
             //Disable register user button
             Button_RegisterUser.IsEnabled = false;
 
