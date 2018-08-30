@@ -205,6 +205,7 @@ namespace CallFabrikamCustomerService
                 //Play audio from text to speech API
                 var speakTask = this.PlaySpeechAudioAsync(e.Result.Text);
             }
+            StartMicrophone();
         }
 
 
