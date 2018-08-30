@@ -1,4 +1,5 @@
-﻿using Microsoft.CognitiveServices.SpeechRecognition;
+﻿//using Microsoft.CognitiveServices.SpeechRecognition;
+using Microsoft.CognitiveServices.Speech;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,6 +33,7 @@ namespace CallFabrikamCustomerService
     {
         private string MicrosoftSpeechToTextEndpoint;
         private string MicrosoftSpeechApiKey;
+        private string Region;
 
         private BitmapImage callButtonImage;
         private BitmapImage hangUpButtonImage;
@@ -46,6 +48,7 @@ namespace CallFabrikamCustomerService
             //Initialize the speech end point & key from app.config
             MicrosoftSpeechToTextEndpoint = ConfigurationManager.AppSettings["MicrosoftSpeechToTextEndpoint"];
             MicrosoftSpeechApiKey = ConfigurationManager.AppSettings["MicrosoftSpeechApiKey"];
+            Region = "westus";
 
             //Best practice to add event handler to dispose and cleanup resources whenever this window is closed
             this.Closing += OnMainWindowClosing;
@@ -68,7 +71,7 @@ namespace CallFabrikamCustomerService
             ringing = new SoundPlayer(@"../../Resources/Ringing_Phone-Mike_Koenig.wav");
 
             //Initialize speech to short phrase mode & default locale
-            Mode = SpeechRecognitionMode.ShortPhrase;
+            //Mode = SpeechRecognitionMode.ShortPhrase;
             DefaultLocale = "en-US";
         }
 
@@ -79,13 +82,14 @@ namespace CallFabrikamCustomerService
             dialTone.Dispose();
             ringing.Dispose();
 
-            //cleanup speech to text mic & thinking tone
+            /*//cleanup speech to text mic & thinking tone
             if (this.micClient != null)
             {
                 this.micClient.EndMicAndRecognition();
                 micClient.Dispose();
                 
             }
+            */
             if (this.thinking != null)
                 thinking.Dispose();
 
@@ -171,6 +175,7 @@ namespace CallFabrikamCustomerService
         }
 
 
+        /*
         //Writes the response result.
         private void EchoResponse(SpeechResponseEventArgs e)
         {
@@ -197,6 +202,36 @@ namespace CallFabrikamCustomerService
                 WriteLine();
             }
         }
+        */
+        //Writes the response result.
+        private void EchoResponse(SpeechRecognitionResultEventArgs e)
+        {
+            WriteLine("Speech To Text Result:");
+            //handle the case when there are no results. 
+            //common situation is when there is a pause from user and audio captured has no speech in it
+            if (e.Result.Text.Length == 0)
+            {
+                WriteLine("No phrase response is available.");
+                WriteLine();
+            }
+            else
+            {
+                //speech to text usually returns an array of returns ranked highest first to lowest
+                //we will print all of the results
+                /*for (int i = 0; i < e.Result.Text.Length; i++)
+                {
+                    WriteLine(
+                        "[{0}] Text=\"{1}\"",
+                        i,
+                        e.Result.Text);
+                }*/
+                //WriteLine();
+                WriteLine(
+                        "Text=\"{0}\"",
+                        e.Result.Text);
+            }
+        }
+
 
         //Creates a line break
         internal void WriteLine()
