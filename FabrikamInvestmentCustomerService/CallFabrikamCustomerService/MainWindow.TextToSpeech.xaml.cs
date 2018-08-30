@@ -57,6 +57,7 @@ namespace CallFabrikamCustomerService
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-Microsoft-OutputFormat", "riff-16khz-16bit-mono-pcm");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "IntelligentApps/FabrikamInvestmentCustomerService");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Host", "westus.tts.speech.microsoft.com");
 
             //initialize a new instance of http request message
             var request = new HttpRequestMessage(HttpMethod.Post, MicrosoftTextToSpeechEndpoint)
@@ -182,7 +183,18 @@ namespace CallFabrikamCustomerService
             }
         }
 
+        private async Task<string> FetchTokenAsync(string fetchUri, string subscriptionKey)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
+                UriBuilder uriBuilder = new UriBuilder(fetchUri);
 
+                var result = await client.PostAsync(uriBuilder.Uri.AbsoluteUri, null);
+                Console.WriteLine("Token Uri: {0}", uriBuilder.Uri.AbsoluteUri);
+                return await result.Content.ReadAsStringAsync();
+            }
+        }
 
     }
 }
