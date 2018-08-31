@@ -50,6 +50,7 @@ namespace CallFabrikamCustomerService
                 this.WriteLine($"An exception occured:{ex}");
                 Debug.WriteLine($"An exception occured:{ex}");
             }
+
         }
 
         private void StopSpeechRecognition()
