@@ -1,5 +1,5 @@
 ﻿using Microsoft.Bot.Connector.DirectLine;
-using Microsoft.CognitiveServices.Speech;
+using Microsoft.CognitiveServices.SpeechRecognition;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,7 +34,6 @@ namespace CallFabrikamCustomerService
         //Fields needed for Speech to Text
         private string MicrosoftSpeechToTextEndpoint;
         private string MicrosoftSpeechApiKey;
-        private string Region;
         private BitmapImage callButtonImage;
         private BitmapImage hangUpButtonImage;
         SoundPlayer dialTone;
@@ -59,14 +58,14 @@ namespace CallFabrikamCustomerService
             //Initialize the speech end point & key from app.config
             MicrosoftSpeechToTextEndpoint = ConfigurationManager.AppSettings["MicrosoftSpeechToTextEndpoint"];
             MicrosoftSpeechApiKey = ConfigurationManager.AppSettings["MicrosoftSpeechApiKey"];
-            MicrosoftSpeechAccessTokenEndpoint = ConfigurationManager.AppSettings["MicrosoftAccessTokenEndpoint"];
+            MicrosoftSpeechAccessTokenEndpoint = ConfigurationManager.AppSettings["MicrosoftSpeechAccessTokenEndpoint"];
             MicrosoftTextToSpeechEndpoint = ConfigurationManager.AppSettings["MicrosoftTextToSpeechEndpoint"];
-            Region = "westus";
 
             //Best practice to add event handler to dispose and cleanup resources whenever this window is closed
             this.Closing += OnMainWindowClosing;
 
             //Initialize speech to text mode & default locale
+            Mode = SpeechRecognitionMode.ShortPhrase;
             DefaultLocale = "en-US";
 
             //Setup the green Call button image
@@ -101,11 +100,11 @@ namespace CallFabrikamCustomerService
             ringing.Dispose();
 
             //cleanup speech to text mic & thinking tone
-            if (this.recognizer != null)
+            if (this.micClient != null)
             {
-                this.recognizer.StopContinuousRecognitionAsync();
-                recognizer.Dispose();
-
+                this.micClient.EndMicAndRecognition();
+                micClient.Dispose();
+                
             }
             if (this.thinking != null)
                 thinking.Dispose();
@@ -208,32 +207,35 @@ namespace CallFabrikamCustomerService
 
 
         //Writes the response result.
-        private async Task EchoResponseAsync(SpeechRecognitionResultEventArgs e)
+        private async Task EchoResponseAsync(SpeechResponseEventArgs e)
         {
             WriteLine("Speech To Text Result:");
             //handle the case when there are no results. 
             //common situation is when there is a pause from user and audio captured has no speech in it
-            if (e.Result.Text.Length == 0)
+            if (e.PhraseResponse.Results.Length == 0)
             {
                 WriteLine("No phrase response is available.");
                 WriteLine();
             }
             else
             {
-                WriteLine(
-                        "Text=\"{0}\"",
-                        e.Result.Text);
+                //speech to text usually returns an array of returns ranked highest first to lowest
+                //we will print all of the results
+                for (int i = 0; i < e.PhraseResponse.Results.Length; i++)
+                {
+                    WriteLine(
+                        "[{0}] Confidence={1}, Text=\"{2}\"",
+                        i,
+                        e.PhraseResponse.Results[i].Confidence,
+                        e.PhraseResponse.Results[i].DisplayText);
+                }
                 WriteLine();
 
-                string result = string.Empty;
                 //send transcribed text to bot and get the response
-                result = await this.GetBotReplyAsync(e.Result.Text);
+                var result = await this.GetBotReplyAsync(e.PhraseResponse.Results[0].DisplayText);
 
                 //Play audio from text to speech API
                 await PlaySpeechAudioAsync(result);
-
-                //Start Microphone
-                StartMicrophone();
             }
         }
 

@@ -57,13 +57,12 @@ namespace CallFabrikamCustomerService
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-Microsoft-OutputFormat", "riff-16khz-16bit-mono-pcm");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "IntelligentApps/FabrikamInvestmentCustomerService");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Host", "westus.tts.speech.microsoft.com");
 
 
             var request = new HttpRequestMessage(HttpMethod.Post, MicrosoftTextToSpeechEndpoint)
             {
                 //we are making a few default assumptions here such as using English, Femail & the speech voice to use
-                //for additional choices refer https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/supported-languages
+                //for additional choices refer https://docs.microsoft.com/en-us/azure/cognitive-services/Speech/api-reference-rest/bingvoiceoutput
                 Content = new StringContent(GenerateSsml("en-US", "Female", "Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)", Text))
             };
 
