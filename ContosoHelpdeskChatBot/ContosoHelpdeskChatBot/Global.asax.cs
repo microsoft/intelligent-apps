@@ -2,6 +2,7 @@
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
+using Microsoft.Bot.Builder.Azure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,15 +27,25 @@ namespace ContosoHelpdeskChatBot
         {
             public static void UpdateConversationContainer()
             {
-                var builder = new ContainerBuilder();
+                var store = new InMemoryDataStore();
 
-                builder.Register(c => new CachingBotDataStore(c.ResolveKeyed<IBotDataStore<BotData>>(typeof(ConnectorStore)),
-                    CachingBotDataStoreConsistencyPolicy.LastWriteWins))
-                    .As<IBotDataStore<BotData>>()
-                    .AsSelf()
-                    .InstancePerLifetimeScope();
+                Conversation.UpdateContainer(
+                           builder =>
+                           {
+                               builder.Register(c => store)
+                                         .Keyed<IBotDataStore<BotData>>(AzureModule.Key_DataStore)
+                                         .AsSelf()
+                                         .SingleInstance();
 
-                builder.Update(Conversation.Container);
+                               builder.Register(c => new CachingBotDataStore(store,
+                                          CachingBotDataStoreConsistencyPolicy
+                                          .ETagBasedConsistency))
+                                          .As<IBotDataStore<BotData>>()
+                                          .AsSelf()
+                                          .InstancePerLifetimeScope();
+
+
+                           });
             }
         }
     }
