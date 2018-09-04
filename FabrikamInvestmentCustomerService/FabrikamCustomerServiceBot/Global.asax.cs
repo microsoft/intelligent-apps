@@ -5,6 +5,10 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
 using Microsoft.Bot.Builder.Azure;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Internals;
+using Microsoft.Bot.Connector;
+using Autofac;
 
 namespace FabrikamCustomerServiceBot
 {
