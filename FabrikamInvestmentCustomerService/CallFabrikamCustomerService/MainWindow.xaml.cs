@@ -202,7 +202,6 @@ namespace CallFabrikamCustomerService
                         "Text=\"{0}\"",
                         e.Result.Text);
 
-
                 //TODO: Play audio from text to speech API
 
 
