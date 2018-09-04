@@ -60,7 +60,7 @@ namespace CallFabrikamCustomerService
             //Initialize the speech end point & key from app.config
             MicrosoftSpeechToTextEndpoint = ConfigurationManager.AppSettings["MicrosoftSpeechToTextEndpoint"];
             MicrosoftSpeechApiKey = ConfigurationManager.AppSettings["MicrosoftSpeechApiKey"];
-            MicrosoftSpeechAccessTokenEndpoint = ConfigurationManager.AppSettings["MicrosoftAccessTokenEndpoint"];
+            MicrosoftSpeechAccessTokenEndpoint = ConfigurationManager.AppSettings["MicrosoftSpeechAccessTokenEndpoint"];
             MicrosoftTextToSpeechEndpoint = ConfigurationManager.AppSettings["MicrosoftTextToSpeechEndpoint"];
             Region = "westus";
 
