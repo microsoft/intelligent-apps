@@ -204,20 +204,11 @@ namespace CallFabrikamCustomerService
             }
             else
             {
-                //speech to text usually returns an array of returns ranked highest first to lowest
-                //we will print all of the results
-                /*for (int i = 0; i < e.Result.Text.Length; i++)
-                {
-                    WriteLine(
-                        "[{0}] Text=\"{1}\"",
-                        i,
-                        e.Result.Text);
-                }*/
-                //WriteLine();
                 WriteLine(
                         "Text=\"{0}\"",
                         e.Result.Text);
             }
+            StartMicrophone();
         }
 
 
