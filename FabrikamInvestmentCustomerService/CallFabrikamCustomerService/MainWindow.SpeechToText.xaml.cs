@@ -11,11 +11,9 @@ namespace CallFabrikamCustomerService
 {
     public partial class MainWindow : Window
     {
-        //These are fields needed for using speech recognition client library aka. Project Oxford
+        //These are fields needed for using speech recognition client library
         //private SpeechRecognitionMode Mode;
         private string DefaultLocale;
-        private string Language;
-        //private MicrophoneRecognitionClient micClient;
         SoundPlayer thinking;
         private TaskCompletionSource<int> stopBaseRecognitionTaskCompletionSource;
         private SpeechRecognizer recognizer;
@@ -55,13 +53,9 @@ namespace CallFabrikamCustomerService
             SpeechRecognizer basicRecognizer;
 
             using (basicRecognizer = basicFactory.CreateSpeechRecognizer(this.DefaultLocale))
-
             {
-
                 await this.RunRecognizer(basicRecognizer, stopBaseRecognitionTaskCompletionSource).ConfigureAwait(false);
-
             }
-
         }
 
         /// <summary>
@@ -101,20 +95,14 @@ namespace CallFabrikamCustomerService
 
         #region Recognition Event Handlers
 
-
         /// <summary>
         /// Logs Intermediate Recognition results
         /// </summary>
         private void IntermediateResultEventHandler(SpeechRecognitionResultEventArgs e)
         {
-            //thinking.PlaySync();
-            //this.EchoResponse(e);
             recognizer.StopContinuousRecognitionAsync();
             //this.WriteLine("Intermediate result: {0} ", e.Result.Text);
-            //PlaySpeechAudio(e.Result.Text);
-            //StartMicrophone();
         }
-
 
         /// <summary>
         /// Logs the Final result
@@ -122,10 +110,8 @@ namespace CallFabrikamCustomerService
         private void FinalResultEventHandler(SpeechRecognitionResultEventArgs e)
         {
             thinking.PlaySync();
-            //this.EchoResponse(e);
             this.EchoResponseAsync(e).Wait();
         }
-
 
         /// <summary>
         /// Logs Error events
@@ -137,7 +123,6 @@ namespace CallFabrikamCustomerService
             TransitionHangUpGui();
         }
 
-
         /// <summary>
         /// If SessionStoppedEvent is received, sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
         /// </summary>
@@ -145,7 +130,7 @@ namespace CallFabrikamCustomerService
         {
             if (e.EventType == SessionEventType.SessionStoppedEvent)
             {
-                //source.TrySetResult(0);
+                source.TrySetResult(0);
             }
         }
 
