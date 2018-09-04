@@ -52,11 +52,8 @@ namespace CallFabrikamCustomerService
             SpeechRecognizer basicRecognizer;
 
             using (basicRecognizer = basicFactory.CreateSpeechRecognizer(this.DefaultLocale))
-
             {
-
                 await this.RunRecognizer(basicRecognizer, stopBaseRecognitionTaskCompletionSource).ConfigureAwait(false);
-
             }
 
         }
@@ -98,7 +95,6 @@ namespace CallFabrikamCustomerService
 
         #region Recognition Event Handlers
 
-
         /// <summary>
         /// Logs Intermediate Recognition results
         /// </summary>
@@ -107,7 +103,6 @@ namespace CallFabrikamCustomerService
             recognizer.StopContinuousRecognitionAsync();
             //this.WriteLine("Intermediate result: {0} ", e.Result.Text);
         }
-
 
         /// <summary>
         /// Logs the Final result
@@ -118,7 +113,6 @@ namespace CallFabrikamCustomerService
             this.EchoResponse(e);
         }
 
-
         /// <summary>
         /// Logs Error events
         /// And sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
@@ -128,7 +122,6 @@ namespace CallFabrikamCustomerService
             source.TrySetResult(0);
             TransitionHangUpGui();
         }
-
 
         /// <summary>
         /// If SessionStoppedEvent is received, sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
