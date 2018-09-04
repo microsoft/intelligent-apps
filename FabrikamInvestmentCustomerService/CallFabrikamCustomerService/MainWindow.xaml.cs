@@ -1,5 +1,4 @@
-﻿//using Microsoft.CognitiveServices.SpeechRecognition;
-using Microsoft.CognitiveServices.Speech;
+﻿using Microsoft.CognitiveServices.Speech;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -71,7 +70,6 @@ namespace CallFabrikamCustomerService
             ringing = new SoundPlayer(@"../../Resources/Ringing_Phone-Mike_Koenig.wav");
 
             //Initialize speech to short phrase mode & default locale
-            //Mode = SpeechRecognitionMode.ShortPhrase;
             DefaultLocale = "en-US";
         }
 
