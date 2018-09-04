@@ -13,7 +13,6 @@ namespace CallFabrikamCustomerService
     {
         //These are fields needed for using speech recognition client library aka. Project Oxford
         private string DefaultLocale;
-        private string Language;
         SoundPlayer thinking;
         private TaskCompletionSource<int> stopBaseRecognitionTaskCompletionSource;
         private SpeechRecognizer recognizer;
@@ -95,7 +94,6 @@ namespace CallFabrikamCustomerService
 
         #region Recognition Event Handlers
 
-
         /// <summary>
         /// Logs Intermediate Recognition results
         /// </summary>
@@ -103,7 +101,6 @@ namespace CallFabrikamCustomerService
         {
             recognizer.StopContinuousRecognitionAsync();
         }
-
 
         /// <summary>
         /// Logs the Final result
@@ -114,17 +111,16 @@ namespace CallFabrikamCustomerService
             this.EchoResponseAsync(e).Wait();
         }
 
-
         /// <summary>
         /// Logs Error events
         /// And sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
         /// </summary>
         private void ErrorEventHandler(RecognitionErrorEventArgs e, TaskCompletionSource<int> source)
         {
+            this.WriteLine("--- Error received by ErrorEventHandler() ---");
             source.TrySetResult(0);
             TransitionHangUpGui();
         }
-
 
         /// <summary>
         /// If SessionStoppedEvent is received, sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
@@ -133,7 +129,7 @@ namespace CallFabrikamCustomerService
         {
             if (e.EventType == SessionEventType.SessionStoppedEvent)
             {
-                //source.TrySetResult(0);
+                source.TrySetResult(0);
             }
         }
 
