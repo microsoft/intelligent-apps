@@ -11,11 +11,8 @@ namespace CallFabrikamCustomerService
 {
     public partial class MainWindow : Window
     {
-        //These are fields needed for using speech recognition client library aka. Project Oxford
-        //private SpeechRecognitionMode Mode;
+        //These are fields needed for using speech recognition client library
         private string DefaultLocale;
-        private string Language;
-        //private MicrophoneRecognitionClient micClient;
         SoundPlayer thinking;
         private TaskCompletionSource<int> stopBaseRecognitionTaskCompletionSource;
         private SpeechRecognizer recognizer;
@@ -48,7 +45,7 @@ namespace CallFabrikamCustomerService
         private async Task CreateMicrophoneReco()
         {
             thinking = new SoundPlayer(@"../../Resources/SpeechResponse_Thinking.wav");
-            // Todo: suport users to specifiy a different region.
+            // Todo: support users to specifiy a different region.
 
             var basicFactory = SpeechFactory.FromSubscription(this.MicrosoftSpeechApiKey, this.Region);
 
@@ -107,12 +104,8 @@ namespace CallFabrikamCustomerService
         /// </summary>
         private void IntermediateResultEventHandler(SpeechRecognitionResultEventArgs e)
         {
-            //thinking.PlaySync();
-            //this.EchoResponse(e);
             recognizer.StopContinuousRecognitionAsync();
             //this.WriteLine("Intermediate result: {0} ", e.Result.Text);
-            //PlaySpeechAudio(e.Result.Text);
-            //StartMicrophone();
         }
 
 
@@ -144,7 +137,7 @@ namespace CallFabrikamCustomerService
         {
             if (e.EventType == SessionEventType.SessionStoppedEvent)
             {
-                //source.TrySetResult(0);
+                source.TrySetResult(0);
             }
         }
 
