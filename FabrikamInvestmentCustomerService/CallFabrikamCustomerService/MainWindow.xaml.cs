@@ -82,14 +82,13 @@ namespace CallFabrikamCustomerService
             dialTone.Dispose();
             ringing.Dispose();
 
-            /*//cleanup speech to text mic & thinking tone
-            if (this.micClient != null)
+            //cleanup speech to text mic & thinking tone
+            if (this.recognizer != null)
             {
-                this.micClient.EndMicAndRecognition();
-                micClient.Dispose();
-                
+                this.recognizer.StopContinuousRecognitionAsync();
+                recognizer.Dispose();
+
             }
-            */
             if (this.thinking != null)
                 thinking.Dispose();
 
@@ -174,35 +173,6 @@ namespace CallFabrikamCustomerService
             }
         }
 
-
-        /*
-        //Writes the response result.
-        private void EchoResponse(SpeechResponseEventArgs e)
-        {
-            WriteLine("Speech To Text Result:");
-            //handle the case when there are no results. 
-            //common situation is when there is a pause from user and audio captured has no speech in it
-            if (e.PhraseResponse.Results.Length == 0)
-            {
-                WriteLine("No phrase response is available.");
-                WriteLine();
-            }
-            else
-            {
-                //speech to text usually returns an array of returns ranked highest first to lowest
-                //we will print all of the results
-                for (int i = 0; i < e.PhraseResponse.Results.Length; i++)
-                {
-                    WriteLine(
-                        "[{0}] Confidence={1}, Text=\"{2}\"",
-                        i,
-                        e.PhraseResponse.Results[i].Confidence,
-                        e.PhraseResponse.Results[i].DisplayText);
-                }
-                WriteLine();
-            }
-        }
-        */
         //Writes the response result.
         private void EchoResponse(SpeechRecognitionResultEventArgs e)
         {
@@ -216,20 +186,11 @@ namespace CallFabrikamCustomerService
             }
             else
             {
-                //speech to text usually returns an array of returns ranked highest first to lowest
-                //we will print all of the results
-                /*for (int i = 0; i < e.Result.Text.Length; i++)
-                {
-                    WriteLine(
-                        "[{0}] Text=\"{1}\"",
-                        i,
-                        e.Result.Text);
-                }*/
-                //WriteLine();
                 WriteLine(
                         "Text=\"{0}\"",
                         e.Result.Text);
             }
+            StartMicrophone();
         }
 
 
