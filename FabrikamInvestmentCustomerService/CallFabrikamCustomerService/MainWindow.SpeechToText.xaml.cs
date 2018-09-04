@@ -118,6 +118,7 @@ namespace CallFabrikamCustomerService
         /// </summary>
         private void ErrorEventHandler(RecognitionErrorEventArgs e, TaskCompletionSource<int> source)
         {
+            this.WriteLine("--- Error received by ErrorEventHandler() ---");
             source.TrySetResult(0);
             TransitionHangUpGui();
         }
