@@ -2,7 +2,6 @@
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
-using Microsoft.Bot.Builder.Azure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
