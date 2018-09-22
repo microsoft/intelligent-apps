@@ -1,4 +1,4 @@
-﻿using Microsoft.CognitiveServices.SpeechRecognition;
+﻿using Microsoft.CognitiveServices.Speech;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,6 +34,7 @@ namespace CallFabrikamCustomerService
         private string MicrosoftSpeechApiKey;
         private string MicrosoftSpeechAccessTokenEndpoint;
         private string MicrosoftTextToSpeechEndpoint;
+        private string Region;
 
         private BitmapImage callButtonImage;
         private BitmapImage hangUpButtonImage;
@@ -50,6 +51,7 @@ namespace CallFabrikamCustomerService
             MicrosoftSpeechApiKey = ConfigurationManager.AppSettings["MicrosoftSpeechApiKey"];
             MicrosoftSpeechAccessTokenEndpoint = ConfigurationManager.AppSettings["MicrosoftSpeechAccessTokenEndpoint"];
             MicrosoftTextToSpeechEndpoint = ConfigurationManager.AppSettings["MicrosoftTextToSpeechEndpoint"];
+            Region = "westus";
 
             //Best practice to add event handler to dispose and cleanup resources whenever this window is closed
             this.Closing += OnMainWindowClosing;
@@ -72,7 +74,6 @@ namespace CallFabrikamCustomerService
             ringing = new SoundPlayer(@"../../Resources/Ringing_Phone-Mike_Koenig.wav");
 
             //Initialize speech to short phrase mode & default locale
-            Mode = SpeechRecognitionMode.ShortPhrase;
             DefaultLocale = "en-US";
         }
 
@@ -84,10 +85,10 @@ namespace CallFabrikamCustomerService
             ringing.Dispose();
 
             //cleanup speech to text mic & thinking tone
-            if (this.micClient != null)
+            if (this.recognizer != null)
             {
-                this.micClient.EndMicAndRecognition();
-                micClient.Dispose();
+                this.recognizer.StopContinuousRecognitionAsync();
+                recognizer.Dispose();
                 
             }
             if (this.thinking != null)
@@ -184,36 +185,29 @@ namespace CallFabrikamCustomerService
             }
         }
 
-
         //Writes the response result.
-        private void EchoResponse(SpeechResponseEventArgs e)
+        private void EchoResponse(SpeechRecognitionResultEventArgs e)
         {
             WriteLine("Speech To Text Result:");
             //handle the case when there are no results. 
             //common situation is when there is a pause from user and audio captured has no speech in it
-            if (e.PhraseResponse.Results.Length == 0)
+            if (e.Result.Text.Length == 0)
             {
                 WriteLine("No phrase response is available.");
                 WriteLine();
             }
             else
             {
-                //speech to text usually returns an array of returns ranked highest first to lowest
-                //we will print all of the results
-                for (int i = 0; i < e.PhraseResponse.Results.Length; i++)
-                {
-                    WriteLine(
-                        "[{0}] Confidence={1}, Text=\"{2}\"",
-                        i,
-                        e.PhraseResponse.Results[i].Confidence,
-                        e.PhraseResponse.Results[i].DisplayText);
-                }
-                WriteLine();
+                WriteLine(
+                        "Text=\"{0}\"",
+                        e.Result.Text);
 
                 //Play audio from text to speech API
-                PlaySpeechAudio(e.PhraseResponse.Results[0].DisplayText);
+                PlaySpeechAudio(e.Result.Text);
             }
+            StartMicrophone();
         }
+
 
         //Creates a line break
         internal void WriteLine()
