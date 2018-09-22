@@ -15,7 +15,7 @@ namespace CallFabrikamCustomerService
 {
     public partial class MainWindow : Window
     {
-        //fields needed to do REST call to Bing Speech API
+        //fields needed to do REST call to Speech API
         private HttpClient httpClient;
         private HttpClientHandler httpHandler;
         private SoundPlayer speech;
@@ -47,7 +47,7 @@ namespace CallFabrikamCustomerService
 
 
             //TODO: add http headers specific for text to speech api
-            //these are the minimum number of Bing Speech API headers to include
+            //these are the minimum number of Speech API headers to include
 
 
             //TODO: initialize a new instance of http request message
