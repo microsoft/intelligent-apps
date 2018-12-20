@@ -1,60 +1,78 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using ContosoHelpdeskChatBot.Models;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Connector;
-using ContosoHelpdeskChatBot.Models;
-using Microsoft.Bot.Builder.FormFlow;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ContosoHelpdeskChatBot.Dialogs
 {
-    [Serializable]
-    public class LocalAdminDialog : IDialog<object>
+    public class LocalAdminDialog : WaterfallDialog
     {
         private LocalAdmin admin = new LocalAdmin();
-        public async Task StartAsync(IDialogContext context)
+
+        public LocalAdminDialog(string dialogId, IEnumerable<WaterfallStep> steps = null) : base(dialogId, steps)
         {
-            await context.PostAsync("Great I will help you request local machine admin.");
+            //request for machine name
+            AddStep(async (stepContext, cancellationToken) =>
+            {
+                await stepContext.Context.SendActivityAsync($"Great! I will help you request local machine admin.");
+                return await stepContext.PromptAsync("textPrompt",
+                    new PromptOptions
+                    {
+                        Prompt = stepContext.Context.Activity.CreateReply($"What is the machine name to add you to local admin group?")
+                    });
+            });
+
+            //request for number of days
+            AddStep(async (stepContext, cancellationToken) =>
+            {
+                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).BankingBotStateStateAccessor.GetAsync(stepContext.Context);
+                state.MachineName = stepContext.Result.ToString();
+                return await stepContext.PromptAsync("numberPrompt",
+                    new PromptOptions
+                    {
+                        Prompt = stepContext.Context.Activity.CreateReply($"How many days do you need the admin access?")
+                    });
+            });
+
+            //write to database
+            AddStep(async (stepContext, cancellationToken) =>
+            {
+                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).BankingBotStateStateAccessor.GetAsync(stepContext.Context);
+                int days = 0;
+                var isNum = int.TryParse(stepContext.Result.ToString(), out days);
+
+                if (isNum)
+                {
+                    state.AccessDays = int.Parse(stepContext.Result.ToString());
+                    using (var db = new ContosoHelpdeskContext(new DbContextOptions<ContosoHelpdeskContext>()))
+                    {
+                        db.LocalAdmins.Add(admin);
+                        db.SaveChanges();
+                    }
+                    var ticketNumber = new Random().Next(0, 20000);
+                    await stepContext.Context.SendActivityAsync($"Thank you for using the Helpdesk Bot. Your ticket number is {ticketNumber}.");
+                    return await stepContext.EndDialogAsync();
+                }
+                else
+                {
+                    await stepContext.Context.SendActivityAsync($"Sorry, invalid response!");
+                    return await stepContext.EndDialogAsync();
+                }
+            });
+        }
+
+        public static string Id => "localAdminDialog";
+        public static LocalAdminDialog Instance { get; } = new LocalAdminDialog(Id);
+        /*
+         await context.PostAsync("");
 
             var localAdminDialog = FormDialog.FromForm(this.BuildLocalAdminForm, FormOptions.PromptInStart);
 
             context.Call(localAdminDialog, this.ResumeAfterLocalAdminFormDialog);
-        }
+         */
 
-        private async Task ResumeAfterLocalAdminFormDialog(IDialogContext context, IAwaitable<LocalAdminPrompt> userReply)
-        {
-            
-            using (var db = new ContosoHelpdeskContext())
-            {
-                db.LocalAdmins.Add(admin);
-                db.SaveChanges();
-            }
-
-            context.Done<object>(null);
-        }
-
-        private IForm<LocalAdminPrompt> BuildLocalAdminForm()
-        {
-            //here's an example of how validation can be used in form builder
-            return new FormBuilder<LocalAdminPrompt>()
-                .Field(nameof(LocalAdminPrompt.MachineName),
-                validate: async (state, value) =>
-                {
-                    var result = new ValidateResult { IsValid = true, Value = value };
-                    //add validation here
-
-                    this.admin.MachineName = (string)value;
-                    return result;
-                })
-                .Field(nameof(LocalAdminPrompt.AdminDuration),
-                validate: async (state, value) =>
-                {
-                    var result = new ValidateResult { IsValid = true, Value = value };
-                    //add validation here
-
-                    this.admin.AdminDuration = Convert.ToInt32((long)value) as int?;
-                    return result;
-                })
-                .Build();
-        }
     }
 }

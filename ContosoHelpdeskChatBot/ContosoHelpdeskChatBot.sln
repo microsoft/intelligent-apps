@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoHelpdeskChatBot", "ContosoHelpdeskChatBot\ContosoHelpdeskChatBot.csproj", "{7CEA9614-BE08-47A8-9175-E858235B6231}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ContosoHelpdeskData", "ContosoHelpdeskData\ContosoHelpdeskData.sqlproj", "{ACE2D83E-26AB-490E-B6C3-737AC7F49975}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoHelpdeskSms", "ContosoHelpdeskSms\ContosoHelpdeskSms.csproj", "{DC4B0541-A167-4AF2-A5BF-D21D9379AE54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoHelpdeskv4", "Trial\ContosoHelpdeskv4.csproj", "{2148E770-4875-4584-947E-B08940A1F986}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoHelpdeskChatBot", "ContosoHelpdeskChatBot\ContosoHelpdeskChatBot.csproj", "{7485F3B9-5F9A-4362-9155-A799FE62547C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7CEA9614-BE08-47A8-9175-E858235B6231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CEA9614-BE08-47A8-9175-E858235B6231}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CEA9614-BE08-47A8-9175-E858235B6231}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CEA9614-BE08-47A8-9175-E858235B6231}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ACE2D83E-26AB-490E-B6C3-737AC7F49975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ACE2D83E-26AB-490E-B6C3-737AC7F49975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACE2D83E-26AB-490E-B6C3-737AC7F49975}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -31,10 +25,10 @@ Global
 		{DC4B0541-A167-4AF2-A5BF-D21D9379AE54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC4B0541-A167-4AF2-A5BF-D21D9379AE54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC4B0541-A167-4AF2-A5BF-D21D9379AE54}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2148E770-4875-4584-947E-B08940A1F986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2148E770-4875-4584-947E-B08940A1F986}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2148E770-4875-4584-947E-B08940A1F986}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2148E770-4875-4584-947E-B08940A1F986}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7485F3B9-5F9A-4362-9155-A799FE62547C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7485F3B9-5F9A-4362-9155-A799FE62547C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7485F3B9-5F9A-4362-9155-A799FE62547C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7485F3B9-5F9A-4362-9155-A799FE62547C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

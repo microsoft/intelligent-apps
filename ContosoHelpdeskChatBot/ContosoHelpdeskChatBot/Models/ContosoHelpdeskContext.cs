@@ -1,14 +1,17 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace ContosoHelpdeskChatBot.Models
 {
-    using System;
-    using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
-
     public partial class ContosoHelpdeskContext : DbContext
     {
-        public ContosoHelpdeskContext()
-            : base("name=ContosoHelpdeskContext")
+        public ContosoHelpdeskContext(DbContextOptions<ContosoHelpdeskContext> options) : base(options)
+
         {
         }
 
@@ -18,7 +21,7 @@ namespace ContosoHelpdeskChatBot.Models
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<ResetPassword> ResetPasswords { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AppMsi>()
                 .Property(e => e.AppName)
@@ -39,6 +42,20 @@ namespace ContosoHelpdeskChatBot.Models
             modelBuilder.Entity<ResetPassword>()
                 .Property(e => e.EmailAddress)
                 .IsUnicode(false);
+        }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile("appsettings.json")
+                   .Build();
+                var connectionString = configuration.GetConnectionString("ContosoHelpdeskContext");
+                optionsBuilder.UseSqlServer(connectionString);
+            }
         }
     }
 }
