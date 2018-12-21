@@ -36,7 +36,7 @@ namespace ContosoHelpdeskChatBot.Bots
             if (turnContext.Activity.Type == ActivityTypes.Message)
             {
                 //initialize state if necessary
-                var state = await BotAccessors.BankingBotStateStateAccessor.GetAsync(turnContext, () => new ContosoBotState(), cancellationToken);
+                var state = await BotAccessors.ContosoBotStateStateAccessor.GetAsync(turnContext, () => new ContosoBotState(), cancellationToken);
 
                 turnContext.TurnState.Add("BotAccessors", BotAccessors);
 

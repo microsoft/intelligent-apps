@@ -25,7 +25,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
 
             AddStep(async (stepContext, cancellationToken) =>
             {
-                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).BankingBotStateStateAccessor.GetAsync(stepContext.Context);
+                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).ContosoBotStateStateAccessor.GetAsync(stepContext.Context);
                 state.AppName = stepContext.Result.ToString();
                 names = this.getAppsAsync(state.AppName);
 
@@ -81,11 +81,10 @@ namespace ContosoHelpdeskChatBot.Dialogs
                         await stepContext.Context.SendActivityAsync($"Sorry, invalid response!");
                         return await stepContext.EndDialogAsync();
                     }
-                    return await stepContext.NextAsync();
                 }
                 else
                 {
-                    var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).BankingBotStateStateAccessor.GetAsync(stepContext.Context);
+                    var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).ContosoBotStateStateAccessor.GetAsync(stepContext.Context);
                     state.MachineName = stepContext.Result.ToString();
 
                     this.install.MachineName = state.MachineName;
@@ -104,7 +103,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
             //found app name & received machine name
             AddStep(async (stepContext, cancellationToken) =>
             {
-                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).BankingBotStateStateAccessor.GetAsync(stepContext.Context);
+                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).ContosoBotStateStateAccessor.GetAsync(stepContext.Context);
                 state.MachineName = stepContext.Result.ToString();
 
                 this.install.MachineName = state.MachineName;

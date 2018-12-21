@@ -28,7 +28,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
             //request for number of days
             AddStep(async (stepContext, cancellationToken) =>
             {
-                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).BankingBotStateStateAccessor.GetAsync(stepContext.Context);
+                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).ContosoBotStateStateAccessor.GetAsync(stepContext.Context);
                 state.MachineName = stepContext.Result.ToString();
                 return await stepContext.PromptAsync("numberPrompt",
                     new PromptOptions
@@ -40,7 +40,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
             //write to database
             AddStep(async (stepContext, cancellationToken) =>
             {
-                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).BankingBotStateStateAccessor.GetAsync(stepContext.Context);
+                var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).ContosoBotStateStateAccessor.GetAsync(stepContext.Context);
                 int days = 0;
                 var isNum = int.TryParse(stepContext.Result.ToString(), out days);
 

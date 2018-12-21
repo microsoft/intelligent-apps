@@ -11,6 +11,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
     {
         public MainDialog(string dialogId, IEnumerable<WaterfallStep> steps = null) : base(dialogId, steps)
         {
+            //First step
             AddStep(async (stepContext, cancellationToken) =>
             {
                 return await stepContext.PromptAsync("choicePrompt",
@@ -20,6 +21,8 @@ namespace ContosoHelpdeskChatBot.Dialogs
                         Choices = new[] { new Choice { Value = "Install Application" }, new Choice { Value = "Reset Password" }, new Choice { Value = "Request Local Admin" } }.ToList()
                     });
             });
+
+            //Second step
             AddStep(async (stepContext, cancellationToken) =>
             {
                 var response = (stepContext.Result as FoundChoice)?.Value;
@@ -44,9 +47,12 @@ namespace ContosoHelpdeskChatBot.Dialogs
             AddStep(async (stepContext, cancellationToken) => { return await stepContext.ReplaceDialogAsync(Id); });
         }
 
-
         public static string Id => "mainDialog";
 
         public static MainDialog Instance { get; } = new MainDialog(Id);
     }
+
+   
+
+
 }

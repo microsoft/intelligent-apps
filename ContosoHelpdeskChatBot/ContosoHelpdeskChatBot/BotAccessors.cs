@@ -15,8 +15,8 @@ namespace ContosoHelpdeskChatBot
             ConversationState = conversationState ?? throw new ArgumentNullException(nameof(conversationState));
         }
 
-        public static string BankingBotStateAccessorName { get; } = $"{nameof(BotAccessors)}.BankingBotState";
-        public IStatePropertyAccessor<ContosoBotState> BankingBotStateStateAccessor { get; internal set; }
+        public static string ContosoBotStateAccessorName { get; } = $"{nameof(BotAccessors)}.ContosoBotState";
+        public IStatePropertyAccessor<ContosoBotState> ContosoBotStateStateAccessor { get; internal set; }
 
         public static string DialogStateAccessorName { get; } = $"{nameof(BotAccessors)}.DialogState";
         public IStatePropertyAccessor<DialogState> DialogStateAccessor { get; internal set; }
