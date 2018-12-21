@@ -1,23 +1,26 @@
-﻿{
-  "name": "ContosoHelpdeskChatBot",
-  "services": [
-    {
-      "type": "endpoint",
-      "name": "development",
-      "endpoint": "http://localhost:3978/api/messages",
-      "appId": "",
-      "appPassword": "",
-      "id": "1"
-    },
-    {
-      "type": "endpoint",
-      "name": "production",
-      "endpoint": "https://ContosoHelpdeskChatBot.azurewebsites.net/api/messages",
-      "appId": "<YOUR APP ID>",
-      "appPassword": "<YOUR APP PASSWORD>",
-      "id": "2"
-    }
-  ],
-  "padlock": "",
-  "version": "2.0"
+{
+    "name": "ContosoHelpdeskChatBot",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "appId": "",
+            "appPassword": "",
+            "endpoint": "http://localhost:3978/api/messages",
+            "id": "1",
+            "name": "development"
+        },
+        {
+            "type": "endpoint",
+            "appId": "1ba66526-ba46-48b0-8c28-91c95a02de93",
+            "appPassword": "uojqrEJI%xtOGHT65866^:!",
+            "endpoint": "https://contosohelpbot.azurewebsites.net/api/messages",
+            "id": "2",
+            "name": "production"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0",
+    "path": "C:\\Users\\shams\\Desktop\\IPDEV\\intelligent-apps\\ContosoHelpdeskChatBot\\ContosoHelpdeskChatBot\\ContosoHelpdeskChatBot.bot",
+    "overrides": null
 }

@@ -81,8 +81,24 @@ namespace ContosoHelpdeskChatBot.Dialogs
                         await stepContext.Context.SendActivityAsync($"Sorry, invalid response!");
                         return await stepContext.EndDialogAsync();
                     }
+                    return await stepContext.NextAsync();
                 }
-                return await stepContext.NextAsync();
+                else
+                {
+                    var state = await (stepContext.Context.TurnState["BotAccessors"] as BotAccessors).BankingBotStateStateAccessor.GetAsync(stepContext.Context);
+                    state.MachineName = stepContext.Result.ToString();
+
+                    this.install.MachineName = state.MachineName;
+
+                    //TODO: Save to database
+                    using (var db = new ContosoHelpdeskContext(new DbContextOptions<ContosoHelpdeskContext>()))
+                    {
+                        db.InstallApps.Add(install);
+                        db.SaveChanges();
+                    }
+                    await stepContext.Context.SendActivityAsync($"Great, your request to install {this.install.AppName} on {this.install.MachineName} has been scheduled.");
+                    return await stepContext.EndDialogAsync();
+                }
             });
 
             //found app name & received machine name

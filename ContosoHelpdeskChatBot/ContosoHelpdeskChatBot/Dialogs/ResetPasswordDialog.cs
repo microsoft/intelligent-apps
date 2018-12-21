@@ -20,7 +20,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
 
                 await stepContext.Context.SendActivityAsync($"Alright! I will help you create a temp password.");
 
-                var sendSMS = sendPassCode(stepContext);
+                bool sendSMS = sendPassCode(stepContext);
 
                 if (sendSMS)
                 {
@@ -90,7 +90,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
             int passcode = new Random().Next(1000, 9999);
             Int64? smsNumber = 0;
             string smsMessage = "Your Contoso Pass Code is ";
-            string countryDialPrefix = "+1";
+            string countryDialPrefix = "+971";
 
             //save PassCode to database
             using (var db = new ContosoHelpdeskContext(new DbContextOptions<ContosoHelpdeskContext>()))

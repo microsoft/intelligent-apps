@@ -47,6 +47,8 @@ namespace ContosoHelpdeskChatBot.Dialogs
                 if (isNum)
                 {
                     state.AccessDays = int.Parse(stepContext.Result.ToString());
+                    admin.AdminDuration = state.AccessDays;
+                    admin.MachineName = state.MachineName;
                     using (var db = new ContosoHelpdeskContext(new DbContextOptions<ContosoHelpdeskContext>()))
                     {
                         db.LocalAdmins.Add(admin);
@@ -66,13 +68,6 @@ namespace ContosoHelpdeskChatBot.Dialogs
 
         public static string Id => "localAdminDialog";
         public static LocalAdminDialog Instance { get; } = new LocalAdminDialog(Id);
-        /*
-         await context.PostAsync("");
-
-            var localAdminDialog = FormDialog.FromForm(this.BuildLocalAdminForm, FormOptions.PromptInStart);
-
-            context.Call(localAdminDialog, this.ResumeAfterLocalAdminFormDialog);
-         */
 
     }
 }
