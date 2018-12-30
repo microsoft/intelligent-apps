@@ -58,9 +58,10 @@ namespace ContosoHelpdeskChatBot.Dialogs
                 }
             });
 
-            //found multiple apps
+            //save to DB
             AddStep(async (stepContext, cancellationToken) =>
             {
+                //found multiple apps
                 if (names.Count > 1)
                 {
                     int choice;
@@ -124,7 +125,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
 
         private List<string> getAppsAsync(string Name)
         {
-            //TODO: Add EF to lookup database
+            //TODO: Lookup database
             var names = new List<string>();
 
             using (var db = new ContosoHelpdeskContext(new DbContextOptions<ContosoHelpdeskContext>()))

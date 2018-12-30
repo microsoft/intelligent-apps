@@ -46,11 +46,15 @@ namespace ContosoHelpdeskChatBot.Bots
                 {
                     await dialogCtx.BeginDialogAsync(MainDialog.Id, cancellationToken);
                 }
+                else if(turnContext.Activity.Text.ToLower().Trim() == "cancel")
+                {
+                    await turnContext.SendActivityAsync("Cancelled!", cancellationToken: cancellationToken);
+                    await dialogCtx.CancelAllDialogsAsync(cancellationToken);
+                }
                 else
                 {
                     await dialogCtx.ContinueDialogAsync(cancellationToken);
                 }
-
                 await BotAccessors.ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
             }
         }
