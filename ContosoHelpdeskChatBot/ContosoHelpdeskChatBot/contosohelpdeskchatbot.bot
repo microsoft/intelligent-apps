@@ -1,0 +1,15 @@
+﻿{
+  "name": "ContosoBot12",
+  "services": [
+    {
+      "type": "endpoint",
+      "name": "development",
+      "endpoint": "URLENDPOINT",
+      "appId": "APPID",
+      "appPassword": "PASSWORD",
+      "id": "166"
+    }
+  ],
+  "padlock": "",
+  "version": "2.0"
+}
