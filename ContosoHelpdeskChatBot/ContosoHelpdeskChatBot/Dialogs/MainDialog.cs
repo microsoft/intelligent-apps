@@ -14,7 +14,6 @@ namespace ContosoHelpdeskChatBot.Dialogs
     {
         private const string InstallAppOption = "Install Application (install)";
         private const string ResetPasswordOption = "Reset Password (password)";
-        private const string LocalAdminOption = "Request Local Admin (admin)";
         private const string GreetMessage = "Welcome to **Contoso Helpdesk Chat Bot**.\n\nI am designed to use with mobile email app, make sure your replies do not contain signatures. \n\nFollowing is what I can help you with, just reply with word in parenthesis:";
         private const string ErrorMessage = "Not a valid option.  Please select one of the possible choices:";
         private static List<Choice> HelpdeskOptions = new List<Choice>
