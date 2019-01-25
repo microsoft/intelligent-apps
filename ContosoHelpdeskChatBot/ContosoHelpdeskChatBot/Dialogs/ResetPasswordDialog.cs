@@ -26,10 +26,9 @@ namespace ContosoHelpdeskChatBot.Dialogs
         private async Task<DialogTurnResult> GreetingStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             await stepContext.Context.SendActivityAsync("Alright I will help you create a temp password");
-
             if (sendPassCode(stepContext))
             {
-                return await stepContext.PromptAsync("number", new PromptOptions { Prompt = MessageFactory.Text("Please provide four digit pass code") }, cancellationToken);
+                return await stepContext.PromptAsync("promptNumber", new PromptOptions { Prompt = MessageFactory.Text("Please provide four digit pass code") }, cancellationToken);
             }
             else
             {

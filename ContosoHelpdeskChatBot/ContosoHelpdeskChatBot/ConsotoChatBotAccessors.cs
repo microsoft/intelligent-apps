@@ -14,14 +14,10 @@ namespace ContosoHelpdeskChatBot
             ConversationState = conversationState ?? throw new ArgumentNullException(nameof(conversationState));
         }
 
-        public static string CounterStateName { get; } = $"{nameof(ConsotoChatBotAccessors)}.CounterState";
+        //public static string CountosoBotStateName { get; } = $"{nameof(ConsotoChatBotAccessors)}.ContosoBotState";
 
-        public IStatePropertyAccessor<BotState> CounterState { get; set; }
+        //public IStatePropertyAccessor<BotState> ContosoBotState { get; set; }
 
-        /*
-        public static string DialogStateAccessorName { get; } = $"{nameof(ConsotoChatBotAccessors)}.DialogState";
-        public IStatePropertyAccessor<DialogState> DialogStateAccessor { get; internal set; }
-        */
         public ConversationState ConversationState { get; }
     }
 }

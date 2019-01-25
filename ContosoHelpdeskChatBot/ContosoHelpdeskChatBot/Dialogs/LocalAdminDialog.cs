@@ -19,7 +19,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
         {
             AddStep(GreetingStepAsync);
             AddStep(ResponseConfirmStepAsync);
-            AddStep(multipleAppsStepAsync);
+            AddStep(finalStepAsync);
         }
 
 
@@ -37,11 +37,11 @@ namespace ContosoHelpdeskChatBot.Dialogs
             return await stepContext.PromptAsync("promptNumber", new PromptOptions { Prompt = MessageFactory.Text("How many days do you need the admin access?") }, cancellationToken);
         }
 
-        private async Task<DialogTurnResult> multipleAppsStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> finalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             int days = (int)stepContext.Result;
 
-            if (true)
+            if (days >= 0)
             {
                 stepContext.Values["AdminDuration"] = days;
                 admin.AdminDuration = (int)stepContext.Values["AdminDuration"];

@@ -1,18 +1,14 @@
-﻿namespace ContosoHelpdeskChatBot.Dialogs
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Web;
-    using Microsoft.Bot.Builder.Dialogs;
-    using Microsoft.Bot.Connector;
-    using ContosoHelpdeskChatBot.Models;
-    using System.Threading;
-    using Microsoft.Bot.Builder;
-    using ContosoHelpdeskChatBot;
-    using Microsoft.Bot.Builder.Dialogs.Choices;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Bot.Builder.Dialogs;
+using ContosoHelpdeskChatBot.Models;
+using System.Threading;
+using Microsoft.Bot.Builder;
 
+namespace ContosoHelpdeskChatBot.Dialogs
+{
     [Serializable]
     public class InstallAppDialog : WaterfallDialog
     {
@@ -22,23 +18,23 @@
 
         public InstallAppDialog(string dialogId, IEnumerable<WaterfallStep> steps = null) : base(dialogId, steps)
         {
-            AddStep(GreetingStepAsync);
-            AddStep(ResponseConfirmStepAsync);
+            AddStep(greetingStepAsync);
+            AddStep(responseConfirmStepAsync);
             AddStep(multipleAppsStepAsync);
-            AddStep(multipleAppsStepAsync);
+            AddStep(multipleAppsStepAsync); // Added twice for dialog path where multiple applications are returned to user, and user must select one
         }
 
-        private static async Task<DialogTurnResult> GreetingStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private static async Task<DialogTurnResult> greetingStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             return await stepContext.PromptAsync("promptText", new PromptOptions { Prompt = MessageFactory.Text("Ok let's get started. What is the name of the application?") }, cancellationToken);
         }
 
-        private async Task<DialogTurnResult> ResponseConfirmStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> responseConfirmStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var AppName = (string)stepContext.Result;
-            stepContext.Values["AppName"] = AppName;
+            var appName = (string)stepContext.Result;
+            stepContext.Values["AppName"] = appName;
 
-            names = await this.getAppsAsync(AppName);
+            names = await this.getAppsAsync(appName);
 
             if (names.Count == 1)
             {
@@ -56,7 +52,7 @@
             }
             else
             {
-                await stepContext.Context.SendActivityAsync($"Sorry, I did not find any application with the name \"{AppName}\".");
+                await stepContext.Context.SendActivityAsync($"Sorry, I did not find any application with the name \"{appName}\".");
                 return await stepContext.EndDialogAsync();
             }
         }
@@ -64,11 +60,13 @@
 
         private async Task<DialogTurnResult> multipleAppsStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            // Check to see if user selected app when there are multiple applications to pick from
             if (stepContext.Values.ContainsKey("AppSelected"))
                 names.Clear();
             else
                 names = await this.getAppsAsync(stepContext.Values["AppName"].ToString());
 
+            // If multiple apps returned then need to prompt user for which one to select
             if (names.Count > 1)
             {
                 int choice = (int)stepContext.Result;
@@ -87,13 +85,13 @@
             }
             else
             {
-
-                var MachineName = (string)stepContext.Result;
+                // Proceed with saving entry into database
+                var machineName = (string)stepContext.Result;
 
                 Models.InstallApp install = new InstallApp();
                 install.AppName = (string)stepContext.Values["AppName"];
-                install.MachineName = MachineName;
-                stepContext.Values["MachineName"] = MachineName;
+                install.MachineName = machineName;
+                stepContext.Values["MachineName"] = machineName;
 
                 //TODO: Save to database
                 using (var db = new ContosoHelpdeskContext())

@@ -22,6 +22,8 @@ namespace ContosoHelpdeskChatBot
             {
                 BotConfig.Register(config);
             });
+
+            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }

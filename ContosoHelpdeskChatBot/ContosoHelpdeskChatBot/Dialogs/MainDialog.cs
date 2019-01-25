@@ -16,9 +16,15 @@ namespace ContosoHelpdeskChatBot.Dialogs
         private const string ResetPasswordOption = "Reset Password (password)";
         private const string LocalAdminOption = "Request Local Admin (admin)";
         private const string GreetMessage = "Welcome to **Contoso Helpdesk Chat Bot**.\n\nI am designed to use with mobile email app, make sure your replies do not contain signatures. \n\nFollowing is what I can help you with, just reply with word in parenthesis:";
-        private const string ErrorMessage = "Not a valid option";
-
+        private const string ErrorMessage = "Not a valid option.  Please select one of the possible choices:";
+        private static List<Choice> HelpdeskOptions = new List<Choice>
+        {
+            new Choice { Value = InstallAppOption, Synonyms = new List<string>{ "install", "application", "install application" } },
+            new Choice { Value = ResetPasswordOption, Synonyms = new List<string>{ "password", "reset", "reset password" } },
+            new Choice { Value = LocalAdminOption, Synonyms = new List<string>{ "admin", "request", "local", "request local admin" } }
+        };
         public static string dialogId = "MainDialog";
+
 
         public MainDialog(string dialogId) : base(dialogId)
         {
@@ -31,51 +37,45 @@ namespace ContosoHelpdeskChatBot.Dialogs
             return await stepContext.PromptAsync("promptChoice", new PromptOptions
             {
                 Prompt = MessageFactory.Text(GreetMessage),
-                Choices = new[] { new Choice { Value = InstallAppOption },
-                                  new Choice { Value = ResetPasswordOption },
-                                  new Choice { Value = LocalAdminOption }
-                                }
+                Choices = HelpdeskOptions,
+                RetryPrompt = MessageFactory.Text(ErrorMessage)
             }, cancellationToken);
         }
 
         private static async Task<DialogTurnResult> ChoiceSelectedStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var response = (stepContext.Result as FoundChoice)?.Value;
+            var optionSelected = (stepContext.Result as FoundChoice)?.Value;
 
-            switch (response)
+            switch (optionSelected)
             {
                 case InstallAppOption:
                     return await stepContext.BeginDialogAsync(InstallAppDialog.dialogId);
-                    break;
                 case ResetPasswordOption:
                     return await stepContext.BeginDialogAsync(ResetPasswordDialog.dialogId);
-                    break;
                 case LocalAdminOption:
                     return await stepContext.BeginDialogAsync(LocalAdminDialog.dialogId);
-                    break;
             }
 
             return await stepContext.NextAsync();
         }
 
+        /*
         private static async Task<DialogTurnResult> RestartStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var response = (stepContext.Result as FoundChoice)?.Value;
+            var optionSelected = (stepContext.Result as FoundChoice)?.Value;
 
-            switch (response)
+            switch (optionSelected)
             {
                 case InstallAppOption:
                     return await stepContext.BeginDialogAsync(InstallAppDialog.dialogId);
-                    break;
                 case ResetPasswordOption:
                     return await stepContext.BeginDialogAsync(ResetPasswordDialog.dialogId);
-                    break;
                 case LocalAdminOption:
                     return await stepContext.BeginDialogAsync(LocalAdminDialog.dialogId);
-                    break;
             }
 
             return await stepContext.ReplaceDialogAsync("MainDialog");
         }
+        */
     }
 }

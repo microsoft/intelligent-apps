@@ -1,10 +1,10 @@
 ﻿{
-  "name": "ContosoBot12",
+  "name": "BOTNAME",
   "services": [
     {
       "type": "endpoint",
       "name": "development",
-      "endpoint": "URLENDPOINT",
+      "endpoint": "ENDPOINT",
       "appId": "APPID",
       "appPassword": "PASSWORD",
       "id": "166"

@@ -33,13 +33,11 @@ namespace ContosoHelpdeskChatBot.App_Start
                 // The Conversation State object is where we persist anything at the conversation-scope.
                 var conversationState = new ConversationState(dataStore);
 
-                botConfig.BotFrameworkOptions.State.Add(conversationState);
-
                 // Create the custom state accessor.
                 // State accessors enable other components to read and write individual properties of state.
                 var accessors = new ConsotoChatBotAccessors(conversationState)
                 {
-                    CounterState = conversationState.CreateProperty<BotState>(ConsotoChatBotAccessors.CounterStateName),
+                    //ContosoBotState = conversationState.CreateProperty<BotState>(ConsotoChatBotAccessors.CounterStateName),
                 };
 
                 UnityConfig.Container.RegisterInstance<ConsotoChatBotAccessors>(accessors, new ContainerControlledLifetimeManager());

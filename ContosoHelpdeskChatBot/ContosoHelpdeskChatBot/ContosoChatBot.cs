@@ -18,6 +18,7 @@ namespace ContosoHelpdeskChatBot
     /// </summary>
     public class ContosoChatBot : IBot
     {
+        private static log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private DialogSet dialogs { get; set; }
 
         private readonly ConsotoChatBotAccessors _accessors;
@@ -35,7 +36,6 @@ namespace ContosoHelpdeskChatBot
             dialogs.Add(new InstallAppDialog("InstallAppDialog"));
             dialogs.Add(new LocalAdminDialog("LocalAdminDialog"));
             dialogs.Add(new ResetPasswordDialog("ResetPasswordDialog"));
-            //_accessors = accessors;
         }
 
         public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
@@ -43,16 +43,53 @@ namespace ContosoHelpdeskChatBot
             if (turnContext.Activity.Type == ActivityTypes.Message)
             {
                 var dialogContext = await dialogs.CreateContextAsync(turnContext, cancellationToken);
-                DialogTurnResult dialogResult = await dialogContext.ContinueDialogAsync(cancellationToken);
 
-                if (dialogResult.Status == DialogTurnStatus.Empty)
+                try
                 {
+                    bool cancelled = false;
+                    // Globally interrupt the dialog stack if the user sent 'cancel'
+                    if (turnContext.Activity.Text.Equals("cancel", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var reply = turnContext.Activity.CreateReply($"Ok restarting conversation.");
+                        await turnContext.SendActivityAsync(reply);
+                        await dialogContext.CancelAllDialogsAsync();
+                        cancelled = true;
+                    }
+
+                    if (!dialogContext.Context.Responded || cancelled)
+                    {
+                        DialogTurnResult dialogResult = await dialogContext.ContinueDialogAsync(cancellationToken);
+
+                        if (dialogResult.Status == DialogTurnStatus.Empty)
+                        {
+                            await dialogContext.BeginDialogAsync(MainDialog.dialogId, cancellationToken);
+                        }
+                        else if (dialogResult.Status == DialogTurnStatus.Complete)
+                        {
+                            await dialogContext.EndDialogAsync();
+
+                            // Uncomment if want to automatically restart a dialog when the last dialog completes
+                            //await dialogContext.BeginDialogAsync(MainDialog.dialogId, cancellationToken);
+                        }
+                        else if (dialogResult.Status == DialogTurnStatus.Waiting)
+                        {
+                            // Currently waiting on a response for a user
+                        }
+                        else
+                        {
+                            await dialogContext.CancelAllDialogsAsync();
+                        }
+                    }
+                }
+                catch (Exception ex) // For production would want to catch more specific exception
+                {
+                    logger.Error(ex);
+
+                    await turnContext.SendActivityAsync("An error occured, cancelling.");
+                    await dialogContext.CancelAllDialogsAsync();
                     await dialogContext.BeginDialogAsync(MainDialog.dialogId, cancellationToken);
                 }
-                else if (dialogResult.Status == DialogTurnStatus.Complete)
-                {
-                    await dialogContext.BeginDialogAsync(MainDialog.dialogId, cancellationToken);
-                }
+
 
                 await _accessors.ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
             }
