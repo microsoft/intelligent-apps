@@ -1,41 +1,45 @@
-﻿namespace ContosoHelpdeskChatBot.Dialogs
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Bot.Builder.Dialogs;
+using System.Threading;
+using Microsoft.Bot.Builder;
+using ContosoHelpdeskChatBot.Models;
+
+namespace ContosoHelpdeskChatBot.Dialogs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Web;
-    using Microsoft.Bot.Builder.Dialogs;
-    using Microsoft.Bot.Builder.FormFlow;
-    using Microsoft.Bot.Connector;
-    using ContosoHelpdeskChatBot.Models;
-
     [Serializable]
-    public class InstallAppDialog : IDialog<object>
+    public class InstallAppDialog : WaterfallDialog
     {
-        private Models.App app = new App();
+        private Models.InstallApp install = new InstallApp();
+        List<string> names = new List<string>();
+        public static string dialogId = "InstallAppDialog";
 
-        public async Task StartAsync(IDialogContext context)
+        public InstallAppDialog(string dialogId, IEnumerable<WaterfallStep> steps = null) : base(dialogId, steps)
         {
-            await context.PostAsync("Ok let's get started. What is the name of the application? ");
-
-            context.Wait(appNameAsync);
+            AddStep(greetingStepAsync);
+            AddStep(responseConfirmStepAsync);
+            AddStep(multipleAppsStepAsync);
+            AddStep(multipleAppsStepAsync); // Added twice for dialog path where multiple applications are returned to user, and user must select one
         }
 
-        private async Task appNameAsync(IDialogContext context, IAwaitable<IMessageActivity> userReply)
+        private static async Task<DialogTurnResult> greetingStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            //this will trigger a wait for user's reply
-            //in this case we are waiting for an app name which will be used as keyword to search the AppMsi table
-            var message = await userReply;
+            return await stepContext.PromptAsync("promptText", new PromptOptions { Prompt = MessageFactory.Text("Ok let's get started. What is the name of the application?") }, cancellationToken);
+        }
 
-            var appname = message.Text;
-            var names = await this.GetAppsAsync(appname);
+        private async Task<DialogTurnResult> responseConfirmStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var appName = (string)stepContext.Result;
+            stepContext.Values["AppName"] = appName;
+
+            names = await this.getAppsAsync(appName);
 
             if (names.Count == 1)
             {
-                app.Name = names.First();
-                await context.PostAsync($"Found {app.Name}. What is the name of the machine to install application?");
-                context.Wait(machineNameAsync);
+                install.AppName = names.First();
+                return await stepContext.PromptAsync("promptText", new PromptOptions { Prompt = MessageFactory.Text($"Found {install.AppName}. What is the name of the machine to install application?") }, cancellationToken);
             }
             else if (names.Count > 1)
             {
@@ -44,62 +48,57 @@
                 {
                     appnames += $"<br/>&nbsp;&nbsp;&nbsp;{i + 1}.&nbsp;" + names[i];
                 }
-                await context.PostAsync($"I found {names.Count()} applications.<br/> {appnames}<br/> Please reply 1 - {names.Count()} to indicate your choice.");
-
-                //at a conversation scope, store state data in ConversationData
-                context.ConversationData.SetValue("AppList", names);
-                context.Wait(multipleAppsAsync);
+                return await stepContext.PromptAsync("promptNumber", new PromptOptions { Prompt = MessageFactory.Text($"I found {names.Count()} applications.<br/> {appnames}<br/> Please reply 1 - {names.Count()} to indicate your choice.") }, cancellationToken);
             }
             else
             {
-                await context.PostAsync($"Sorry, I did not find any application with the name \"{appname}\".");
-                context.Done<object>(null);
+                await stepContext.Context.SendActivityAsync($"Sorry, I did not find any application with the name \"{appName}\".");
+                return await stepContext.EndDialogAsync();
             }
         }
 
-        private async Task multipleAppsAsync(IDialogContext context, IAwaitable<IMessageActivity> userReply)
+
+        private async Task<DialogTurnResult> multipleAppsStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            //this will trigger a wait for user's reply
-            //in this case we are waiting for an app name which will be used as keyword to search the AppMsi table
-            var message = await userReply;
+            // Check to see if user selected app when there are multiple applications to pick from
+            if (stepContext.Values.ContainsKey("AppSelected"))
+                names.Clear();
+            else
+                names = await this.getAppsAsync(stepContext.Values["AppName"].ToString());
 
-            int choice;
-            var isNum = int.TryParse(message.Text, out choice);
-            List<string> applist;
-           
-            context.ConversationData.TryGetValue("AppList", out applist);
-
-            if (isNum && choice <= applist.Count && choice > 0)
+            // If multiple apps returned then need to prompt user for which one to select
+            if (names.Count > 1)
             {
-                //minus becoz index zero base
-                this.app.Name = applist[choice - 1];
-                await context.PostAsync($"What is the name of the machine to install application?");
-                context.Wait(machineNameAsync);
+                int choice = (int)stepContext.Result;
+
+                if (choice <= names.Count && choice > 0)
+                {
+                    //minus becoz index zero base
+                    stepContext.Values["AppSelected"] = true;
+                    return await stepContext.PromptAsync("promptText", new PromptOptions { Prompt = MessageFactory.Text($"What is the name of the machine to install?") }, cancellationToken);
+                }
+                else
+                {
+                    return await stepContext.PromptAsync("promptNumber", new PromptOptions { Prompt = MessageFactory.Text($"Invalid response. Please reply 1 - {names.Count()} to indicate your choice.") }, cancellationToken);
+                }
             }
             else
             {
-                await context.PostAsync($"Invalid response. Please reply 1 - {applist.Count()} to indicate your choice.");
-                context.Wait(multipleAppsAsync);
+                var machineName = (string)stepContext.Result;
+
+                InstallApp install = new InstallApp();
+                install.AppName = (string)stepContext.Values["AppName"];
+                install.MachineName = machineName;
+                stepContext.Values["MachineName"] = machineName;
+
+                //we don't need to do much here for now but in the next PBI we will add saving to database
+
+                await stepContext.Context.SendActivityAsync($"Great, your request to install {install.AppName} on {install.MachineName} has been scheduled.");
+                return await stepContext.EndDialogAsync();
             }
         }
 
-        private async Task machineNameAsync(IDialogContext context, IAwaitable<IMessageActivity> userReply)
-        {
-            //this will trigger a wait for user's reply
-            //in this case we are waiting for an app name which will be used as keyword to search the AppMsi table
-            var message = await userReply;
-
-            var machinename = message.Text;
-
-            this.app.Machine = machinename;
-
-            //we don't need to do much here for now but in the next PBI we will add saving to database
-
-            await context.PostAsync($"Great, your request to install {this.app.Name} on {this.app.Machine} has been scheduled.");
-            context.Done<object>(null);
-        }
-
-        private async Task<List<string>> GetAppsAsync(string Name)
+        private async Task<List<string>> getAppsAsync(string Name)
         {
             //TODO: Add list of dummy app names
             //we will switch to using Entity Framework in the next PBI to lookup list from a table
