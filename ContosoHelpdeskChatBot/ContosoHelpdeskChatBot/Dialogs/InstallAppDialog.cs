@@ -42,7 +42,6 @@ namespace ContosoHelpdeskChatBot.Dialogs
             {
                 //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
                 //install.AppName = names.First();
-                //await context.PostAsync($"Found {install.AppName}. What is the name of the machine to install application?");
                 //return await stepContext.PromptAsync("promptText", new PromptOptions { Prompt = MessageFactory.Text($"Found {install.AppName}. What is the name of the machine to install application?") }, cancellationToken);
                 return null;
             }
