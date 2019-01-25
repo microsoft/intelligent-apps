@@ -1,4 +1,4 @@
-﻿using Microsoft.CognitiveServices.SpeechRecognition;
+﻿using Microsoft.CognitiveServices.Speech;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,6 +32,7 @@ namespace CallFabrikamCustomerService
     {
         private string MicrosoftSpeechToTextEndpoint;
         private string MicrosoftSpeechApiKey;
+        private string Region;
 
         private BitmapImage callButtonImage;
         private BitmapImage hangUpButtonImage;
@@ -46,6 +47,7 @@ namespace CallFabrikamCustomerService
             //Initialize the speech end point & key from app.config
             MicrosoftSpeechToTextEndpoint = ConfigurationManager.AppSettings["MicrosoftSpeechToTextEndpoint"];
             MicrosoftSpeechApiKey = ConfigurationManager.AppSettings["MicrosoftSpeechApiKey"];
+            Region = "westus";
 
             //Best practice to add event handler to dispose and cleanup resources whenever this window is closed
             this.Closing += OnMainWindowClosing;
@@ -67,7 +69,7 @@ namespace CallFabrikamCustomerService
             dialTone = new SoundPlayer(@"../../Resources/DialTone_18883226837.wav");
             ringing = new SoundPlayer(@"../../Resources/Ringing_Phone-Mike_Koenig.wav");
 
-            //TODO: Initialize speech to short phrase mode & default locale
+            //TODO: Initialize speech default locale
 
         }
 
@@ -163,16 +165,16 @@ namespace CallFabrikamCustomerService
 
 
         //Writes the response result.
-        private void EchoResponse(SpeechResponseEventArgs e)
+        private void EchoResponse(SpeechRecognitionResultEventArgs e)
         {
             WriteLine("Speech To Text Result:");
             //TODO: handle the case when there are no results. 
             //common situation is when there is a pause from user and audio captured has no speech in it
 
-                //speech to text usually returns an array of returns ranked highest first to lowest
-                //TODO: we will print all of the results
-                
+            //speech to text usually returns an array of returns ranked highest first to lowest
+            //TODO: we will print all of the results
 
+            StartMicrophone();
         }
 
         //Creates a line break
