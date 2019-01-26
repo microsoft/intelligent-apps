@@ -1,4 +1,4 @@
-﻿namespace ContosoHelpdeskChatBot.Models
+namespace ContosoHelpdeskChatBot.Models
 {
     using System;
 
