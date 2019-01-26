@@ -5,7 +5,7 @@ namespace ContosoHelpdeskChatBot.Models
     [Serializable]
     public class App
     {
-        public string Name { get; set; }
-        public string Machine { get; set; }
+        public string AppName { get; set; }
+        public string MachineName { get; set; }
     }
 }
