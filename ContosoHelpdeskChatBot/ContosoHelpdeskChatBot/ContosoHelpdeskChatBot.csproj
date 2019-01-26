@@ -282,12 +282,7 @@
     <Compile Include="ConsotoChatBotAccessors.cs" />
     <Compile Include="ContosoChatBot.cs" />
     <Compile Include="Dialogs\MainDialog.cs" />
-    <Compile Include="Models\AppMsi.cs" />
-    <Compile Include="Models\ContosoHelpdeskContext.cs" />
-    <Compile Include="Models\InstallApp.cs" />
-    <Compile Include="Models\LocalAdmin.cs" />
-    <Compile Include="Models\Log.cs" />
-    <Compile Include="Models\ResetPassword.cs" />
+    <Compile Include="Models\App.cs" />
     <Compile Include="Dialogs\InstallAppDialog.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

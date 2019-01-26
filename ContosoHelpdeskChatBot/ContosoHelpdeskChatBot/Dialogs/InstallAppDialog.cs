@@ -12,7 +12,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
     [Serializable]
     public class InstallAppDialog : WaterfallDialog
     {
-        private Models.InstallApp install = new InstallApp();
+        private App install = new App();
         List<string> names = new List<string>();
         public static string dialogId = "InstallAppDialog";
 
@@ -86,7 +86,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
             {
                 var machineName = (string)stepContext.Result;
 
-                InstallApp install = new InstallApp();
+                App install = new App();
                 install.AppName = (string)stepContext.Values["AppName"];
                 install.MachineName = machineName;
                 stepContext.Values["MachineName"] = machineName;
