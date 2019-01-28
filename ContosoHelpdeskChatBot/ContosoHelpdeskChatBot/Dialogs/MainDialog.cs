@@ -58,24 +58,5 @@ namespace ContosoHelpdeskChatBot.Dialogs
 
             return await stepContext.NextAsync();
         }
-
-        /*
-        private static async Task<DialogTurnResult> RestartStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var optionSelected = (stepContext.Result as FoundChoice)?.Value;
-
-            switch (optionSelected)
-            {
-                case InstallAppOption:
-                    return await stepContext.BeginDialogAsync(InstallAppDialog.dialogId);
-                case ResetPasswordOption:
-                    return await stepContext.BeginDialogAsync(ResetPasswordDialog.dialogId);
-                case LocalAdminOption:
-                    return await stepContext.BeginDialogAsync(LocalAdminDialog.dialogId);
-            }
-
-            return await stepContext.ReplaceDialogAsync("MainDialog");
-        }
-        */
     }
 }
