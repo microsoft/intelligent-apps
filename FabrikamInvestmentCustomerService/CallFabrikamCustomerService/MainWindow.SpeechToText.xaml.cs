@@ -1,10 +1,7 @@
-﻿//using Microsoft.CognitiveServices.SpeechRecognition;
-using Microsoft.CognitiveServices.Speech;
+﻿using Microsoft.CognitiveServices.Speech;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Media;
-using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -12,12 +9,11 @@ namespace CallFabrikamCustomerService
 {
     public partial class MainWindow : Window
     {
-        //These are fields needed for using speech recognition client library
+        //These are fields needed for using speech recognition client library aka. Project Oxford
         private string DefaultLocale;
         SoundPlayer thinking;
         private TaskCompletionSource<int> stopBaseRecognitionTaskCompletionSource;
         private SpeechRecognizer recognizer;
-
 
         private void StartMicrophone()
         {
@@ -27,14 +23,17 @@ namespace CallFabrikamCustomerService
 
         private void StopMicrophone()
         {
+            //end mic recognition
             recognizer.StopContinuousRecognitionAsync().Wait();
 
             // unsubscribe from events
-            recognizer.IntermediateResultReceived -= (sender, e) => IntermediateResultEventHandler(e);
-            recognizer.FinalResultReceived -= (sender, e) => FinalResultEventHandler(e);
-            recognizer.RecognitionErrorRaised -= (sender, e) => ErrorEventHandler(e, stopBaseRecognitionTaskCompletionSource);
-            recognizer.OnSessionEvent -= (sender, e) => SessionEventHandler(e, stopBaseRecognitionTaskCompletionSource);
-            recognizer.OnSpeechDetectedEvent -= (sender, e) => SpeechDetectedEventHandler(e);
+            recognizer.Recognizing -= (sender, e) => RecognizingEventHandler(e);
+            recognizer.Recognized -= (sender, e) => RecognizedEventHandler(e);
+            recognizer.Canceled -= (sender, e) => CanceledEventHandler(e, stopBaseRecognitionTaskCompletionSource);
+            recognizer.SessionStarted -= (sender, e) => SessionStartedEventHandler(e, stopBaseRecognitionTaskCompletionSource);
+            recognizer.SessionStopped -= (sender, e) => SessionStoppedEventHandler(e, stopBaseRecognitionTaskCompletionSource);
+            recognizer.SpeechStartDetected -= (sender, e) => SpeechStartDetectedEventHandler(e);
+            recognizer.SpeechEndDetected -= (sender, e) => SpeechEndDetectedEventHandler(e);
 
             stopBaseRecognitionTaskCompletionSource.TrySetResult(0);
         }
@@ -46,17 +45,24 @@ namespace CallFabrikamCustomerService
         /// </summary>
         private async Task CreateMicrophoneReco()
         {
-            thinking = new SoundPlayer(@"../../Resources/SpeechResponse_Thinking.wav");
-            // Todo: support users to specifiy a different region.
+            string path = Assembly.GetExecutingAssembly().Location;
+            string path1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\SpeechResponse_Thinking.wav");
+            thinking = new SoundPlayer(path1);
+            // Todo: suport users to specifiy a different region.
+            try
+            {
+                var speechConfig = SpeechConfig.FromSubscription(this.MicrosoftSpeechApiKey, this.Region);
 
-            var basicFactory = SpeechFactory.FromSubscription(this.MicrosoftSpeechApiKey, this.Region);
+                SpeechRecognizer basicRecognizer;
 
-            SpeechRecognizer basicRecognizer;
-
-            using (basicRecognizer = basicFactory.CreateSpeechRecognizer(this.DefaultLocale))
+                using (basicRecognizer = new SpeechRecognizer(speechConfig))
+                {
+                    await this.RunRecognizer(basicRecognizer, stopBaseRecognitionTaskCompletionSource).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
             {
 
-                await this.RunRecognizer(basicRecognizer, stopBaseRecognitionTaskCompletionSource).ConfigureAwait(false);
             }
         }
 
@@ -74,13 +80,14 @@ namespace CallFabrikamCustomerService
             recognizer = recogniz;
 
             //subscribe to events
-            recognizer.IntermediateResultReceived += (sender, e) => IntermediateResultEventHandler(e);
-            recognizer.FinalResultReceived += (sender, e) => FinalResultEventHandler(e);
-            recognizer.RecognitionErrorRaised += (sender, e) => ErrorEventHandler(e, source);
-            recognizer.OnSessionEvent += (sender, e) => SessionEventHandler(e, source);
-            recognizer.OnSpeechDetectedEvent += (sender, e) => SpeechDetectedEventHandler(e);
-            
-            
+            recognizer.Recognizing += (sender, e) => RecognizingEventHandler(e);
+            recognizer.Recognized += (sender, e) => RecognizedEventHandler(e);
+            recognizer.Canceled += (sender, e) => CanceledEventHandler(e, source);
+            recognizer.SessionStarted += (sender, e) => SessionStartedEventHandler(e, source);
+            recognizer.SessionStopped += (sender, e) => SessionStoppedEventHandler(e, source);
+            recognizer.SpeechStartDetected += (sender, e) => SpeechStartDetectedEventHandler(e);
+            recognizer.SpeechEndDetected += (sender, e) => SpeechEndDetectedEventHandler(e);
+
             //start,wait,stop recognition
             await recognizer.StartContinuousRecognitionAsync().ConfigureAwait(false);
             await source.Task.ConfigureAwait(false);
@@ -88,11 +95,13 @@ namespace CallFabrikamCustomerService
 
 
             // unsubscribe from events
-            recognizer.IntermediateResultReceived -= (sender, e) => IntermediateResultEventHandler(e);
-            recognizer.FinalResultReceived -= (sender, e) => FinalResultEventHandler(e);
-            recognizer.RecognitionErrorRaised -= (sender, e) => ErrorEventHandler(e, source);
-            recognizer.OnSessionEvent -= (sender, e) => SessionEventHandler(e, source);
-            recognizer.OnSpeechDetectedEvent -= (sender, e) => SpeechDetectedEventHandler(e);
+            recognizer.Recognizing -= (sender, e) => RecognizingEventHandler(e);
+            recognizer.Recognized -= (sender, e) => RecognizedEventHandler(e);
+            recognizer.Canceled -= (sender, e) => CanceledEventHandler(e, source);
+            recognizer.SessionStarted -= (sender, e) => SessionStartedEventHandler(e, source);
+            recognizer.SessionStopped -= (sender, e) => SessionStoppedEventHandler(e, source);
+            recognizer.SpeechStartDetected -= (sender, e) => SpeechStartDetectedEventHandler(e);
+            recognizer.SpeechEndDetected -= (sender, e) => SpeechEndDetectedEventHandler(e);
         }
 
         #region Recognition Event Handlers
@@ -100,16 +109,15 @@ namespace CallFabrikamCustomerService
         /// <summary>
         /// Logs Intermediate Recognition results
         /// </summary>
-        private void IntermediateResultEventHandler(SpeechRecognitionResultEventArgs e)
+        private void RecognizingEventHandler(SpeechRecognitionEventArgs e)
         {
             recognizer.StopContinuousRecognitionAsync();
-            //this.WriteLine("Intermediate result: {0} ", e.Result.Text);
         }
 
         /// <summary>
         /// Logs the Final result
         /// </summary>
-        private void FinalResultEventHandler(SpeechRecognitionResultEventArgs e)
+        private void RecognizedEventHandler(SpeechRecognitionEventArgs e)
         {
             thinking.PlaySync();
             this.EchoResponse(e);
@@ -119,9 +127,10 @@ namespace CallFabrikamCustomerService
         /// Logs Error events
         /// And sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
         /// </summary>
-        private void ErrorEventHandler(RecognitionErrorEventArgs e, TaskCompletionSource<int> source)
+        private void CanceledEventHandler(SpeechRecognitionCanceledEventArgs e, TaskCompletionSource<int> source)
         {
-            this.WriteLine("--- Error received by ErrorEventHandler() ---");
+            this.WriteLine($"\n    Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
+            Console.WriteLine($"\n    Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
             source.TrySetResult(0);
             TransitionHangUpGui();
         }
@@ -129,17 +138,24 @@ namespace CallFabrikamCustomerService
         /// <summary>
         /// If SessionStoppedEvent is received, sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
         /// </summary>
-        private void SessionEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
+        private void SessionStartedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
-            if (e.EventType == SessionEventType.SessionStoppedEvent)
-            {
-                source.TrySetResult(0);
-            }
+            Console.WriteLine("\n    Session started event.");
         }
 
-        private void SpeechDetectedEventHandler(RecognitionEventArgs e)
+        private void SessionStoppedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
-            WriteLine(e.EventType == 0 ? "Mic Recording. Please start speaking." : "Mic Stopped.");
+            Console.WriteLine("\n    Session stopped event.");
+        }
+
+        private void SpeechStartDetectedEventHandler(RecognitionEventArgs e)
+        {
+            Console.WriteLine("\n    Speech start detected.");
+        }
+
+        private void SpeechEndDetectedEventHandler(RecognitionEventArgs e)
+        {
+            Console.WriteLine("\n    Speech end detected.");
         }
 
         #endregion
