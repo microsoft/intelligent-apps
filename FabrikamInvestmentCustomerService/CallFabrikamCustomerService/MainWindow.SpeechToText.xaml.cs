@@ -11,7 +11,7 @@ namespace CallFabrikamCustomerService
 {
     public partial class MainWindow : Window
     {
-        //These are fields needed for using speech recognition client library aka. Project Oxford
+        //These are fields needed for using speech recognition client library
         private string DefaultLocale;
         SoundPlayer thinking;
         private TaskCompletionSource<int> stopBaseRecognitionTaskCompletionSource;
@@ -32,7 +32,9 @@ namespace CallFabrikamCustomerService
         //Creates a new microphone recognizer to start recoding and send send audio stream to Speech API automatically for text transcription
         private void CreateMicrophoneReco()
         {
-            thinking = new SoundPlayer(@"../../Resources/SpeechResponse_Thinking.wav");
+            string path = Assembly.GetExecutingAssembly().Location;
+            string path1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\SpeechResponse_Thinking.wav");
+            thinking = new SoundPlayer(path1);
 
             //TODO: use the speech recognition factory to create mic client
 
@@ -69,7 +71,7 @@ namespace CallFabrikamCustomerService
         /// <summary>
         /// Logs Intermediate Recognition results
         /// </summary>
-        private void IntermediateResultEventHandler(SpeechRecognitionResultEventArgs e)
+        private void RecognizingEventHandler(SpeechRecognitionEventArgs e)
         {
             //TODO: end recognition
         }
@@ -77,7 +79,7 @@ namespace CallFabrikamCustomerService
         /// <summary>
         /// Logs the Final result
         /// </summary>
-        private void FinalResultEventHandler(SpeechRecognitionResultEventArgs e)
+        private void RecognizedEventHandler(SpeechRecognitionEventArgs e)
         {
             thinking.PlaySync();
 
@@ -87,30 +89,34 @@ namespace CallFabrikamCustomerService
         }
 
         /// <summary>
-        /// Logs Error events
+        /// Logs Cancel events
         /// And sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
         /// </summary>
-        private void ErrorEventHandler(RecognitionErrorEventArgs e, TaskCompletionSource<int> source)
+        private void CanceledEventHandler(SpeechRecognitionCanceledEventArgs e, TaskCompletionSource<int> source)
         {
-            this.WriteLine("--- Error received by ErrorEventHandler() ---");
+            this.WriteLine($"\n    Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
             source.TrySetResult(0);
             TransitionHangUpGui();
         }
 
-        /// <summary>
-        /// If SessionStoppedEvent is received, sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
-        /// </summary>
-        private void SessionEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
+        private void SessionStartedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
-            if (e.EventType == SessionEventType.SessionStoppedEvent)
-            {
-                source.TrySetResult(0);
-            }
+            Console.WriteLine("\n    Session started event.");
         }
 
-        private void SpeechDetectedEventHandler(RecognitionEventArgs e)
+        private void SessionStoppedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
-            //TODO: Writeline out mic status change to onscreen display
+            Console.WriteLine("\n    Session stopped event.");
+        }
+
+        private void SpeechStartDetectedEventHandler(RecognitionEventArgs e)
+        {
+            Console.WriteLine("\n    Speech start detected.");
+        }
+
+        private void SpeechEndDetectedEventHandler(RecognitionEventArgs e)
+        {
+            Console.WriteLine("\n    Speech end detected.");
         }
 
         #endregion
