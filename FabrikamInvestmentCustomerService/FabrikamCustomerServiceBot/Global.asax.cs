@@ -5,10 +5,9 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
 using Microsoft.Bot.Builder.Azure;
-using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
 using Autofac;
+using FabrikamCustomerServiceBot.App_Start;
 
 namespace FabrikamCustomerServiceBot
 {
@@ -16,6 +15,7 @@ namespace FabrikamCustomerServiceBot
     {
         protected void Application_Start()
         {
+            /*
             var store = new InMemoryDataStore();
 
             Conversation.UpdateContainer(
@@ -35,6 +35,12 @@ namespace FabrikamCustomerServiceBot
                        });
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            */
+            var x = 1;
+            GlobalConfiguration.Configure(config =>
+            {
+                BotConfig.Register(config);
+            });
         }
     }
 }

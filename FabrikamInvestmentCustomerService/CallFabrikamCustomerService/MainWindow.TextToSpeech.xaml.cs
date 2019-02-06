@@ -45,26 +45,30 @@ namespace CallFabrikamCustomerService
                                            TimeSpan.FromMilliseconds(-1));
         }
 
-        public Task PlaySpeechAudioAsync(string Text)
+        public async Task PlaySpeechAudioAsync(string Text)
         {
             if (httpClient == null)
                 CreateSpeechClient();
 
             httpClient.DefaultRequestHeaders.Clear();
+            //Text = "Come on guys";
+            string body = @"<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='en-US'>
+              <voice name='Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)'>" +
+              Text + "</voice></speak>";
 
             //these are the minimum number of Speech API headers to include
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/ssml+xml");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-Microsoft-OutputFormat", "riff-16khz-16bit-mono-pcm");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-Microsoft-OutputFormat", "riff-24khz-16bit-mono-pcm");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "IntelligentApps/FabrikamInvestmentCustomerService");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Host", "westus.tts.speech.microsoft.com");
-
+            httpClient.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
 
             var request = new HttpRequestMessage(HttpMethod.Post, MicrosoftTextToSpeechEndpoint)
             {
                 //we are making a few default assumptions here such as using English, Femail & the speech voice to use
                 //for additional choices refer https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/supported-languages#text-to-speech
-                Content = new StringContent(GenerateSsml("en-US", "Female", "Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)", Text))
+                //Content = new StringContent(GenerateSsml("en-US", "Female", "Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)", Text))
+                Content = new StringContent(body, Encoding.UTF8, "application/ssml+xml")
             };
 
             var httpTask = httpClient.SendAsync(request);
@@ -98,7 +102,7 @@ namespace CallFabrikamCustomerService
                 TaskContinuationOptions.AttachedToParent,
                 CancellationToken.None);
 
-            return saveTask;
+            return;
         }
 
         //Helps generate SSML for posting to Text-to-Speech API
