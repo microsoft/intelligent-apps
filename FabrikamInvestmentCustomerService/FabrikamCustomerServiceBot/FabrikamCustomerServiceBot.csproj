@@ -69,33 +69,6 @@
     <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Bot.Builder, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bot.Builder.4.2.2\lib\netstandard2.0\Microsoft.Bot.Builder.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bot.Builder.AI.Luis, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bot.Builder.AI.Luis.4.2.2\lib\netstandard2.0\Microsoft.Bot.Builder.AI.Luis.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bot.Builder.Azure, Version=3.16.0.38373, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bot.Builder.Azure.3.16.0.38373\lib\net46\Microsoft.Bot.Builder.Azure.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bot.Builder.Dialogs, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bot.Builder.Dialogs.4.2.2\lib\netstandard2.0\Microsoft.Bot.Builder.Dialogs.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bot.Builder.History, Version=3.20.1.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bot.Builder.History.3.20.1\lib\net46\Microsoft.Bot.Builder.History.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bot.Builder.Integration.AspNet.WebApi, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bot.Builder.Integration.AspNet.WebApi.4.2.2\lib\net461\Microsoft.Bot.Builder.Integration.AspNet.WebApi.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bot.Configuration, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bot.Configuration.4.2.2\lib\netstandard2.0\Microsoft.Bot.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bot.Connector, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bot.Connector.4.2.2\lib\netstandard2.0\Microsoft.Bot.Connector.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bot.Schema, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bot.Schema.4.2.2\lib\netstandard2.0\Microsoft.Bot.Schema.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Data.Edm, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Edm.5.7.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
