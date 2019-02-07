@@ -9,6 +9,7 @@ using System.IO;
 using System.Media;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -66,7 +67,7 @@ namespace CallFabrikamCustomerService
             //Best practice to add event handler to dispose and cleanup resources whenever this window is closed
             this.Closing += OnMainWindowClosing;
 
-            //Initialize speech to short phrase mode & default locale
+            //Initialize speech to text mode & default locale
             DefaultLocale = "en-US";
 
             //Setup the green Call button image
@@ -83,8 +84,11 @@ namespace CallFabrikamCustomerService
             hangUpButtonImage.EndInit();
 
             //Setup dial & ringing tone
-            dialTone = new SoundPlayer(@"../../Resources/DialTone_18883226837.wav");
-            ringing = new SoundPlayer(@"../../Resources/Ringing_Phone-Mike_Koenig.wav");
+            string path = Assembly.GetExecutingAssembly().Location;
+            string path1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\Ringing_Phone-Mike_Koenig.wav");
+            string path2 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\DialTone_18883226837.wav");
+            dialTone = new SoundPlayer(path2);
+            ringing = new SoundPlayer(path1);
 
             //Initialize Bot configuration
             botId = ConfigurationManager.AppSettings["BotId"];
@@ -134,10 +138,15 @@ namespace CallFabrikamCustomerService
             //we should wait until the dialing tone has been completed before continue
             dial.Wait();
 
-            StartMicrophone();
-
             //transition calling to connected GUI
             TransitionCallGui();
+
+            //greet caller
+            this.WriteLine("Connecting...");
+            var result = await this.GetBotReplyAsync("hi");
+            await PlaySpeechAudioAsync(result);
+
+            StartMicrophone();
         }
 
         //Handle the hang up button click
@@ -203,7 +212,7 @@ namespace CallFabrikamCustomerService
 
 
         //Writes the response result.
-        private async Task EchoResponseAsync(SpeechRecognitionResultEventArgs e)
+        private async Task EchoResponseAsync(SpeechRecognitionEventArgs e)
         {
             WriteLine("Speech To Text Result:");
             //handle the case when there are no results. 
@@ -212,6 +221,7 @@ namespace CallFabrikamCustomerService
             {
                 WriteLine("No phrase response is available.");
                 WriteLine();
+
             }
             else
             {
@@ -227,9 +237,10 @@ namespace CallFabrikamCustomerService
                 //Play audio from text to speech API
                 await PlaySpeechAudioAsync(result);
 
-                //Start Microphone
-                StartMicrophone();
             }
+
+            //Start Microphone
+            StartMicrophone();
         }
 
         //Creates a line break
