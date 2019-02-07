@@ -29,13 +29,19 @@ namespace CallFabrikamCustomerService
 
         private void CreateSpeechClient()
         {
-            //TODO: initialize cookie container, http client handler, http client and get an access token
+            //initialize cookie container, http client handler, http client and get an access token
+            var cookieContainer = new CookieContainer();
+            httpHandler = new HttpClientHandler() { CookieContainer = new CookieContainer(), UseProxy = false };
+            httpClient = new HttpClient(httpHandler);
 
+            accessToken = HttpPost(MicrosoftSpeechAccessTokenEndpoint, MicrosoftSpeechApiKey);
 
-            //TODO: add auto-renewal of access token needed to connect to text to speech API
             //This auto-renew the Speech API access token needed when doing a POST
             //The access token only last for 10min so we setup a timer to renew the it every 9min
-
+            accessTokenRenewer = new Timer(new TimerCallback(OnTokenExpiredCallback),
+                                           this,
+                                           TimeSpan.FromMinutes(RefreshTokenDuration),
+                                           TimeSpan.FromMilliseconds(-1));
         }
 
         public Task PlaySpeechAudio(string Text)
@@ -43,21 +49,58 @@ namespace CallFabrikamCustomerService
             if (httpClient == null)
                 CreateSpeechClient();
 
-            //TODO: cleanup the headers since we are reusing the HttpClient
+            //cleanup the headers since we are reusing the HttpClient
+            httpClient.DefaultRequestHeaders.Clear();
 
+            //these are the minimum number of Bing Speech API headers to include
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/ssml+xml");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-Microsoft-OutputFormat", "riff-16khz-16bit-mono-pcm");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "IntelligentApps/FabrikamInvestmentCustomerService");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Host", "westus.tts.speech.microsoft.com");
 
-            //TODO: add http headers specific for text to speech api
-            //these are the minimum number of Speech API headers to include
+            //initialize a new instance of http request message
+            var request = new HttpRequestMessage(HttpMethod.Post, MicrosoftTextToSpeechEndpoint)
+            {
+                //we are making a few default assumptions here such as using English, Femail & the speech voice to use
+                //for additional choices refer https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/supported-languages#text-to-speech
+                Content = new StringContent(GenerateSsml("en-US", "Female", "Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)", Text))
+            };
 
-
-            //TODO: initialize a new instance of http request message
-            HttpRequestMessage request;
-
-
-            //TODO: send the request, read the response stream and pass it to sound player to play the audio to speaker
+            //send the request, read the response stream and pass it to sound player to play the audio to speaker
             Task<HttpResponseMessage> httpTask = null;
             Task<Task> saveTask = null;
 
+            httpTask = httpClient.SendAsync(request);
+
+            saveTask = httpTask.ContinueWith(
+                async (responseMessage, token) =>
+                {
+                    try
+                    {
+                        if (responseMessage.IsCompleted && responseMessage.Result != null && responseMessage.Result.IsSuccessStatusCode)
+                        {
+                            var httpStream = await responseMessage.Result.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                            speech = new SoundPlayer(httpStream);
+                            speech.PlaySync();
+                        }
+                        else
+                        {
+                            this.WriteLine("Service returned {0}", responseMessage.Result.StatusCode);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.WriteLine(ex.GetBaseException().Message);
+                    }
+                    finally
+                    {
+                        responseMessage.Dispose();
+                        request.Dispose();
+                    }
+                },
+                TaskContinuationOptions.AttachedToParent,
+                CancellationToken.None);
 
             return saveTask;
         }
@@ -67,8 +110,15 @@ namespace CallFabrikamCustomerService
         {
             XDocument ssmlDoc = new XDocument();
 
-            //TODO: create SSML XML document that will be the payload for posting to speech api
-
+            //create SSML XML document that will be the payload for posting to speech api
+            ssmlDoc.Add(new XElement("speak",
+                                  new XAttribute("version", "1.0"),
+                                  new XAttribute(XNamespace.Xml + "lang", "en-US"),
+                                  new XElement("voice",
+                                      new XAttribute(XNamespace.Xml + "lang", locale),
+                                      new XAttribute(XNamespace.Xml + "gender", gender),
+                                      new XAttribute("name", name),
+                                      text)));
 
             return ssmlDoc.ToString();
         }
@@ -76,8 +126,29 @@ namespace CallFabrikamCustomerService
         //Callback method when the timer fires every 9min to renew speech token
         private void OnTokenExpiredCallback(object stateInfo)
         {
-            //TODO: do http post to get new token and assign new token to accessToken
-            
+            //do http post to get new token and assign new token to accessToken
+            try
+            {
+                string newAccessToken = HttpPost(MicrosoftSpeechAccessTokenEndpoint, MicrosoftSpeechApiKey);
+                //swap the new token with old one
+                //Note: the swap is thread unsafe
+                accessToken = newAccessToken;
+            }
+            catch (Exception ex)
+            {
+                this.WriteLine(string.Format("Failed renewing access token. Details: {0}", ex.Message));
+            }
+            finally
+            {
+                try
+                {
+                    accessTokenRenewer.Change(TimeSpan.FromMinutes(RefreshTokenDuration), TimeSpan.FromMilliseconds(-1));
+                }
+                catch (Exception ex)
+                {
+                    this.WriteLine(string.Format("Failed to reschedule the timer to renew access token. Details: {0}", ex.Message));
+                }
+            }
         }
 
         //Helper method to get extract speech access token
@@ -112,7 +183,18 @@ namespace CallFabrikamCustomerService
             }
         }
 
+        private async Task<string> FetchTokenAsync(string fetchUri, string subscriptionKey)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
+                UriBuilder uriBuilder = new UriBuilder(fetchUri);
 
+                var result = await client.PostAsync(uriBuilder.Uri.AbsoluteUri, null);
+                Console.WriteLine("Token Uri: {0}", uriBuilder.Uri.AbsoluteUri);
+                return await result.Content.ReadAsStringAsync();
+            }
+        }
 
     }
 }
