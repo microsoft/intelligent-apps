@@ -52,7 +52,7 @@ namespace CallFabrikamCustomerService
             //cleanup the headers since we are reusing the HttpClient
             httpClient.DefaultRequestHeaders.Clear();
 
-            //these are the minimum number of Bing Speech API headers to include
+            //these are the minimum number of Speech API headers to include
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/ssml+xml");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-Microsoft-OutputFormat", "riff-16khz-16bit-mono-pcm");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "IntelligentApps/FabrikamInvestmentCustomerService");
