@@ -83,7 +83,7 @@ namespace CallFabrikamCustomerService
 
             //TODO: call EchoResponse to write out received response 
 
-            //TODO: start mic recognition again
+
         }
 
         /// <summary>
