@@ -134,9 +134,6 @@ namespace CallFabrikamCustomerService
             TransitionHangUpGui();
         }
 
-        /// <summary>
-        /// If SessionStoppedEvent is received, sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
-        /// </summary>
         private void SessionStartedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
             WriteLine("Session start detected.  Please start speaking.");
