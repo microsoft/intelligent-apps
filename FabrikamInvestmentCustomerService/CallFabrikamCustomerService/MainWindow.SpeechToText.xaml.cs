@@ -109,12 +109,12 @@ namespace CallFabrikamCustomerService
 
         private void SpeechStartDetectedEventHandler(RecognitionEventArgs e)
         {
-            Console.WriteLine("\n    Speech start detected.");
+            //TODO: Writeline out mic status change to onscreen display
         }
 
         private void SpeechEndDetectedEventHandler(RecognitionEventArgs e)
         {
-            Console.WriteLine("\n    Speech end detected.");
+            //TODO: Writeline out mic status change to onscreen display
         }
 
         #endregion
