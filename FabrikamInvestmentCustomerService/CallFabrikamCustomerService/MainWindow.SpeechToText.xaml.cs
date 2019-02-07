@@ -99,22 +99,24 @@ namespace CallFabrikamCustomerService
 
         private void SessionStartedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
-            Console.WriteLine("\n    Session started event.");
+            //TODO: Writeline out mic status change to onscreen display
+
         }
 
         private void SessionStoppedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
-            Console.WriteLine("\n    Session stopped event.");
+            //TODO: Writeline out mic status change to onscreen display
+
         }
 
         private void SpeechStartDetectedEventHandler(RecognitionEventArgs e)
         {
-            //TODO: Writeline out mic status change to onscreen display
+            Console.WriteLine("\n    Speech start detected.");
         }
 
         private void SpeechEndDetectedEventHandler(RecognitionEventArgs e)
         {
-            //TODO: Writeline out mic status change to onscreen display
+            Console.WriteLine("\n    Speech end detected.");
         }
 
         #endregion
