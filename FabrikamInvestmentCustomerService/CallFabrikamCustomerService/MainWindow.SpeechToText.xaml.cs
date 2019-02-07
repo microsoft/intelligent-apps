@@ -92,7 +92,7 @@ namespace CallFabrikamCustomerService
         /// </summary>
         private void CanceledEventHandler(SpeechRecognitionCanceledEventArgs e, TaskCompletionSource<int> source)
         {
-            this.WriteLine($"\n    Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
+            WriteLine($"\n    Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
             source.TrySetResult(0);
             TransitionHangUpGui();
         }
