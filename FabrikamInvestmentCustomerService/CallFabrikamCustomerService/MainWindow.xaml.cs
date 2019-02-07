@@ -224,8 +224,6 @@ namespace CallFabrikamCustomerService
                 WriteLine("No phrase response is available.");
                 WriteLine();
 
-                //Start Microphone
-                StartMicrophone();
             }
             else
             {
@@ -241,9 +239,10 @@ namespace CallFabrikamCustomerService
                 //Play audio from text to speech API
                 await PlaySpeechAudioAsync(result);
 
-                //Start Microphone
-                StartMicrophone();
             }
+
+            //Start Microphone
+            StartMicrophone();
         }
 
         //Creates a line break
