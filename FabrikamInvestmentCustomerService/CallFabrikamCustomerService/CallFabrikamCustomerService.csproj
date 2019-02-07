@@ -162,9 +162,15 @@
   <ItemGroup>
     <Resource Include="Resources\Button_Call.png" />
     <Resource Include="Resources\Button_HangUp.png" />
-    <Content Include="Resources\DialTone_18883226837.wav" />
-    <Content Include="Resources\Ringing_Phone-Mike_Koenig.wav" />
-    <Content Include="Resources\SpeechResponse_Thinking.wav" />
+    <Content Include="Resources\DialTone_18883226837.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Ringing_Phone-Mike_Koenig.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\SpeechResponse_Thinking.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
