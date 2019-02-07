@@ -111,7 +111,7 @@ namespace CallFabrikamCustomerService
         /// </summary>
         private void RecognizingEventHandler(SpeechRecognitionEventArgs e)
         {
-            recognizer.StopContinuousRecognitionAsync();
+            recognizer.StopContinuousRecognitionAsync().Wait();
         }
 
         /// <summary>
@@ -129,8 +129,7 @@ namespace CallFabrikamCustomerService
         /// </summary>
         private void CanceledEventHandler(SpeechRecognitionCanceledEventArgs e, TaskCompletionSource<int> source)
         {
-            this.WriteLine($"\n    Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
-            Console.WriteLine($"\n    Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
+            WriteLine($"\n    Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
             source.TrySetResult(0);
             TransitionHangUpGui();
         }
@@ -140,12 +139,12 @@ namespace CallFabrikamCustomerService
         /// </summary>
         private void SessionStartedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
-            Console.WriteLine("\n    Session started event.");
+            WriteLine("Session start detected.  Please start speaking.");
         }
 
         private void SessionStoppedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
-            Console.WriteLine("\n    Session stopped event.");
+            WriteLine("Session stop detected.");
         }
 
         private void SpeechStartDetectedEventHandler(RecognitionEventArgs e)
