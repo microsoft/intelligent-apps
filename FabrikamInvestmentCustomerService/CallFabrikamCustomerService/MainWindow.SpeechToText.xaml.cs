@@ -9,7 +9,7 @@ namespace CallFabrikamCustomerService
 {
     public partial class MainWindow : Window
     {
-        //These are fields needed for using speech recognition client library aka. Project Oxford
+        //These are fields needed for using speech recognition client library
         private string DefaultLocale;
         SoundPlayer thinking;
         private TaskCompletionSource<int> stopBaseRecognitionTaskCompletionSource;
