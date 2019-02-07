@@ -74,6 +74,9 @@
     <Reference Include="Microsoft.Bot.Connector.DirectLine, Version=3.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bot.Connector.DirectLine.3.0.2\lib\net45\Microsoft.Bot.Connector.DirectLine.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CognitiveServices.Speech.csharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=d2e6dcccb609e663, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CognitiveServices.Speech.0.6.0\lib\net461\Microsoft.CognitiveServices.Speech.csharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel.Logging, Version=1.1.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Logging.1.1.5\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
     </Reference>
@@ -97,9 +100,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="SpeechClient, Version=0.0.0.0, Culture=neutral, PublicKeyToken=720c26922c782415, processorArchitecture=x86">
-      <HintPath>..\packages\Microsoft.ProjectOxford.SpeechRecognition-x86.1.0.0.7\lib\SpeechClient.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -203,6 +203,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Bond.CSharp.7.0.1\build\Bond.CSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bond.CSharp.7.0.1\build\Bond.CSharp.props'))" />
     <Error Condition="!Exists('..\packages\Bond.CSharp.7.0.1\build\Bond.CSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bond.CSharp.7.0.1\build\Bond.CSharp.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CognitiveServices.Speech.0.6.0\build\net461\Microsoft.CognitiveServices.Speech.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CognitiveServices.Speech.0.6.0\build\net461\Microsoft.CognitiveServices.Speech.targets'))" />
   </Target>
   <Import Project="..\packages\Bond.CSharp.7.0.1\build\Bond.CSharp.targets" Condition="Exists('..\packages\Bond.CSharp.7.0.1\build\Bond.CSharp.targets')" />
+  <Import Project="..\packages\Microsoft.CognitiveServices.Speech.0.6.0\build\net461\Microsoft.CognitiveServices.Speech.targets" Condition="Exists('..\packages\Microsoft.CognitiveServices.Speech.0.6.0\build\net461\Microsoft.CognitiveServices.Speech.targets')" />
 </Project>
