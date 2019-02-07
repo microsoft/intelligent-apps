@@ -141,11 +141,6 @@ namespace CallFabrikamCustomerService
             //transition calling to connected GUI
             TransitionCallGui();
 
-            //greet caller
-            this.WriteLine("Connecting...");
-            var result = await this.GetBotReplyAsync("hi");
-            await PlaySpeechAudioAsync(result);
-
             StartMicrophone();
         }
 
