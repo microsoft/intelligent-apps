@@ -129,8 +129,7 @@ namespace CallFabrikamCustomerService
         /// </summary>
         private void CanceledEventHandler(SpeechRecognitionCanceledEventArgs e, TaskCompletionSource<int> source)
         {
-            this.WriteLine($"\n    Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
-            Console.WriteLine($"\n    Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
+            WriteLine($"Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
             source.TrySetResult(0);
             TransitionHangUpGui();
         }
@@ -150,12 +149,12 @@ namespace CallFabrikamCustomerService
 
         private void SpeechStartDetectedEventHandler(RecognitionEventArgs e)
         {
-            Console.WriteLine("\n    Speech start detected.");
+            WriteLine("Speech start detected.  Please start speaking.");
         }
 
         private void SpeechEndDetectedEventHandler(RecognitionEventArgs e)
         {
-            Console.WriteLine("\n    Speech end detected.");
+            WriteLine("Speech stop detected.");
         }
 
         #endregion
