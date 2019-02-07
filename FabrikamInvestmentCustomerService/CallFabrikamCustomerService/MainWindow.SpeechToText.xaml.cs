@@ -111,7 +111,7 @@ namespace CallFabrikamCustomerService
         /// </summary>
         private void RecognizingEventHandler(SpeechRecognitionEventArgs e)
         {
-            recognizer.StopContinuousRecognitionAsync();
+            recognizer.StopContinuousRecognitionAsync().Wait();
         }
 
         /// <summary>
@@ -139,22 +139,22 @@ namespace CallFabrikamCustomerService
         /// </summary>
         private void SessionStartedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
-            Console.WriteLine("\n    Session started event.");
+            WriteLine("Session start detected.  Please start speaking.");
         }
 
         private void SessionStoppedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
-            Console.WriteLine("\n    Session stopped event.");
+            WriteLine("Session stop detected.");
         }
 
         private void SpeechStartDetectedEventHandler(RecognitionEventArgs e)
         {
-            WriteLine("Speech start detected.  Please start speaking.");
+            Console.WriteLine("\n    Speech start detected.");
         }
 
         private void SpeechEndDetectedEventHandler(RecognitionEventArgs e)
         {
-            WriteLine("Speech stop detected.");
+            Console.WriteLine("\n    Speech end detected.");
         }
 
         #endregion
