@@ -213,7 +213,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.ConnectToBot.cs" />
+    <Compile Include="MainWindow.ConnectToBot.xaml.cs" />
     <Compile Include="MainWindow.SpeechToText.xaml.cs" />
     <Compile Include="MainWindow.TextToSpeech.xaml.cs" />
     <Compile Include="MainWindow.xaml.cs">
