@@ -29,17 +29,12 @@ namespace FabrikamCustomerServiceBot
         {
             _accessors = accessors ?? throw new System.ArgumentNullException(nameof(accessors));
 
-            //get the luis app id & key
-            var MicrosoftLuisAppId = ConfigurationManager.AppSettings["MicrosoftLuisAppId"];
-            var MicrosoftLuisKey = ConfigurationManager.AppSettings["MicrosoftLuisKey"];
+            //TODO: get the luis app id & key & endpoint
 
-            var LuisApp = new LuisApplication(ConfigurationManager.AppSettings["MicrosoftLuisAppId"], ConfigurationManager.AppSettings["MicrosoftLuisKey"], ConfigurationManager.AppSettings["MicrosoftLuisEndPoint"]);
-            var LuisOptions = new LuisPredictionOptions
-            {
-                IncludeAllIntents = true,
-            };
 
-            luisRecognizer = new LuisRecognizer(LuisApp, LuisOptions, true);
+            //TODO: instantiate luisRecognizer
+
+
         }
 
         public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))
@@ -58,20 +53,18 @@ namespace FabrikamCustomerServiceBot
                 {
                     switch (strIntent)
                     {
-                        case "None":
-                            await turnContext.SendActivityAsync("Sorry, I don't understand.");
-                            break;
-                        case "Greeting":
-                            await turnContext.SendActivityAsync("Welcome to Fabrikam Investment Customer Service. I can understand phrases and full sentences. Now how can I help you?");
-                            break;
-                        case "CheckingAccountBalance":
-                            var balance = new Random().Next(0, 1000000);
-                            await turnContext.SendActivityAsync($"Your checking account balance is {balance} dollars");
-                            break;
+                        //TODO: post a reply of the default None message
+
+
+                        //TODO: post a reply of the welcome message
+
+
+                        //TODO: post a reply of checking account balance message
+
                         default:
                             await turnContext.SendActivityAsync(
                                 $"Intent: {topIntent.Value.intent} ({topIntent.Value.score}).");
-                            break;
+                            break;   
                     }
                 }
                 else if (strIntent != "")
