@@ -158,6 +158,9 @@ namespace CallFabrikamCustomerService
         //Writes the response result.
         private void EchoResponse(SpeechRecognitionEventArgs e)
         {
+            //Stop Microphone, want to make sure recognizer is cleaned up and events unsubscribed
+            StopMicrophone();
+
             WriteLine("Speech To Text Result:");
             //TODO: handle the case when there are no results. 
             //common situation is when there is a pause from user and audio captured has no speech in it
