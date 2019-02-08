@@ -47,7 +47,7 @@ namespace CallFabrikamCustomerService
                 conversation = await botClient.Conversations.StartConversationAsync();
             }catch (Exception ex)
             {
-
+                Console.WriteLine($"An exception occured:{ex}");
             }
         }
 
