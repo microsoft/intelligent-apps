@@ -62,7 +62,7 @@ namespace CallFabrikamCustomerService
             //initialize a new instance of http request message
             var request = new HttpRequestMessage(HttpMethod.Post, MicrosoftTextToSpeechEndpoint)
             {
-                //we are making a few default assumptions here such as using English, Femail & the speech voice to use
+                //we are making a few default assumptions here such as using English, Female & the speech voice to use
                 //for additional choices refer https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/supported-languages#text-to-speech
                 Content = new StringContent(GenerateSsml("en-US", "Female", "Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)", Text))
             };
