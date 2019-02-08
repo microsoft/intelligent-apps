@@ -40,7 +40,7 @@ namespace CallFabrikamCustomerService
 
         /// <summary>
         /// Creates Recognizer with English language and microphone
-        /// Creates a factory with subscription key and selected region
+        /// Creates a config with subscription key and selected region
         /// Waits on RunRecognition
         /// </summary>
         private async Task CreateMicrophoneReco()
