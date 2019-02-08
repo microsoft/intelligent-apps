@@ -1,5 +1,5 @@
 ﻿{
-  "name": "FabBot1",
+  "name": "BotName",
   "services": [
     {
       "type": "endpoint",
