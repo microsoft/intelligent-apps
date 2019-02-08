@@ -75,9 +75,6 @@
     <Reference Include="Microsoft.Bot.Builder.AI.Luis, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bot.Builder.AI.Luis.4.2.2\lib\netstandard2.0\Microsoft.Bot.Builder.AI.Luis.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Bot.Builder.Azure, Version=3.16.0.38373, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bot.Builder.Azure.3.16.0.38373\lib\net46\Microsoft.Bot.Builder.Azure.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Bot.Builder.Dialogs, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bot.Builder.Dialogs.4.2.2\lib\netstandard2.0\Microsoft.Bot.Builder.Dialogs.dll</HintPath>
     </Reference>
