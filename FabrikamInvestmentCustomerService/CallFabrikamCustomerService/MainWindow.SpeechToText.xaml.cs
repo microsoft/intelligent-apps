@@ -48,7 +48,7 @@ namespace CallFabrikamCustomerService
             string path = Assembly.GetExecutingAssembly().Location;
             string path1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\SpeechResponse_Thinking.wav");
             thinking = new SoundPlayer(path1);
-            // Todo: suport users to specifiy a different region.
+
             try
             {
                 var speechConfig = SpeechConfig.FromSubscription(this.MicrosoftSpeechApiKey, this.Region);
