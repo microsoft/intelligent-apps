@@ -35,10 +35,7 @@ namespace FabrikamCustomerServiceBot.App_Start
 
                 // Create the custom state accessor.
                 // State accessors enable other components to read and write individual properties of state.
-                var accessors = new FabrikamServiceBotAccessors(conversationState)
-                {
-                    //ContosoBotState = conversationState.CreateProperty<BotState>(ConsotoChatBotAccessors.CounterStateName),
-                };
+                var accessors = new FabrikamServiceBotAccessors(conversationState);
 
                 UnityConfig.Container.RegisterInstance<FabrikamServiceBotAccessors>(accessors, new ContainerControlledLifetimeManager());
             });
