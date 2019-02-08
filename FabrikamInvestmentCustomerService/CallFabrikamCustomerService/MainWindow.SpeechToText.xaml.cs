@@ -43,7 +43,7 @@ namespace CallFabrikamCustomerService
 
         /// <summary>
         /// Creates Recognizer with English language and microphone
-        /// Creates a factory with subscription key and selected region
+        /// Creates a config with subscription key and selected region
         /// Waits on RunRecognition
         /// </summary>
         private async Task CreateMicrophoneReco()
@@ -51,10 +51,11 @@ namespace CallFabrikamCustomerService
             string path = Assembly.GetExecutingAssembly().Location;
             string path1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\SpeechResponse_Thinking.wav");
             thinking = new SoundPlayer(path1);
-            // Todo: suport users to specifiy a different region.
+
             try
             {
                 var speechConfig = SpeechConfig.FromSubscription(this.MicrosoftSpeechApiKey, this.Region);
+                speechConfig.SpeechRecognitionLanguage = this.DefaultLocale;
 
                 SpeechRecognizer basicRecognizer;
 
@@ -65,7 +66,8 @@ namespace CallFabrikamCustomerService
             }
             catch (Exception ex)
             {
-
+                WriteLine($"An exception occured:{ex}");
+                Console.WriteLine($"An exception occured:{ex}");
             }
         }
 
