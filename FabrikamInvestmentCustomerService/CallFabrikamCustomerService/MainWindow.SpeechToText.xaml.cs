@@ -51,7 +51,7 @@ namespace CallFabrikamCustomerService
             string path = Assembly.GetExecutingAssembly().Location;
             string path1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\SpeechResponse_Thinking.wav");
             thinking = new SoundPlayer(path1);
-            // Todo: suport users to specifiy a different region.
+
             try
             {
                 var speechConfig = SpeechConfig.FromSubscription(this.MicrosoftSpeechApiKey, this.Region);
@@ -136,7 +136,7 @@ namespace CallFabrikamCustomerService
         }
 
         /// <summary>
-        /// Logs Error events
+        /// Logs Cancel events
         /// And sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
         /// </summary>
         private void CanceledEventHandler(SpeechRecognitionCanceledEventArgs e, TaskCompletionSource<int> source)
