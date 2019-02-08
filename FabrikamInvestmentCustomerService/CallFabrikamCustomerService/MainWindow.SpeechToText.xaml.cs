@@ -126,7 +126,7 @@ namespace CallFabrikamCustomerService
         }
 
         /// <summary>
-        /// Logs Error events
+        /// Logs Cancel events
         /// And sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
         /// </summary>
         private void CanceledEventHandler(SpeechRecognitionCanceledEventArgs e, TaskCompletionSource<int> source)
@@ -136,9 +136,6 @@ namespace CallFabrikamCustomerService
             TransitionHangUpGui();
         }
 
-        /// <summary>
-        /// If SessionStoppedEvent is received, sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
-        /// </summary>
         private void SessionStartedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
         {
             WriteLine("Session start detected.  Please start speaking.");
