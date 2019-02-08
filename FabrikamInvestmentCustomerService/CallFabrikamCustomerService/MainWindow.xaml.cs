@@ -53,6 +53,9 @@ namespace CallFabrikamCustomerService
             //Best practice to add event handler to dispose and cleanup resources whenever this window is closed
             this.Closing += OnMainWindowClosing;
 
+            //Initialize speech to text mode & default locale
+            DefaultLocale = "en-US";
+
             //Setup the green Call button image
             // Note BitmapImage.UriSource must be in a BeginInit/EndInit block.
             callButtonImage = new BitmapImage();
