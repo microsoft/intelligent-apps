@@ -34,7 +34,7 @@ namespace CallFabrikamCustomerService
             string path1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\SpeechResponse_Thinking.wav");
             thinking = new SoundPlayer(path1);
 
-            //TODO: use the speech recognition factory to create mic client
+            //TODO: use the speech recognition config and recognizer to create mic client
 
 
             //TODO: Call RunRecognizer Wire up Event handlers for speech recognition results
