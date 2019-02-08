@@ -52,6 +52,7 @@ namespace CallFabrikamCustomerService
             try
             {
                 var speechConfig = SpeechConfig.FromSubscription(this.MicrosoftSpeechApiKey, this.Region);
+                speechConfig.SpeechRecognitionLanguage = this.DefaultLocale;
 
                 SpeechRecognizer basicRecognizer;
 
@@ -62,7 +63,8 @@ namespace CallFabrikamCustomerService
             }
             catch (Exception ex)
             {
-
+                WriteLine($"An exception occured:{ex}");
+                Console.WriteLine($"An exception occured:{ex}");
             }
         }
 
