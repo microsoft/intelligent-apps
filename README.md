@@ -1,3 +1,14 @@
+### February 2019 Updates
+**Contoso Helpdesk Chat Bot**
+* Bot framework updated from version 3 to version 4.
+	- updated packages: Microsoft.Bot.Builder to v4.2.2
+	- added packages: Microsoft.Bot.Builder.Dialogs, Microsoft.Bot.Builder.Integration.AspNet.WebApi, Microsoft.Bot.Configuration
+
+**Fabrikam Investment Bank Customer Service**
+* Bot framework updated from version 3 to version 4.
+	- updated packages: Microsoft.Bot.Builder to v4.2.2
+	- added packages: Microsoft.Bot.Builder.AI.Luis, Microsoft.Bot.Builder.Dialogs, Microsoft.Bot.Builder.Integration.AspNet.WebApi, Microsoft.Bot.Configuration
+* Speech API updated from version 0.6 to version 1.2.
 
 # Activate Azure with Intelligent Apps
 There are five proof of concept applications in this repo written to illustrate how to augment existing applications with Microsoft Cognitive Services and Bot Framework to add intelligence as well as using other services in the Azure platform.
@@ -8,7 +19,7 @@ There are five proof of concept applications in this repo written to illustrate 
 
 **Alpine Ski House Happiness Meter**
 * Simple greetings app to evaluate the satisfaction of arriving visitors by analyzing their emotions.
-* Uses Emotion API (Former Project Oxford)
+* Uses Emotion API
 
 **Contoso Helpdesk Chat Bot**
 * Employee helpdesk solution to enable self-service app install, password reset and local admin elevation with a bot. 
@@ -16,7 +27,7 @@ There are five proof of concept applications in this repo written to illustrate 
 
 **Fabrikam Investment Bank Customer Service**
 * Customer facing bot for the account balance information inquiry through simulated Interactive Voice Response.
-* Uses Bot Framework (DirectLine Channel), LUIS & Bing Speech API (Project Oxford)
+* Uses Bot Framework (DirectLine Channel), LUIS & Speech API
 
 **Woodgrove Bank Enhanced ATM Security**
 * Demonstration of an enhanced ATM authentication through face recognition API.
