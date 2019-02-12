@@ -6,7 +6,6 @@ namespace ContosoHelpdeskChatBot.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Serializable]
     [Table("InstallApp")]
     public partial class InstallApp
     {
