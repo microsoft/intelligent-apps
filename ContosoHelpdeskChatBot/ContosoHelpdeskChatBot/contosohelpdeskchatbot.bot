@@ -1,0 +1,15 @@
+﻿{
+  "name": "BOTNAME",
+  "services": [
+    {
+      "type": "endpoint",
+      "name": "development",
+      "endpoint": "ENDPOINT",
+      "appId": "APPID",
+      "appPassword": "PASSWORD",
+      "id": "166"
+    }
+  ],
+  "padlock": "",
+  "version": "2.0"
+}
