@@ -3,35 +3,48 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using ContosoHelpdeskChatBot.Models;
-using Microsoft.Bot.Builder.FormFlow;
+using System.Collections.Generic;
+using Microsoft.Bot.Builder;
+using System.Threading;
 
 namespace ContosoHelpdeskChatBot.Dialogs
 {
     [Serializable]
-    public class LocalAdminDialog : IDialog<object>
+    public class LocalAdminDialog : WaterfallDialog
     {
         private LocalAdmin admin = new LocalAdmin();
-        public async Task StartAsync(IDialogContext context)
-        {
-            await context.PostAsync("Great I will help you request local machine admin.");
+        public static string dialogId = "LocalAdminDialog";
 
-            //TODO: use form builder call the dialog
+        public LocalAdminDialog(string dialogId, IEnumerable<WaterfallStep> steps = null) : base(dialogId, steps)
+        {
+            AddStep(GreetingStepAsync);
+            AddStep(ResponseConfirmStepAsync);
+            AddStep(finalStepAsync);
         }
 
-        private async Task ResumeAfterLocalAdminFormDialog(IDialogContext context, IAwaitable<LocalAdminPrompt> userReply)
+
+        private static async Task<DialogTurnResult> GreetingStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            //TODO: save data to LocalAdmin table
+            await stepContext.Context.SendActivityAsync($"Great! I will help you request local machine admin.");
 
-
-            context.Done<object>(null);
+            //TODO: prompt the user
+            return null;
         }
 
-        private IForm<LocalAdminPrompt> BuildLocalAdminForm()
+        private async Task<DialogTurnResult> ResponseConfirmStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            //TODO: implement form builder and use validate to assign values to admin.MachineName & admin.AdminDuration
-            var form = new FormBuilder<LocalAdminPrompt>();
+            //TODO: get user response and store it
 
-            return form.Build();
+            //TODO: prompt user
+            return null;
+        }
+
+        private async Task<DialogTurnResult> finalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            //TODO: get user response and validate
+
+            //TODO: save data to localAdmin table
+            return null;
         }
     }
 }
