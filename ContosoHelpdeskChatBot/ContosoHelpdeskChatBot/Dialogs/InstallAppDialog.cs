@@ -72,6 +72,8 @@ namespace ContosoHelpdeskChatBot.Dialogs
             //TODO: Add list of dummy app names
             //we will switch to using Entity Framework in the next PBI to lookup list from a table
             var names = new List<string>();
+            names.Add(Name + " 1");
+            names.Add(Name + " 2");
 
             return names;
         }

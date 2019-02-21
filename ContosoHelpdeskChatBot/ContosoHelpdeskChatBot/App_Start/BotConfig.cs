@@ -22,8 +22,6 @@ namespace ContosoHelpdeskChatBot.App_Start
                 //var path = HostingEnvironment.MapPath(@"~/contosohelpdeskchatbot.bot");
                 //var botConfigurationFile = BotConfiguration.Load(path);
                 //var endpointService = (EndpointService)botConfigurationFile.Services.First(s => s.Type == "endpoint");
-
-                //TODO: uncomment to load bot from bot file
                 //botConfig
                 //    .UseMicrosoftApplicationIdentity(endpointService?.AppId, endpointService?.AppPassword);
 
