@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoHelpdeskChatBot", "ContosoHelpdeskChatBot\ContosoHelpdeskChatBot.csproj", "{7CEA9614-BE08-47A8-9175-E858235B6231}"
 EndProject
@@ -30,5 +30,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D8005E5-57DD-4910-950A-5950E0BF8DAA}
 	EndGlobalSection
-	
 EndGlobal

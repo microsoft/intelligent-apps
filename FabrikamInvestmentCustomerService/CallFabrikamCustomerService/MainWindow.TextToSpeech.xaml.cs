@@ -15,7 +15,7 @@ namespace CallFabrikamCustomerService
 {
     public partial class MainWindow : Window
     {
-        //fields needed to do REST call to Bing Speech API
+        //fields needed to do REST call to Speech API
         private HttpClient httpClient;
         private HttpClientHandler httpHandler;
         private SoundPlayer speech;
@@ -57,12 +57,13 @@ namespace CallFabrikamCustomerService
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-Microsoft-OutputFormat", "riff-16khz-16bit-mono-pcm");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "IntelligentApps/FabrikamInvestmentCustomerService");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Bearer " + accessToken);
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Host", "westus.tts.speech.microsoft.com");
 
             //initialize a new instance of http request message
             var request = new HttpRequestMessage(HttpMethod.Post, MicrosoftTextToSpeechEndpoint)
             {
                 //we are making a few default assumptions here such as using English, Femail & the speech voice to use
-                //for additional choices refer https://docs.microsoft.com/en-us/azure/cognitive-services/Speech/api-reference-rest/bingvoiceoutput
+                //for additional choices refer https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/supported-languages#text-to-speech
                 Content = new StringContent(GenerateSsml("en-US", "Female", "Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)", Text))
             };
 
@@ -182,7 +183,18 @@ namespace CallFabrikamCustomerService
             }
         }
 
+        private async Task<string> FetchTokenAsync(string fetchUri, string subscriptionKey)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
+                UriBuilder uriBuilder = new UriBuilder(fetchUri);
 
+                var result = await client.PostAsync(uriBuilder.Uri.AbsoluteUri, null);
+                Console.WriteLine("Token Uri: {0}", uriBuilder.Uri.AbsoluteUri);
+                return await result.Content.ReadAsStringAsync();
+            }
+        }
 
     }
 }
