@@ -1,11 +1,11 @@
-﻿namespace ContosoHelpdeskChatBot.Models
+namespace ContosoHelpdeskChatBot.Models
 {
     using System;
 
     [Serializable]
     public class App
     {
-        public string Name { get; set; }
-        public string Machine { get; set; }
+        public string AppName { get; set; }
+        public string MachineName { get; set; }
     }
 }
