@@ -1,13 +1,13 @@
 ﻿{
-  "name": "BOTNAME",
+  "name": "<bot handle>",
   "services": [
     {
       "type": "endpoint",
       "name": "development",
-      "endpoint": "ENDPOINT",
-      "appId": "APPID",
-      "appPassword": "PASSWORD",
-      "id": "166"
+      "endpoint": "http://<your bot name>.azurewebsites.net/api/messages",
+      "appId": "<Refer PBI1 Task 5 Step 3>",
+      "appPassword": "<Refer PBI1 Task 5 Step 4>",
+      "id": "http://<your bot name>.azurewebsites.net/api/messages"
     }
   ],
   "padlock": "",

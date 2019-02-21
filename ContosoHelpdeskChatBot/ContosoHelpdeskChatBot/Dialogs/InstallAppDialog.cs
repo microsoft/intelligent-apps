@@ -12,6 +12,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
     [Serializable]
     public class InstallAppDialog : WaterfallDialog
     {
+        private static log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private Models.InstallApp install = new InstallApp();
         List<string> names = new List<string>();
         public static string dialogId = "InstallAppDialog";
@@ -99,6 +100,8 @@ namespace ContosoHelpdeskChatBot.Dialogs
                     db.InstallApps.Add(install);
                     db.SaveChanges();
                 }
+
+                logger.Info("InstallAppDialog: AppName = " + install.AppName + "; MachineName = " + install.MachineName);
 
                 await stepContext.Context.SendActivityAsync($"Great, your request to install {install.AppName} on {install.MachineName} has been scheduled.");
                 return await stepContext.EndDialogAsync();
