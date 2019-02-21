@@ -23,9 +23,8 @@ namespace ContosoHelpdeskChatBot.App_Start
                 //var botConfigurationFile = BotConfiguration.Load(path);
                 //var endpointService = (EndpointService)botConfigurationFile.Services.First(s => s.Type == "endpoint");
 
-                //TODO: uncomment to load bot from bot file
-                //botConfig
-                //    .UseMicrosoftApplicationIdentity(endpointService?.AppId, endpointService?.AppPassword);
+                botConfig
+                    .UseMicrosoftApplicationIdentity(endpointService?.AppId, endpointService?.AppPassword);
 
                 // The Memory Storage used here is for local bot debugging only. When the bot
                 // is restarted, everything stored in memory will be gone.
