@@ -9,7 +9,6 @@ using Microsoft.Bot.Builder;
 
 namespace ContosoHelpdeskChatBot.Dialogs
 {
-    [Serializable]
     public class InstallAppDialog : WaterfallDialog
     {
         private static log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);

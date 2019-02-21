@@ -285,7 +285,6 @@
     <Compile Include="ConsotoChatBotAccessors.cs" />
     <Compile Include="ContosoChatBot.cs" />
     <Compile Include="Dialogs\MainDialog.cs" />
-    <Compile Include="Dialogs\ResetPasswordDialog.cs" />
     <Compile Include="Models\AppMsi.cs" />
     <Compile Include="Models\ContosoHelpdeskContext.cs" />
     <Compile Include="Models\InstallApp.cs" />
