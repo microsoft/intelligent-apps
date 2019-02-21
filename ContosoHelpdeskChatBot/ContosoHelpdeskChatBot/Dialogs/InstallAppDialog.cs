@@ -75,6 +75,7 @@ namespace ContosoHelpdeskChatBot.Dialogs
                 {
                     //minus becoz index zero base
                     stepContext.Values["AppSelected"] = true;
+                    stepContext.Values["AppName"] = stepContext.Values["AppName"].ToString() + choice;
                     return await stepContext.PromptAsync("promptText", new PromptOptions { Prompt = MessageFactory.Text($"What is the name of the machine to install?") }, cancellationToken);
                 }
                 else
