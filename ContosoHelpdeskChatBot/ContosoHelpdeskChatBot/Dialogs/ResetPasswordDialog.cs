@@ -3,33 +3,61 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
-using Microsoft.Bot.Builder.FormFlow;
 using ContosoHelpdeskChatBot.Models;
 using ContosoHelpdeskSms;
+using System.Collections.Generic;
+using System.Threading;
+using Microsoft.Bot.Builder;
 
 namespace ContosoHelpdeskChatBot.Dialogs
 {
     [Serializable]
-    public class ResetPasswordDialog : IDialog<object>
+    public class ResetPasswordDialog : WaterfallDialog
     {
-        public async Task StartAsync(IDialogContext context)
+        public static string dialogId = "ResetPasswordDialog";
+
+        public ResetPasswordDialog(string dialogId, IEnumerable<WaterfallStep> steps = null) : base(dialogId, steps)
         {
-            await context.PostAsync("Alright I will help you create a temp password");
+            AddStep(GreetingStepAsync);
+            AddStep(PasscodeReceivedStepAsync);
+        }
 
-            //TODO: Use form builder to prompt for pass code
-            if (sendPassCode(context))
+
+        private async Task<DialogTurnResult> GreetingStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            await stepContext.Context.SendActivityAsync("Alright I will help you create a temp password");
+            if (sendPassCode(stepContext))
             {
-                //call form builder & resume ResumeAfterResetPasswordFormDialog
-
+                //TODO: prompt user
+                return null;
             }
             else
             {
-                //here we can simply fail the current dialog because we have root dialog handling all exceptions
-                context.Fail(new Exception("\n\nCannot send SMS. This feature only works in email channel.\n\nAlso, make sure email & phone number has been added to database."));
+                //TODO: notify user and end dialog
+                return null;
             }
         }
 
-        private bool sendPassCode(IDialogContext context)
+        private async Task<DialogTurnResult> PasscodeReceivedStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            int result;
+            bool isNum = int.TryParse(stepContext.Context.Activity.Text, out result);
+            if (isNum)
+            {
+                var email = stepContext.Context.Activity.From.Id;
+                int? passcode;
+
+                //TODO: Lookup ResetPassword table and generate temporary password if pass code matches
+                return null;
+            }
+            else
+            {
+                await stepContext.Context.SendActivityAsync($"Invalid passcode.");
+                return await stepContext.EndDialogAsync();
+            }
+        }
+
+        private bool sendPassCode(WaterfallStepContext context)
         {
             bool result = false;
 
@@ -45,16 +73,6 @@ namespace ContosoHelpdeskChatBot.Dialogs
             //TODO: Send SMS to mobile number looked up from ResetPassword table
 
             return result;
-        }
-
-        private async Task ResumeAfterResetPasswordFormDialog(IDialogContext context, IAwaitable<ResetPasswordPrompt> userReply)
-        {
-            var prompt = await userReply;
-
-            //TODO: Lookup ResetPassword table and generate temporary password if pass code matches
-
-
-            context.Done<object>(null);
         }
     }
 }
