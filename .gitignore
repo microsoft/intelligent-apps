@@ -286,3 +286,5 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+/ContosoHelpdeskChatBot/ContosoHelpdeskChatBot/contosohelpdeskchatbot_AZURE.bot
+/ContosoHelpdeskChatBot/ContosoHelpdeskChatBot/contosohelpdeskchatbot_NOINFO.bot
