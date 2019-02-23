@@ -9,7 +9,6 @@ using System.Threading;
 
 namespace ContosoHelpdeskChatBot.Dialogs
 {
-    [Serializable]
     public class LocalAdminDialog : WaterfallDialog
     {
         private LocalAdmin admin = new LocalAdmin();
