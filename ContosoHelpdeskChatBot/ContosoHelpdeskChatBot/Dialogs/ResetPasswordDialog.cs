@@ -11,7 +11,6 @@ using Microsoft.Bot.Builder;
 
 namespace ContosoHelpdeskChatBot.Dialogs
 {
-    [Serializable]
     public class ResetPasswordDialog : WaterfallDialog
     {
         public static string dialogId = "ResetPasswordDialog";
@@ -45,10 +44,20 @@ namespace ContosoHelpdeskChatBot.Dialogs
             if (isNum)
             {
                 var email = stepContext.Context.Activity.From.Id;
-                int? passcode;
+                int? passcode = null;
 
                 //TODO: Lookup ResetPassword table and generate temporary password if pass code matches
-                return null;
+
+                
+                if (result == passcode)
+                {​
+                    //TODO: Create temporary password and store in database​
+                }​
+                else
+                {​
+                    await stepContext.Context.SendActivityAsync($"Incorrect passcode.");​
+                    return await stepContext.EndDialogAsync();​
+                }
             }
             else
             {
