@@ -302,7 +302,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="contosohelpdeskchatbot.bot" />
-    <None Include="Properties\PublishProfiles\ContosoHelpdeskChatBot111 - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
