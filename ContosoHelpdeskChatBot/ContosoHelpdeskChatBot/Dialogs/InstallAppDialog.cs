@@ -10,9 +10,11 @@ using Microsoft.Bot.Builder;
 
 namespace ContosoHelpdeskChatBot.Dialogs
 {
-    [Serializable]
     public class InstallAppDialog : WaterfallDialog
     {
+        //TODO: Uncomment after adding log4net Nuget package
+        //private static log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
         //private Models.InstallApp install = new InstallApp();
         List<string> names = new List<string>();
@@ -97,9 +99,11 @@ namespace ContosoHelpdeskChatBot.Dialogs
                 //Models.InstallApp install = new InstallApp();
                 //install.AppName = (string)stepContext.Values["AppName"];
                 //install.MachineName = machineName;
-                stepContext.Values["MachineName"] = machineName;
 
                 //TODO: Save to database
+
+                //TODO: Uncomment after adding log4net Nuget package
+                //logger.Info("InstallAppDialog: AppName = " + install.AppName + "; MachineName = " + install.MachineName);
 
                 //TODO: Uncomment after adding Entity Framework entities from ContosoHelpdeskData database
                 //await stepContext.Context.SendActivityAsync($"Great, your request to install {install.AppName} on {install.MachineName} has been scheduled.");

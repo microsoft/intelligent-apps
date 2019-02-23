@@ -19,7 +19,6 @@ namespace ContosoHelpdeskChatBot.Dialogs
         private static List<Choice> HelpdeskOptions = new List<Choice>
         {
             new Choice { Value = InstallAppOption, Synonyms = new List<string>{ "install", "application", "install application" } },
-            new Choice { Value = ResetPasswordOption, Synonyms = new List<string>{ "password", "reset", "reset password" } }
         };
         public static string dialogId = "MainDialog";
 
@@ -48,8 +47,6 @@ namespace ContosoHelpdeskChatBot.Dialogs
             {
                 case InstallAppOption:
                     return await stepContext.BeginDialogAsync(InstallAppDialog.dialogId);
-                case ResetPasswordOption:
-                    return await stepContext.BeginDialogAsync(ResetPasswordDialog.dialogId);
             }
 
             return await stepContext.NextAsync();
