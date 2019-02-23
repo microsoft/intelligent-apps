@@ -285,7 +285,6 @@
     <Compile Include="ConsotoChatBotAccessors.cs" />
     <Compile Include="ContosoChatBot.cs" />
     <Compile Include="Dialogs\MainDialog.cs" />
-    <Compile Include="Dialogs\ResetPasswordDialog.cs" />
     <Compile Include="Models\AppMsi.cs" />
     <Compile Include="Models\ContosoHelpdeskContext.cs" />
     <Compile Include="Models\InstallApp.cs" />
@@ -303,7 +302,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="contosohelpdeskchatbot.bot" />
-    <None Include="Properties\PublishProfiles\ContosoHelpdeskChatBot111 - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
