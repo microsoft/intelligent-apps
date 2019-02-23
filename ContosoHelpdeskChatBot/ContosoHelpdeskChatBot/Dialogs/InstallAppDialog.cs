@@ -9,7 +9,6 @@ using ContosoHelpdeskChatBot.Models;
 
 namespace ContosoHelpdeskChatBot.Dialogs
 {
-    [Serializable]
     public class InstallAppDialog : WaterfallDialog
     {
         private App install = new App();
