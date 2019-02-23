@@ -8,7 +8,6 @@ using Microsoft.Bot.Builder;
 
 namespace ContosoHelpdeskChatBot.Dialogs
 {
-    [Serializable]
     public class InstallAppDialog : WaterfallDialog
     {
         private Models.App install = new Models.App();
