@@ -1,0 +1,15 @@
+﻿{
+  "name": "FabBot1",
+  "services": [
+    {
+      "type": "endpoint",
+      "name": "development",
+      "endpoint": "FILL IN - BOT URL ENDPOINT",
+      "appId": "FILL IN - BOT APP ID",
+      "appPassword": "FILL IN - BOT PASSWORD",
+      "id": "166"
+    }
+  ],
+  "padlock": "",
+  "version": "2.0"
+}
