@@ -41,8 +41,14 @@ namespace CallFabrikamCustomerService
         {
             botClient = new DirectLineClient(MicrosoftBotDirectLineKey);
 
-            //we are starting a conversation with the bot
-            conversation = await botClient.Conversations.StartConversationAsync();
+            try
+            {
+                //we are starting a conversation with the bot
+                conversation = await botClient.Conversations.StartConversationAsync();
+            }catch (Exception ex)
+            {
+                Console.WriteLine($"An exception occured:{ex}");
+            }
         }
 
         //Get bot Activities i.e. messages from the bot
