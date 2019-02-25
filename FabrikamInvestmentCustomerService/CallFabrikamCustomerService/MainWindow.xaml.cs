@@ -1,27 +1,15 @@
 ﻿using Microsoft.CognitiveServices.Speech;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
-using System.Diagnostics;
-using System.IO;
 using System.Media;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Xml.Linq;
 
 namespace CallFabrikamCustomerService
 {
@@ -66,8 +54,11 @@ namespace CallFabrikamCustomerService
             hangUpButtonImage.EndInit();
 
             //Setup dial & ringing tone
-            dialTone = new SoundPlayer(@"../../Resources/DialTone_18883226837.wav");
-            ringing = new SoundPlayer(@"../../Resources/Ringing_Phone-Mike_Koenig.wav");
+            string path = Assembly.GetExecutingAssembly().Location;
+            string path1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\Ringing_Phone-Mike_Koenig.wav");
+            string path2 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\DialTone_18883226837.wav");
+            dialTone = new SoundPlayer(path2);
+            ringing = new SoundPlayer(path1);
 
             //TODO: Initialize speech default locale
 
@@ -165,8 +156,11 @@ namespace CallFabrikamCustomerService
 
 
         //Writes the response result.
-        private void EchoResponse(SpeechRecognitionResultEventArgs e)
+        private void EchoResponse(SpeechRecognitionEventArgs e)
         {
+            //Stop Microphone, want to make sure recognizer is cleaned up and events unsubscribed
+            StopMicrophone();
+
             WriteLine("Speech To Text Result:");
             //TODO: handle the case when there are no results. 
             //common situation is when there is a pause from user and audio captured has no speech in it
