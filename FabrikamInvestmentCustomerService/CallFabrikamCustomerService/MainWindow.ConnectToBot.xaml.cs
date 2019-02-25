@@ -47,17 +47,17 @@ namespace CallFabrikamCustomerService
             IEnumerable<Activity> activities;
             int retry = 3;
 
-            
+
             //the http get on activities for directline uses a poll pattern
             //because of that it is possible to be in a race condition where we are not receiving messages/activities on a premature call
             //here we use a simple retry and delay in between to address that but consider using web sockets
             do
             {
                 //TODO: get bot replies on the conversation we started earlier
-                
+
 
                 //TODO: activity watermark helps determine if we have the latest messages
-                
+
 
                 //TODO: get the replies from botId and get the latest Text which is where the message is
 
@@ -69,7 +69,7 @@ namespace CallFabrikamCustomerService
                 await Task.Delay(500);
 
             } while (retry > 0);
-            
+
             return result;
 
         }
