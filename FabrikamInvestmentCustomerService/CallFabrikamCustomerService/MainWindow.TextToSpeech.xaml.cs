@@ -36,6 +36,8 @@ namespace CallFabrikamCustomerService
             //This auto-renew the Speech API access token needed when doing a POST
             //The access token only last for 10min so we setup a timer to renew the it every 9min
 
+
+
         }
 
         public Task PlaySpeechAudio(string Text)
@@ -70,6 +72,7 @@ namespace CallFabrikamCustomerService
             //TODO: create SSML XML document that will be the payload for posting to speech api
 
 
+
             return ssmlDoc.ToString();
         }
 
@@ -77,7 +80,8 @@ namespace CallFabrikamCustomerService
         private void OnTokenExpiredCallback(object stateInfo)
         {
             //TODO: do http post to get new token and assign new token to accessToken
-            
+
+
         }
 
         //Helper method to get extract speech access token
@@ -111,8 +115,5 @@ namespace CallFabrikamCustomerService
                 }
             }
         }
-
-
-
     }
 }

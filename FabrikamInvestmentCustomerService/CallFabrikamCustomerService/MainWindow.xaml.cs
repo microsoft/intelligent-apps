@@ -8,6 +8,7 @@ using System.IO;
 using System.Media;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -70,8 +71,11 @@ namespace CallFabrikamCustomerService
             hangUpButtonImage.EndInit();
 
             //Setup dial & ringing tone
-            dialTone = new SoundPlayer(@"../../Resources/DialTone_18883226837.wav");
-            ringing = new SoundPlayer(@"../../Resources/Ringing_Phone-Mike_Koenig.wav");
+            string path = Assembly.GetExecutingAssembly().Location;
+            string path1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\Ringing_Phone-Mike_Koenig.wav");
+            string path2 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\DialTone_18883226837.wav");
+            dialTone = new SoundPlayer(path2);
+            ringing = new SoundPlayer(path1);
 
             //Initialize speech to short phrase mode & default locale
             DefaultLocale = "en-US";
@@ -103,7 +107,6 @@ namespace CallFabrikamCustomerService
 
             if (this.speech != null)
                 this.speech.Dispose();
-
         }
 
         //Handle the call button click
@@ -185,10 +188,12 @@ namespace CallFabrikamCustomerService
             }
         }
 
-
         //Writes the response result.
-        private void EchoResponse(SpeechRecognitionResultEventArgs e)
+        private void EchoResponse(SpeechRecognitionEventArgs e)
         {
+            //Stop Microphone, want to make sure recognizer is cleaned up and events unsubscribed
+            StopMicrophone();
+
             WriteLine("Speech To Text Result:");
             //handle the case when there are no results. 
             //common situation is when there is a pause from user and audio captured has no speech in it
@@ -203,10 +208,14 @@ namespace CallFabrikamCustomerService
                         "Text=\"{0}\"",
                         e.Result.Text);
 
+
                 //TODO: Play audio from text to speech API
-                
+
+
             }
+            StartMicrophone();
         }
+
 
         //Creates a line break
         internal void WriteLine()
