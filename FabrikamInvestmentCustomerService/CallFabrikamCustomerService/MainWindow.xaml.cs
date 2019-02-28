@@ -80,19 +80,16 @@ namespace CallFabrikamCustomerService
         //Event handler that will cleanup speech client when window is closed; essentially closing app
         private void OnMainWindowClosing(object sender, CancelEventArgs e)
         {
-            //cleanup tones
+            //cleanup resources
             dialTone.Dispose();
             ringing.Dispose();
 
-            //cleanup speech to text mic & thinking tone
-            if (this.recognizer != null)
-            {
-                this.recognizer.StopContinuousRecognitionAsync();
-                recognizer.Dispose();
-
-            }
+            //check for null in case window closed without using recognizer
             if (this.thinking != null)
                 thinking.Dispose();
+
+            if (this.recognizer != null)
+                recognizer.Dispose();
 
         }
 
@@ -108,7 +105,7 @@ namespace CallFabrikamCustomerService
             //we should wait until the dialing tone has been completed before continue
             dial.Wait();
 
-            StartMicrophone();
+            StartSpeechRecognition();
 
             //transition calling to connected GUI
             TransitionCallGui();
@@ -117,7 +114,7 @@ namespace CallFabrikamCustomerService
         //Handle the hang up button click
         private void keypadHangUpButton_Click(object sender, RoutedEventArgs e)
         {
-            StopMicrophone();
+            StopSpeechRecognition();
 
             //transition GUI back to ready to call
             TransitionHangUpGui();
@@ -178,9 +175,6 @@ namespace CallFabrikamCustomerService
         //Writes the response result.
         private void EchoResponse(SpeechRecognitionEventArgs e)
         {
-            //Stop Microphone, want to make sure recognizer is cleaned up and events unsubscribed
-            StopMicrophone();
-
             WriteLine("Speech To Text Result:");
             //handle the case when there are no results. 
             //common situation is when there is a pause from user and audio captured has no speech in it
@@ -195,7 +189,6 @@ namespace CallFabrikamCustomerService
                         "Text=\"{0}\"",
                         e.Result.Text);
             }
-            StartMicrophone();
         }
 
 
