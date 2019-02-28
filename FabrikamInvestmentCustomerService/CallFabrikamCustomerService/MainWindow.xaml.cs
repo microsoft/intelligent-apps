@@ -1,15 +1,28 @@
 ﻿using Microsoft.CognitiveServices.Speech;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
+using System.Diagnostics;
+using System.IO;
 using System.Media;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Xml.Linq;
 
 namespace CallFabrikamCustomerService
 {
@@ -60,18 +73,19 @@ namespace CallFabrikamCustomerService
             dialTone = new SoundPlayer(path2);
             ringing = new SoundPlayer(path1);
 
-            //TODO: Initialize speech default locale
-
+            //Initialize speech to short phrase mode & default locale
+            DefaultLocale = "en-US";
         }
 
         //Event handler that will cleanup speech client when window is closed; essentially closing app
         private void OnMainWindowClosing(object sender, CancelEventArgs e)
         {
-            //cleanup tones
+            //cleanup resources
             dialTone.Dispose();
             ringing.Dispose();
 
-            //TODO: cleanup speech to text mic & thinking tone
+            //TODO: check for null in case window closed without using recognizer
+
 
         }
 
@@ -87,7 +101,7 @@ namespace CallFabrikamCustomerService
             //we should wait until the dialing tone has been completed before continue
             dial.Wait();
 
-            StartMicrophone();
+            StartSpeechRecognition();
 
             //transition calling to connected GUI
             TransitionCallGui();
@@ -96,7 +110,7 @@ namespace CallFabrikamCustomerService
         //Handle the hang up button click
         private void keypadHangUpButton_Click(object sender, RoutedEventArgs e)
         {
-            StopMicrophone();
+            StopSpeechRecognition();
 
             //transition GUI back to ready to call
             TransitionHangUpGui();
@@ -154,22 +168,16 @@ namespace CallFabrikamCustomerService
             }
         }
 
-
         //Writes the response result.
         private void EchoResponse(SpeechRecognitionEventArgs e)
         {
-            //Stop Microphone, want to make sure recognizer is cleaned up and events unsubscribed
-            StopMicrophone();
-
             WriteLine("Speech To Text Result:");
-            //TODO: handle the case when there are no results. 
+            //TODO: write out results to on screen display
+            //handle the case when there are no results. 
             //common situation is when there is a pause from user and audio captured has no speech in it
 
-            //speech to text usually returns an array of returns ranked highest first to lowest
-            //TODO: we will print all of the results
-
-            StartMicrophone();
         }
+
 
         //Creates a line break
         internal void WriteLine()
