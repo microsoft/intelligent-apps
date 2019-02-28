@@ -80,7 +80,7 @@ namespace CallFabrikamCustomerService
             //play the thinking sound to simulate processing transription
             thinking.PlaySync();
 
-            //display the result in the 
+            //display the result in the main window
             this.EchoResponse(e);
         }
 
