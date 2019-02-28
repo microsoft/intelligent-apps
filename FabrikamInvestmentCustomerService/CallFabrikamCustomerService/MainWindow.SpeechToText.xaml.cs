@@ -86,8 +86,11 @@ namespace CallFabrikamCustomerService
 
         private void CanceledEventHandler(SpeechRecognitionCanceledEventArgs e)
         {
-            //writing errors to visual studio output window for debugging purposes
-            Debug.WriteLine($"Recognition Canceled. Reason: {e.Reason}, ErrorDetails: {e.ErrorDetails}");
+            //show errors in main window
+            if (e.Reason == CancellationReason.Error)
+            {
+                this.WriteLine($"Recognition Canceled. Reason: {e.Reason}, ErrorDetails: {e.ErrorDetails}");
+            }
         }
 
         private void SessionStartedEventHandler(SessionEventArgs e)
