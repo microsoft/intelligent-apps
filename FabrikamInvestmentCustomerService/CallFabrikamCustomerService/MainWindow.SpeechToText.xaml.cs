@@ -1,5 +1,6 @@
 ﻿using Microsoft.CognitiveServices.Speech;
 using System;
+using System.Diagnostics;
 using System.Media;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -11,112 +12,93 @@ namespace CallFabrikamCustomerService
     {
         //These are fields needed for using speech recognition client library
         private string DefaultLocale;
-        SoundPlayer thinking;
-        private TaskCompletionSource<int> stopBaseRecognitionTaskCompletionSource;
         private SpeechRecognizer recognizer;
 
-        private void StartMicrophone()
-        {
-            //TODO: create and start mic recognition
-            
-        }
+        SoundPlayer thinking;
+        
 
-        private void StopMicrophone()
-        {
-            //TODO: end mic recognition and dispose of recognizer
-
-        }
-
-        //Creates a new microphone recognizer to start recoding and send send audio stream to Speech API automatically for text transcription
-        private void CreateMicrophoneReco()
+        private void StartSpeechRecognition()
         {
             string path = Assembly.GetExecutingAssembly().Location;
             string path1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), "Resources\\SpeechResponse_Thinking.wav");
             thinking = new SoundPlayer(path1);
 
-            //TODO: use the speech recognition config and recognizer to create mic client
+            try
+            {
+                //TODO: set the key, region, language and instantiate a recognizer
 
 
-            //TODO: Call RunRecognizer Wire up Event handlers for speech recognition results
+                //TODO: instantiate new instance of speech recognizer and 
+                //keeping it for the lifetime until the main window closes
 
+
+                //TODO: wire up event handlers to speech events
+
+
+                //start speech recognition
+
+            }
+            catch (Exception ex)
+            {
+                this.WriteLine($"An exception occured:{ex}");
+                Debug.WriteLine($"An exception occured:{ex}");
+            }
         }
 
-        /// <summary>
-        /// Subscribes to Recognition Events
-        /// Starts the Recognition and waits until Final Result is received, then Stops recognition
-        /// </summary>
-        /// <param name="recognizer">Recognizer object</param>
-        /// <param name="recoType">Type of Recognizer</param>
-        ///  <value>
-        ///   <c>Base</c> if Baseline model; otherwise, <c>Custom</c>.
-        /// </value>
-        private async Task RunRecognizer(SpeechRecognizer recogniz, TaskCompletionSource<int> source)
+        private void StopSpeechRecognition()
         {
-            recognizer = recogniz;
+            //TODO: stop recognition
 
-            //TODO: Wire up Event handlers for speech recognition results
 
-            //start,wait,stop recognition
-            await recognizer.StartContinuousRecognitionAsync().ConfigureAwait(false);
-            await source.Task.ConfigureAwait(false);
-            await recognizer.StopContinuousRecognitionAsync().ConfigureAwait(false);
+            //TODO: unsubscribe from events
 
-            //TODO: Unsubscribe from Event handlers
         }
 
         #region Recognition Event Handlers
 
-        /// <summary>
-        /// Logs Intermediate Recognition results
-        /// </summary>
         private void RecognizingEventHandler(SpeechRecognitionEventArgs e)
         {
-            //TODO: end recognition
+            //logs Intermediate Recognition results to Visual Studio Output Window
+            Debug.WriteLine("\n    RecognizingEventHandler: {0}", e.Result);
         }
 
-        /// <summary>
-        /// Logs the Final result
-        /// </summary>
         private void RecognizedEventHandler(SpeechRecognitionEventArgs e)
         {
+            //play the thinking sound to simulate processing transription
             thinking.PlaySync();
 
-            //TODO: call EchoResponse to write out received response 
-
-
-        }
-
-        /// <summary>
-        /// Logs Cancel events
-        /// And sets the TaskCompletionSource to 0, in order to trigger Recognition Stop
-        /// </summary>
-        private void CanceledEventHandler(SpeechRecognitionCanceledEventArgs e, TaskCompletionSource<int> source)
-        {
-            WriteLine($"\n    Recognition Canceled. Reason: {e.Reason.ToString()}, CanceledReason: {e.Reason}");
-            source.TrySetResult(0);
-            TransitionHangUpGui();
-        }
-
-        private void SessionStartedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
-        {
-            //TODO: Writeline out mic status change to onscreen display
+            //TODO: display the result in the main window
 
         }
 
-        private void SessionStoppedEventHandler(SessionEventArgs e, TaskCompletionSource<int> source)
+        private void CanceledEventHandler(SpeechRecognitionCanceledEventArgs e)
         {
-            //TODO: Writeline out mic status change to onscreen display
+            //show errors in main window
+            if (e.Reason == CancellationReason.Error)
+            {
+                this.WriteLine($"Recognition Canceled. Reason: {e.Reason}, ErrorDetails: {e.ErrorDetails}");
+            }
+        }
 
+        private void SessionStartedEventHandler(SessionEventArgs e)
+        {
+            //writing out to the label control to show progress/status
+            this.WriteLine("Session start detected.  Please start speaking.");
+        }
+
+        private void SessionStoppedEventHandler(SessionEventArgs e)
+        {
+            this.WriteLine("Session stop detected.");
         }
 
         private void SpeechStartDetectedEventHandler(RecognitionEventArgs e)
         {
-            Console.WriteLine("\n    Speech start detected.");
+            Debug.WriteLine("\n    Speech start detected.");
         }
 
         private void SpeechEndDetectedEventHandler(RecognitionEventArgs e)
         {
-            Console.WriteLine("\n    Speech end detected.");
+            Debug.WriteLine("\n    Speech end detected.");
         }
 
         #endregion
