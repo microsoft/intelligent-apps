@@ -100,19 +100,16 @@ namespace CallFabrikamCustomerService
     //Event handler that will cleanup speech client when window is closed; essentially closing app
     private void OnMainWindowClosing(object sender, CancelEventArgs e)
         {
-            //cleanup tones
+            //cleanup resources
             dialTone.Dispose();
             ringing.Dispose();
 
-            //cleanup speech to text mic & thinking tone
-            if (this.recognizer != null)
-            {
-                this.recognizer.StopContinuousRecognitionAsync();
-                recognizer.Dispose();
-
-            }
+            //check for null in case window closed without using recognizer
             if (this.thinking != null)
                 thinking.Dispose();
+
+            if (this.recognizer != null)
+                recognizer.Dispose();
 
             //cleanup text to speech http client, handler & speech audio
             if (this.httpClient != null)
@@ -138,16 +135,16 @@ namespace CallFabrikamCustomerService
             //we should wait until the dialing tone has been completed before continue
             dial.Wait();
 
+            StartSpeechRecognition();
+
             //transition calling to connected GUI
             TransitionCallGui();
-
-            StartMicrophone();
         }
 
         //Handle the hang up button click
         private void keypadHangUpButton_Click(object sender, RoutedEventArgs e)
         {
-            StopMicrophone();
+            StopSpeechRecognition();
 
             //transition GUI back to ready to call
             TransitionHangUpGui();
@@ -207,7 +204,7 @@ namespace CallFabrikamCustomerService
 
 
         //Writes the response result.
-        private async Task EchoResponseAsync(SpeechRecognitionEventArgs e)
+        private void EchoResponse(SpeechRecognitionEventArgs e)
         {
             WriteLine("Speech To Text Result:");
             //handle the case when there are no results. 
@@ -234,9 +231,6 @@ namespace CallFabrikamCustomerService
                 var speakTask = this.PlaySpeechAudioAsync(result);
 
             }
-
-            //Start Microphone
-            StartMicrophone();
         }
 
         //Creates a line break
