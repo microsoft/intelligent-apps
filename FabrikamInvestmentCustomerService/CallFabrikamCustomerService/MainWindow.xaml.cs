@@ -203,7 +203,7 @@ namespace CallFabrikamCustomerService
                         e.Result.Text);
 
                 //Play audio from text to speech API
-                PlaySpeechAudio(e.Result.Text);
+                var speakTask = this.PlaySpeechAudioAsync(e.Result.Text);
             }
         }
 

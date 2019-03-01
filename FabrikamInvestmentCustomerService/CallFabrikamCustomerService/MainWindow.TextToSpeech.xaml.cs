@@ -44,7 +44,7 @@ namespace CallFabrikamCustomerService
                                            TimeSpan.FromMilliseconds(-1));
         }
 
-        public Task PlaySpeechAudio(string Text)
+        public Task PlaySpeechAudioAsync(string Text)
         {
             if (httpClient == null)
                 CreateSpeechClient();
