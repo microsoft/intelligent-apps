@@ -144,9 +144,9 @@ namespace CallFabrikamCustomerService
 
             //greet caller
             this.WriteLine("Connecting...");
-            var botReplyTask = this.GetBotReplyAsync("hi");
-            string result = botReplyTask.Result;
-            var speakTask = this.PlaySpeechAudioAsync(result);
+            var result = await this.GetBotReplyAsync("hi");
+            await PlaySpeechAudioAsync(result);
+
 
         }
 
