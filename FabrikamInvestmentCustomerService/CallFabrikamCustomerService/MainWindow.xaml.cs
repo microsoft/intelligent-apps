@@ -231,7 +231,7 @@ namespace CallFabrikamCustomerService
 
 
                 //Play audio from text to speech API
-                await PlaySpeechAudioAsync(result);
+                var speakTask = this.PlaySpeechAudioAsync(result);
 
             }
 
