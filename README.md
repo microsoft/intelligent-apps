@@ -6,6 +6,7 @@
 	- WaterfallDialog instead of FormFlow
 	- Scorables replaced with new cancelation on turns
 	- new .bot configuration file 
+* NOTE: For migration approach that retains most compatibility with ASP.NET, refer to migration guide [Migrate a .NET SDK v3 bot to v4](https://docs.microsoft.com/en-us/azure/bot-service/migration/conversion-framework?view=azure-bot-service-4.0)
 
 **Fabrikam Investment Bank Customer Service**
 * Bot framework mgirated from version 3 to version 4.
