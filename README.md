@@ -1,14 +1,18 @@
 ### February 2019 Updates
 **Contoso Helpdesk Chat Bot**
-* Bot framework updated from version 3 to version 4.
-	- updated packages: Microsoft.Bot.Builder to v4.2.2
-	- added packages: Microsoft.Bot.Builder.Dialogs, Microsoft.Bot.Builder.Integration.AspNet.WebApi, Microsoft.Bot.Configuration
+* Bot framework migrated from version 3 to version 4.
+	- new Bot class implementing IBot as entry point to bot service
+	- switched from bot state service to in-proc in-memory cache
+	- WaterfallDialog instead of FormFlow
+	- Scorables replaced with new cancelation on turns
+	- new .bot configuration file 
 
 **Fabrikam Investment Bank Customer Service**
-* Bot framework updated from version 3 to version 4.
-	- updated packages: Microsoft.Bot.Builder to v4.2.2
-	- added packages: Microsoft.Bot.Builder.AI.Luis, Microsoft.Bot.Builder.Dialogs, Microsoft.Bot.Builder.Integration.AspNet.WebApi, Microsoft.Bot.Configuration
-* Speech API updated from version 0.6 to version 1.2.
+* Bot framework mgirated from version 3 to version 4.
+	- see above details in Contoso solution updates
+* Project Oxford migrated to Speech API version 1.3.
+	- microphone client replaced with simple speech recognizer
+	- LUIS now uses recognizer and switch case to map intents to actions
 
 # Activate Azure with Intelligent Apps
 There are five proof of concept applications in this repo written to illustrate how to augment existing applications with Microsoft Cognitive Services and Bot Framework to add intelligence as well as using other services in the Azure platform.
