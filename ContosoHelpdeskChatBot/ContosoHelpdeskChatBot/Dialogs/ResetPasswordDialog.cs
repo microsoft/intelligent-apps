@@ -54,10 +54,10 @@ namespace ContosoHelpdeskChatBot.Dialogs
                 {
                     string temppwd = "TempPwd" + new Random().Next(0, 5000);
                     using (var db = new ContosoHelpdeskContext())
-                    {​
-                        var reset = db.ResetPasswords.Where(r => r.EmailAddress == email).First();​
-                        reset.TempPassword = temppwd;​
-                        db.SaveChanges();​
+                    {
+                        var reset = db.ResetPasswords.Where(r => r.EmailAddress == email).First();
+                        reset.TempPassword = temppwd;
+                        db.SaveChanges();
                     }
                     await stepContext.Context.SendActivityAsync($"Your temp password is {temppwd}");
                     return await stepContext.EndDialogAsync();
