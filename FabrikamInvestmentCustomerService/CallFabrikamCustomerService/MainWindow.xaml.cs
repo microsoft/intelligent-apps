@@ -190,27 +190,6 @@ namespace CallFabrikamCustomerService
                         e.Result.Text);
             }
         }
-        */
-        //Writes the response result.
-        private void EchoResponse(SpeechRecognitionResultEventArgs e)
-        {
-            WriteLine("Speech To Text Result:");
-            //handle the case when there are no results. 
-            //common situation is when there is a pause from user and audio captured has no speech in it
-            if (e.Result.Text.Length == 0)
-            {
-                WriteLine("No phrase response is available.");
-                WriteLine();
-            }
-            else
-            {
-                WriteLine(
-                        "Text=\"{0}\"",
-                        e.Result.Text);
-            }
-            StartMicrophone();
-        }
-
 
 
         //Creates a line break
