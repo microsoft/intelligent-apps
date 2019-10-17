@@ -25,13 +25,15 @@ namespace AdatumTaxCorpKnowledgeService.Controllers
         public JsonResult FindTaxAnswer(QnaMakerQuestion inquiry)
         {
             JsonResult result;
-            string kbIdName = "knowledgeBaseID";
             string keyName = "authorization";
+            string host = "qnaHost";
+            string uri = "qnaUri";
             string contentTypeName = "Content-Type";
             string contentTypeValue = "application/json";
 
-            var kbIdValue = WebConfigurationManager.AppSettings[kbIdName];
             var keyValue = WebConfigurationManager.AppSettings[keyName];
+            var hostValue = WebConfigurationManager.AppSettings[host];
+            var uriValue = WebConfigurationManager.AppSettings[uri];
 
             if (inquiry.Question is null || inquiry.Question == "")
             {
@@ -39,7 +41,7 @@ namespace AdatumTaxCorpKnowledgeService.Controllers
             }
             else
             {
-                string url = $"https://adatumtaxcorpknowledgebot.azurewebsites.net/qnamaker/knowledgebases/{kbIdValue}/generateAnswer";
+                string url = $"{hostValue}{uriValue}";
                 string body = JsonConvert.SerializeObject(inquiry);
 
                 using (WebClient client = new WebClient())
