@@ -39,7 +39,7 @@ namespace AdatumTaxCorpKnowledgeService.Controllers
             }
             else
             {
-                string url = $"https://westus.api.cognitive.microsoft.com/qnamaker/v2.0/knowledgebases/{kbIdValue}/generateAnswer";
+                string url = $"https://adatumtaxcorpknowledgebot.azurewebsites.net/qnamaker/knowledgebases/{kbIdValue}/generateAnswer";
                 string body = JsonConvert.SerializeObject(inquiry);
 
                 using (WebClient client = new WebClient())
