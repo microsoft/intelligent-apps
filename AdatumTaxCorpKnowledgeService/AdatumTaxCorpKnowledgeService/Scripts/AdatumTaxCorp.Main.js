@@ -54,10 +54,3 @@ $(document).ready(function () {
         }
     });
 });
-
-
-function htmlDecode(input) {
-    var temp = document.createElement('div');
-    temp.innerHTML = input;
-    return temp.childNodes[0].nodeValue;
-}
