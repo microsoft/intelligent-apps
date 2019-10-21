@@ -34,7 +34,6 @@ namespace ContosoHelpdeskChatBot
             dialogs.Add(new TextPrompt("promptText"));
             dialogs.Add(new NumberPrompt<int>("promptNumber"));
             dialogs.Add(new InstallAppDialog("InstallAppDialog"));
-            dialogs.Add(new ResetPasswordDialog("ResetPasswordDialog"));
         }
 
         public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default(CancellationToken))

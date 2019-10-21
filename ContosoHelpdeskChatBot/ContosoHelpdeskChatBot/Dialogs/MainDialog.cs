@@ -48,8 +48,6 @@ namespace ContosoHelpdeskChatBot.Dialogs
             {
                 case InstallAppOption:
                     return await stepContext.BeginDialogAsync(InstallAppDialog.dialogId);
-                case ResetPasswordOption:
-                    return await stepContext.BeginDialogAsync(ResetPasswordDialog.dialogId);
             }
 
             return await stepContext.NextAsync();
