@@ -27,7 +27,6 @@ $(document).ready(function () {
                 answer = ob.answers[0].answer;
 				score = ob.answers[0].score;
 				matchingquestions = ob.answers[0].questions;
-                answer = htmlDecode(answer);
 
                 answerHtml = "<div>" + answer + "</div><br /><div><hr><br /><hr><h4>Score:</h4>" + score + "</div><br /><div><h4>Matching Questions:</h4>" + matchingquestions + "</div>";
 
@@ -55,10 +54,3 @@ $(document).ready(function () {
         }
     });
 });
-
-
-function htmlDecode(input) {
-    var temp = document.createElement('div');
-    temp.innerHTML = input;
-    return temp.childNodes[0].nodeValue;
-}
