@@ -48,15 +48,14 @@ namespace ContosoHelpdeskChatBot.Dialogs
 
                 //TODO: Lookup ResetPassword table and generate temporary password if pass code matches
 
-                
                 if (result == passcode)
-                {​
-                    //TODO: Create temporary password and store in database​
-                }​
+                {
+                    //TODO: Create temporary password and store in database
+                }
                 else
-                {​
-                    await stepContext.Context.SendActivityAsync($"Incorrect passcode.");​
-                    return await stepContext.EndDialogAsync();​
+                {
+                    await stepContext.Context.SendActivityAsync($"Incorrect passcode.");
+                    return await stepContext.EndDialogAsync();
                 }
             }
             else
