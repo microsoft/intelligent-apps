@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
@@ -25,6 +26,9 @@ namespace ContosoHelpdeskChatBot
 
         public ContosoChatBot(ConsotoChatBotAccessors accessors)
         {
+            // Log to log stream
+            Trace.TraceError("Contoso Chat Bot initialized.");
+
             _accessors = accessors ?? throw new System.ArgumentNullException(nameof(accessors));
 
             // Create top - level dialog(s)
@@ -75,6 +79,10 @@ namespace ContosoHelpdeskChatBot
                 }
                 catch (Exception ex) // For production would want to catch more specific exception
                 {
+                    // Log to log stream
+                    Trace.TraceError("Error from within the code in OnTurnAsync function in ContosoChatBot.cs:");
+                    Trace.TraceError(ex.Message);
+
                     logger.Error(ex);
 
                     await turnContext.SendActivityAsync("An error occured, cancelling.");
