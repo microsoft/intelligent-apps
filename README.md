@@ -1,4 +1,17 @@
-### February 2019 Updates
+## November 2019 Updates
+**Adatum Tax Corp Knowledge Service**
+* Minor fixes on DB connection string and QnaMaker URL
+
+**Contoso Helpdesk Chat Bot**
+* Minor fixes on character encoding issues in source files
+* Added debug output for log streaming to improve diagnostics in initial app deployment to Azure 
+
+**Fabrikam Investment Bank Customer Service**
+* Minor fixes to improve code readibility 
+<br/>  
+<br/>  
+  
+## February 2019 Updates
 **Contoso Helpdesk Chat Bot**
 * Bot framework migrated from version 3 to version 4.
 	- new Bot class implementing IBot as entry point to bot service
@@ -14,6 +27,8 @@
 * Project Oxford migrated to Speech API version 1.3.
 	- microphone client replaced with simple speech recognizer
 	- LUIS now uses recognizer and switch case to map intents to actions
+<br/>  
+<br/>  
 
 # Activate Azure with Intelligent Apps
 There are five proof of concept applications in this repo written to illustrate how to augment existing applications with Microsoft Cognitive Services and Bot Framework to add intelligence as well as using other services in the Azure platform.
